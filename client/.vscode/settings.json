@@ -1,0 +1,6 @@
+{
+	"volar.codeLens.scriptSetupTools": true,
+	"[vue]": {
+		"editor.defaultFormatter": "johnsoncodehk.volar"
+	  }
+}

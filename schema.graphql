@@ -1,0 +1,92 @@
+type User {
+  pseudo: String!
+  collections: [Collection!]!
+  collection(id: Int!): Collection
+}
+
+type Collection {
+  id: Int!
+  name: String!
+  item(id: Int!): Item
+}
+
+input CollectionInput {
+  name: String!
+}
+
+type ItemsList {
+  items: [Item!]!
+  pages: Int!
+}
+
+type Item {
+  id: Int!
+  collectionId: Int!
+  name: String!
+  quantity: Int!
+  description: String
+  barcode: String
+}
+
+input ItemInput {
+  name: String!
+  quantity: Int!
+  description: String
+  barcode: String
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+enum Comparisons {
+  equals
+  gt
+  gte
+  lt
+  lte
+}
+
+enum Ordering {
+  asc
+  desc
+}
+
+input QuantitySearchInput {
+  value: Int!
+  comparison: Comparisons!
+}
+
+input SearchInput {
+  text: String
+  quantity: QuantitySearchInput
+  barcode: String
+  collectionId: Int
+}
+
+input OrderingInput {
+  page: Int!
+  numberPerPage: Int!
+  ordering: Ordering
+  orderingField: String
+}
+
+type Query {
+  me: User
+  search(ordering: OrderingInput!, input: SearchInput!): ItemsList!
+  bareCollection(collectionId: Int!): [Item!]!
+}
+
+type Mutation {
+  signup(pseudo: String!, password: String!): AuthPayload
+  login(pseudo: String!, password: String!): AuthPayload
+
+  addCollection(input: CollectionInput!): Collection
+  updateCollection(id: Int!, input: CollectionInput!): Collection
+  deleteCollection(id: Int!): Collection
+
+  addItem(collectionId: Int!, input: ItemInput!): Item
+  updateItem(id: Int!, input: ItemInput!): Item
+  deleteItem(id: Int!): Item
+}

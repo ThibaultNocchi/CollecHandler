@@ -1,0 +1,40 @@
+{
+  "name": "package.json",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predev": "npm run codegen",
+    "codegen": "graphql-codegen"
+  },
+  "dependencies": {
+    "@mdi/font": "5.9.55",
+    "@urql/vue": "^0.6.1",
+    "copy-to-clipboard": "^3.3.1",
+    "graphql": "^15.8.0",
+    "jsbarcode": "^3.11.5",
+    "roboto-fontface": "*",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.12",
+    "vuetify": "^3.0.0-alpha.0",
+    "webfontloader": "^1.0.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.3.1",
+    "@graphql-codegen/typescript": "^2.4.2",
+    "@graphql-codegen/typescript-operations": "^2.2.2",
+    "@graphql-codegen/typescript-vue-urql": "^2.2.2",
+    "@vitejs/plugin-vue": "^2.0.0",
+    "@vue/cli-plugin-babel": "5.0.0-beta.7",
+    "@vue/cli-service": "5.0.0-beta.7",
+    "@vuetify/vite-plugin": "^1.0.0-alpha.3",
+    "sass": "^1.38.0",
+    "sass-loader": "^10.0.0",
+    "typescript": "^4.4.4",
+    "vite": "^2.7.2",
+    "vue-cli-plugin-vuetify": "~2.4.5",
+    "vue-tsc": "^0.29.8",
+    "vuetify-loader": "^2.0.0-alpha.0"
+  }
+}

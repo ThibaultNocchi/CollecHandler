@@ -1,0 +1,86 @@
+query me {
+  me {
+    pseudo
+    collections {
+      id
+      name
+    }
+  }
+}
+
+query collectionId($id: Int!) {
+  me {
+    collection(id: $id) {
+      name
+    }
+  }
+}
+
+query searchItems($ordering: OrderingInput!, $input: SearchInput!) {
+  search(ordering: $ordering, input: $input) {
+    pages
+    items {
+      id
+      collectionId
+      name
+    }
+  }
+}
+
+query bareCollection($collectionId: Int!) {
+  bareCollection(collectionId: $collectionId) {
+    name
+    quantity
+    description
+    barcode
+  }
+}
+
+query itemId($collectionId: Int!, $id: Int!) {
+  me {
+    collection(id: $collectionId) {
+      item(id: $id) {
+        name
+        quantity
+        description
+        barcode
+      }
+    }
+  }
+}
+
+mutation addCollection($input: CollectionInput!) {
+  addCollection(input: $input) {
+    id
+  }
+}
+
+mutation deleteCollection($id: Int!) {
+  deleteCollection(id: $id) {
+    id
+  }
+}
+
+mutation addItem($collectionId: Int!, $input: ItemInput!) {
+  addItem(collectionId: $collectionId, input: $input) {
+    id
+  }
+}
+
+mutation deleteItem($id: Int!) {
+  deleteItem(id: $id) {
+    id
+  }
+}
+
+mutation login($pseudo: String!, $password: String!) {
+  login(pseudo: $pseudo, password: $password) {
+    token
+  }
+}
+
+mutation signup($pseudo: String!, $password: String!) {
+  signup(pseudo: $pseudo, password: $password) {
+    token
+  }
+}
