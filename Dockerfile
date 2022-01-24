@@ -15,7 +15,7 @@ FROM alpine:latest
 
 ENV NODE_ENV=production
 
-RUN apk add nginx npm nodejs supervisor
+RUN apk add --no-cache nginx npm nodejs supervisor
 
 COPY --from=client /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/http.d/default.conf
@@ -25,12 +25,10 @@ COPY --from=server /app/dist dist
 COPY --from=server /app/package*.json ./
 COPY --from=server /app/prisma prisma
 COPY schema.graphql /
-RUN npm ci --no-audit
+RUN npm ci --no-audit && npm cache clean --force && rm -r /root/.cache package-lock.json /usr/lib/python*/__pycache__
 
 WORKDIR /
-COPY supervisord.conf ./
-COPY start.sh ./
-RUN chmod +x start.sh
+COPY supervisord.conf start.sh ./
 
 VOLUME [ "/server/prisma/db" ]
 

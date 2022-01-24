@@ -3,4 +3,5 @@ client/dist
 
 server/node_modules
 server/prisma/db
+server/prisma/seed.ts
 server/dist
