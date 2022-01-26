@@ -1,6 +1,6 @@
 <template>
+	<v-icon @click="iconClick">mdi-barcode-scan</v-icon>
 	<input ref="file" type="file" @change="onScan" />
-	<!-- <v-icon @click="onScan">mdi-barcode-scan</v-icon> -->
 </template>
 
 <script lang="ts" setup>
@@ -9,6 +9,10 @@ import { Ref, ref, watch } from 'vue';
 
 const file: Ref<null | HTMLInputElement> = ref(null)
 const fileBase64: Ref<string | ArrayBuffer | null> = ref(null)
+
+const iconClick = () => {
+	if (file.value) file.value.click()
+}
 
 const onScan = () => {
 	if (!file.value?.files) return
@@ -43,3 +47,13 @@ watch(fileBase64, () => {
 })
 
 </script>
+
+<style scoped>
+i {
+	cursor: pointer;
+}
+
+input {
+	opacity: 0;
+}
+</style>
