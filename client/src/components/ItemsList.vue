@@ -41,6 +41,7 @@
 		<input type="number" min="0" placeholder="Quantity" v-model="form.quantity" />
 		<br />
 		<input type="text" placeholder="Barcode" v-model="form.barcode" />
+		<BarcodeScanner @change="onNewItemBarcodeChange" />
 		<br />
 		<textarea placeholder="Description" v-model="form.description"></textarea>
 		<br />
@@ -53,6 +54,7 @@ import { Ordering, Comparisons, useAddItemMutation, useSearchItemsQuery } from '
 import { computed, reactive, Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Pagination from './Pagination.vue';
+import BarcodeScanner from './BarcodeScanner.vue';
 
 
 const props = defineProps({
@@ -135,6 +137,11 @@ const onSubmit = async () => {
 		router.push({ name: 'Item', params: { collectionId: props.collectionId, id: addItemMutation.data.addItem.id } })
 	else
 		alert('error adding item')
+}
+
+const onNewItemBarcodeChange = (val: string | undefined) => {
+	if (val) form.barcode = val
+	else alert('Can\'t read barcode, try again')
 }
 
 </script>

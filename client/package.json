@@ -9,6 +9,7 @@
     "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@ericblade/quagga2": "^1.4.2",
     "@mdi/font": "5.9.55",
     "@urql/vue": "^0.6.1",
     "copy-to-clipboard": "^3.3.1",
