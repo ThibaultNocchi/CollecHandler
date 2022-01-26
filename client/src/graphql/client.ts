@@ -2,11 +2,10 @@ import router from "@/routes";
 import { createClient } from "@urql/vue";
 import { ref } from "vue";
 
-const HOST = `${location.protocol}//${location.host}`;
 const URL =
   import.meta.env.MODE === "production"
-    ? `${HOST}/graphql`
-    : "http://localhost:4000/graphql";
+    ? `${location.protocol}//${location.host}/graphql`
+    : `http://${location.hostname}:4000/graphql`;
 
 const localToken = localStorage.getItem("jwt") || undefined;
 
