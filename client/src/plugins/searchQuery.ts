@@ -17,6 +17,12 @@ const searchQuery = {
   orderingField: computed(
     () => getQueryParamOrUndefined("orderingField") || "id"
   ),
+  collectionId: computed(() =>
+    getQueryParamOrUndefined("collectionId")
+      ? // @ts-expect-error return value should be always defined
+        parseInt(getQueryParamOrUndefined("collectionId"))
+      : undefined
+  ),
   text: computed(() => getQueryParamOrUndefined("text") || ""),
   barcode: computed(() => getQueryParamOrUndefined("barcode")),
   quantityComparison: computed(
