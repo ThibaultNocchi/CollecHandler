@@ -9,57 +9,7 @@
 	<Pagination :current="page" :pages="pages" />
 
 	<h3>Search</h3>
-
-	<label>Ordering</label>
-	<select
-		:value="searchQueryStore.ordering.value"
-		@change="routeParam('ordering', ($event.target as HTMLSelectElement).value)"
-	>
-		<option v-for="item in Ordering" :value="item">{{ item }}</option>
-	</select>
-	<select
-		:value="searchQueryStore.orderingField.value"
-		@change="routeParam('orderingField', ($event.target as HTMLSelectElement).value)"
-	>
-		<option v-for="item in ORDERING_FIELDS" :value="item">{{ item }}</option>
-	</select>
-
-	<br />
-
-	<input
-		type="text"
-		placeholder="Text search"
-		:value="searchQueryStore.text.value"
-		@input="routeParam('text', ($event.target as HTMLInputElement).value)"
-	/>
-
-	<br />
-
-	<input
-		type="text"
-		placeholder="Barcode"
-		:value="searchQueryStore.barcode.value"
-		@input="routeParam('barcode', ($event.target as HTMLInputElement).value)"
-	/>
-	<BarcodeScanner @change="onSearchBarcodeChange" />
-
-	<br />
-
-	<label>Quantity</label>
-	<select
-		:value="searchQueryStore.quantityComparison.value"
-		@change="routeQuantityComparison(($event.target as HTMLSelectElement).value)"
-	>
-		<option :value="'disabled'">Disabled</option>
-		<option v-for="item in Comparisons" :value="item">{{ item }}</option>
-	</select>
-	<input
-		type="number"
-		ref="quantityInput"
-		:disabled="searchQueryStore.quantityComparison.value === 'disabled'"
-		:value="searchQueryStore.quantity.value"
-		@input="routeParam('quantity', ($event.target as HTMLInputElement).value)"
-	/>
+	<SearchForm />
 
 	<h3>Add new item</h3>
 	<form @submit.prevent="onSubmit">
@@ -77,12 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { Ordering, Comparisons, useAddItemMutation, useSearchItemsQuery } from '@/graphql/graphql';
-import { computed, reactive, Ref, ref } from 'vue';
+import { useAddItemMutation, useSearchItemsQuery } from '@/graphql/graphql';
+import { computed, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Pagination from './Pagination.vue';
 import BarcodeScanner from './BarcodeScanner.vue';
-import searchQueryStore, { ORDERING_FIELDS } from '@/plugins/searchQuery';
+import SearchForm from './SearchForm.vue';
+import searchQueryStore from '@/plugins/searchQuery';
 
 const props = defineProps({
 	collectionId: {
@@ -94,18 +45,7 @@ const props = defineProps({
 const router = useRouter()
 const route = useRoute()
 
-const routeParam = (name: string, value: string | undefined) => {
-	router.push({ ...route, query: { ...route.query, [name]: value ? value : undefined } })
-}
-
 const page = computed(() => typeof route.query.page === 'string' ? parseInt(route.query.page) : 1)
-
-const routeQuantityComparison = (newValue: Comparisons | string) => {
-	if (newValue !== "disabled") router.push({ ...route, query: { ...route.query, quantityComparison: newValue, quantity: quantityInput?.value?.value } })
-	else router.push({ ...route, query: { ...route.query, quantityComparison: undefined, quantity: undefined } })
-}
-
-const quantityInput: Ref<HTMLInputElement | null> = ref(null);
 
 const searchQuery = await useSearchItemsQuery({
 	variables: {
@@ -162,11 +102,6 @@ const onSubmit = async () => {
 
 const onNewItemBarcodeChange = (val: string | undefined) => {
 	if (val) form.barcode = val
-	else alert('Can\'t read barcode, try again')
-}
-
-const onSearchBarcodeChange = (val: string | undefined) => {
-	if (val) routeParam('barcode', val)
 	else alert('Can\'t read barcode, try again')
 }
 
