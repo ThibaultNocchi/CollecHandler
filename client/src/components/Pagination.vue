@@ -26,6 +26,9 @@ const props = defineProps({
 const router = useRouter()
 const route = useRoute()
 
+if (searchQuery.page.value > props.pages)
+	router.replace({ ...route, query: { ...route.query, page: undefined } })
+
 const onPrevious = () => {
 	router.push({ ...route, query: { ...route.query, page: searchQuery.page.value - 1 } })
 }

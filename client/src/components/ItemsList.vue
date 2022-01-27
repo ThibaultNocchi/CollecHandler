@@ -72,9 +72,6 @@ const addItem = useAddItemMutation()
 const items = computed(() => searchQuery.data.value?.search.items || [])
 const pages = computed(() => searchQuery.data.value?.search.pages || 1)
 
-if (searchQueryStore.page.value > pages.value)
-	router.replace({ ...route, query: { ...route.query, page: undefined } })
-
 const form = reactive({
 	name: '',
 	quantity: 1,
