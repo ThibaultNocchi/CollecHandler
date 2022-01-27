@@ -11,10 +11,16 @@
 	<h3>Search</h3>
 
 	<label>Ordering</label>
-	<select :value="ordering" @change="routeParam('ordering', ($event.target as HTMLSelectElement).value)">
+	<select
+		:value="searchQueryStore.ordering.value"
+		@change="routeParam('ordering', ($event.target as HTMLSelectElement).value)"
+	>
 		<option v-for="item in Ordering" :value="item">{{ item }}</option>
 	</select>
-	<select :value="orderingField" @change="routeParam('orderingField', ($event.target as HTMLSelectElement).value)">
+	<select
+		:value="searchQueryStore.orderingField.value"
+		@change="routeParam('orderingField', ($event.target as HTMLSelectElement).value)"
+	>
 		<option v-for="item in ORDERING_FIELDS" :value="item">{{ item }}</option>
 	</select>
 
@@ -23,7 +29,7 @@
 	<input
 		type="text"
 		placeholder="Text search"
-		:value="textSearch"
+		:value="searchQueryStore.text.value"
 		@input="routeParam('text', ($event.target as HTMLInputElement).value)"
 	/>
 
@@ -32,7 +38,7 @@
 	<input
 		type="text"
 		placeholder="Barcode"
-		:value="barcodeSearch"
+		:value="searchQueryStore.barcode.value"
 		@input="routeParam('barcode', ($event.target as HTMLInputElement).value)"
 	/>
 	<BarcodeScanner @change="onSearchBarcodeChange" />
@@ -40,15 +46,18 @@
 	<br />
 
 	<label>Quantity</label>
-	<select :value="quantityComparison" @change="routeQuantityComparison(($event.target as HTMLSelectElement).value)">
+	<select
+		:value="searchQueryStore.quantityComparison.value"
+		@change="routeQuantityComparison(($event.target as HTMLSelectElement).value)"
+	>
 		<option :value="'disabled'">Disabled</option>
 		<option v-for="item in Comparisons" :value="item">{{ item }}</option>
 	</select>
 	<input
 		type="number"
 		ref="quantityInput"
-		:disabled="quantityComparison === 'disabled'"
-		:value="quantity"
+		:disabled="searchQueryStore.quantityComparison.value === 'disabled'"
+		:value="searchQueryStore.quantity.value"
 		@input="routeParam('quantity', ($event.target as HTMLInputElement).value)"
 	/>
 
@@ -73,7 +82,7 @@ import { computed, reactive, Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Pagination from './Pagination.vue';
 import BarcodeScanner from './BarcodeScanner.vue';
-
+import searchQueryStore, { ORDERING_FIELDS } from '@/plugins/searchQuery';
 
 const props = defineProps({
 	collectionId: {
@@ -91,20 +100,11 @@ const routeParam = (name: string, value: string | undefined) => {
 
 const page = computed(() => typeof route.query.page === 'string' ? parseInt(route.query.page) : 1)
 
-const ordering = computed(() => typeof route.query.ordering === 'string' ? route.query.ordering : Ordering.Desc)
-const ORDERING_FIELDS = ['id', 'name']
-const orderingField = computed(() => typeof route.query.orderingField === 'string' ? route.query.orderingField : 'id')
-
-const textSearch = computed(() => typeof route.query.text === 'string' ? route.query.text : '')
-const barcodeSearch = computed(() => typeof route.query.barcode === 'string' ? route.query.barcode : undefined)
-
-const quantityComparison = computed(() => typeof route.query.quantityComparison === 'string' ? route.query.quantityComparison as Comparisons : 'disabled')
 const routeQuantityComparison = (newValue: Comparisons | string) => {
 	if (newValue !== "disabled") router.push({ ...route, query: { ...route.query, quantityComparison: newValue, quantity: quantityInput?.value?.value } })
 	else router.push({ ...route, query: { ...route.query, quantityComparison: undefined, quantity: undefined } })
 }
 
-const quantity = computed(() => typeof route.query.quantity === 'string' ? parseInt(route.query.quantity) : 1)
 const quantityInput: Ref<HTMLInputElement | null> = ref(null);
 
 const searchQuery = await useSearchItemsQuery({
@@ -112,20 +112,20 @@ const searchQuery = await useSearchItemsQuery({
 		input: {
 			collectionId: props.collectionId,
 			// @ts-expect-error - Vue URQL can handle reactive variables
-			text: textSearch,
+			text: searchQueryStore.text,
 			// @ts-expect-error - Vue URQL can handle reactive variables
-			barcode: barcodeSearch,
+			barcode: searchQueryStore.barcode,
 			// @ts-expect-error - Vue URQL can handle reactive variables
-			quantity: computed(() => quantityComparison.value !== "disabled" ? { value: quantity.value || 0, comparison: quantityComparison.value } : undefined)
+			quantity: computed(() => searchQueryStore.quantityComparison.value !== "disabled" ? { value: searchQueryStore.quantity.value || 0, comparison: searchQueryStore.quantityComparison.value } : undefined)
 		},
 		ordering: {
 			// @ts-expect-error - Vue URQL can handle reactive variables
 			page,
 			numberPerPage: 10,
 			// @ts-expect-error - Vue URQL can handle reactive variables
-			ordering,
+			ordering: searchQueryStore.ordering,
 			// @ts-expect-error - Vue URQL can handle reactive variables
-			orderingField
+			orderingField: searchQueryStore.orderingField
 		}
 	}
 })
