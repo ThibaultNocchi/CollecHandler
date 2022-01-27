@@ -8,6 +8,8 @@
 
 	<Pagination :current="page" :pages="pages" />
 
+	<h3>Search</h3>
+
 	<label>Ordering</label>
 	<select :value="ordering" @change="routeParam('ordering', ($event.target as HTMLSelectElement).value)">
 		<option v-for="item in Ordering" :value="item">{{ item }}</option>
