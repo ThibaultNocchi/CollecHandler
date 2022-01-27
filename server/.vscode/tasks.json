@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"problemMatcher": [],
+			"label": "npm: dev",
+			"detail": "ts-node-dev --exit-child --clear --no-notify --respawn --transpile-only src/server",
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		}
+	]
+}
