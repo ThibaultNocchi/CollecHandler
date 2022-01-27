@@ -3,7 +3,7 @@
   "scripts": {
     "start": "node dist/server",
     "build": "tsc",
-    "dev": "ts-node-dev --exit-child --clear --no-notify --respawn --transpile-only src/server",
+    "dev": "JWT_SECRET=RANDOM_KEY ts-node-dev --exit-child --clear --no-notify --respawn --transpile-only src/server",
     "predev": "npm run codegen",
     "codegen": "graphql-codegen"
   },
