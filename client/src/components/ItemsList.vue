@@ -8,20 +8,26 @@
 
 	<Pagination :current="page" :pages="pages" />
 
+	<label>Ordering</label>
 	<select :value="ordering" @change="routeParam('ordering', ($event.target as HTMLSelectElement).value)">
 		<option v-for="item in Ordering" :value="item">{{ item }}</option>
 	</select>
 	<select :value="orderingField" @change="routeParam('orderingField', ($event.target as HTMLSelectElement).value)">
 		<option v-for="item in ORDERING_FIELDS" :value="item">{{ item }}</option>
 	</select>
+
 	<br />
+
 	<input
 		type="text"
 		placeholder="Text search"
 		:value="textSearch"
 		@input="routeParam('text', ($event.target as HTMLInputElement).value)"
 	/>
+
 	<br />
+
+	<label>Quantity</label>
 	<select :value="quantityComparison" @change="routeQuantityComparison(($event.target as HTMLSelectElement).value)">
 		<option :value="'disabled'">Disabled</option>
 		<option v-for="item in Comparisons" :value="item">{{ item }}</option>
