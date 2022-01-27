@@ -10,6 +10,7 @@ const getQueryParamOrUndefined = (key: string) =>
 export const ORDERING_FIELDS = ["id", "name"];
 
 const searchQuery = {
+  page: computed(() => parseInt(getQueryParamOrUndefined("page") || "1")),
   ordering: computed(
     () => (getQueryParamOrUndefined("ordering") as Ordering) || Ordering.Desc
   ),

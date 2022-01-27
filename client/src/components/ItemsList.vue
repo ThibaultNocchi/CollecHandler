@@ -6,7 +6,7 @@
 		</router-link>
 	</ul>
 
-	<Pagination :current="page" :pages="pages" />
+	<Pagination :pages="pages" />
 
 	<h3>Search</h3>
 	<SearchForm />
@@ -45,8 +45,6 @@ const props = defineProps({
 const router = useRouter()
 const route = useRoute()
 
-const page = computed(() => typeof route.query.page === 'string' ? parseInt(route.query.page) : 1)
-
 const searchQuery = await useSearchItemsQuery({
 	variables: {
 		input: {
@@ -60,7 +58,7 @@ const searchQuery = await useSearchItemsQuery({
 		},
 		ordering: {
 			// @ts-expect-error - Vue URQL can handle reactive variables
-			page,
+			page: searchQueryStore.page,
 			numberPerPage: 10,
 			// @ts-expect-error - Vue URQL can handle reactive variables
 			ordering: searchQueryStore.ordering,
@@ -74,7 +72,7 @@ const addItem = useAddItemMutation()
 const items = computed(() => searchQuery.data.value?.search.items || [])
 const pages = computed(() => searchQuery.data.value?.search.pages || 1)
 
-if (page.value > pages.value)
+if (searchQueryStore.page.value > pages.value)
 	router.replace({ ...route, query: { ...route.query, page: undefined } })
 
 const form = reactive({
