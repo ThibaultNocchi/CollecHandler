@@ -27,6 +27,16 @@
 
 	<br />
 
+	<input
+		type="text"
+		placeholder="Barcode"
+		:value="barcodeSearch"
+		@input="routeParam('barcode', ($event.target as HTMLInputElement).value)"
+	/>
+	<BarcodeScanner @change="onSearchBarcodeChange" />
+
+	<br />
+
 	<label>Quantity</label>
 	<select :value="quantityComparison" @change="routeQuantityComparison(($event.target as HTMLSelectElement).value)">
 		<option :value="'disabled'">Disabled</option>
@@ -84,6 +94,7 @@ const ORDERING_FIELDS = ['id', 'name']
 const orderingField = computed(() => typeof route.query.orderingField === 'string' ? route.query.orderingField : 'id')
 
 const textSearch = computed(() => typeof route.query.text === 'string' ? route.query.text : '')
+const barcodeSearch = computed(() => typeof route.query.barcode === 'string' ? route.query.barcode : undefined)
 
 const quantityComparison = computed(() => typeof route.query.quantityComparison === 'string' ? route.query.quantityComparison as Comparisons : 'disabled')
 const routeQuantityComparison = (newValue: Comparisons | string) => {
@@ -100,6 +111,8 @@ const searchQuery = await useSearchItemsQuery({
 			collectionId: props.collectionId,
 			// @ts-expect-error - Vue URQL can handle reactive variables
 			text: textSearch,
+			// @ts-expect-error - Vue URQL can handle reactive variables
+			barcode: barcodeSearch,
 			// @ts-expect-error - Vue URQL can handle reactive variables
 			quantity: computed(() => quantityComparison.value !== "disabled" ? { value: quantity.value || 0, comparison: quantityComparison.value } : undefined)
 		},
@@ -147,6 +160,11 @@ const onSubmit = async () => {
 
 const onNewItemBarcodeChange = (val: string | undefined) => {
 	if (val) form.barcode = val
+	else alert('Can\'t read barcode, try again')
+}
+
+const onSearchBarcodeChange = (val: string | undefined) => {
+	if (val) routeParam('barcode', val)
 	else alert('Can\'t read barcode, try again')
 }
 
