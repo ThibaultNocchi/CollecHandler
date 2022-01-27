@@ -1,7 +1,7 @@
 <template>
 	<h2>Items</h2>
 	<ul>
-		<router-link :to="{ name: 'Item', params: { collectionId, id: item.id } }" v-for="item in items">
+		<router-link :to="{ name: 'Item', params: { collectionId: item.collectionId, id: item.id } }" v-for="item in items">
 			<li>{{ item.id }}. {{ item.name }}</li>
 		</router-link>
 	</ul>
@@ -22,7 +22,7 @@ import searchQueryStore from '@/plugins/searchQuery';
 const props = defineProps({
 	collectionId: {
 		type: Number,
-		required: true
+		required: false
 	}
 })
 
