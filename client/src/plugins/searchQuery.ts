@@ -17,12 +17,19 @@ const searchQuery = {
   orderingField: computed(
     () => getQueryParamOrUndefined("orderingField") || "id"
   ),
-  collectionId: computed(() =>
-    getQueryParamOrUndefined("collectionId")
+  collectionId: computed(() => {
+    if (
+      router.currentRoute.value.name === "Collection" &&
+      typeof router.currentRoute.value.params.id === "string"
+    ) {
+      return parseInt(router.currentRoute.value.params.id);
+    }
+
+    return getQueryParamOrUndefined("collectionId")
       ? // @ts-expect-error return value should be always defined
         parseInt(getQueryParamOrUndefined("collectionId"))
-      : undefined
-  ),
+      : undefined;
+  }),
   text: computed(() => getQueryParamOrUndefined("text") || ""),
   barcode: computed(() => getQueryParamOrUndefined("barcode")),
   quantityComparison: computed(

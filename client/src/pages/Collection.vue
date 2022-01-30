@@ -27,15 +27,16 @@
 <script setup lang="ts">
 import { BareCollectionDocument, BareCollectionQuery, useAddItemMutation, useCollectionIdQuery, useDeleteCollectionMutation } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import ItemsList from '@/components/ItemsList.vue';
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
 import { useClientHandle } from '@urql/vue';
 import { exportToCsv, exportToJson } from '@/plugins/exportCollections';
+import searchQuery from '@/plugins/searchQuery';
 
 
-if (typeof useRoute().params.id !== "string") throw "Bad parameter"
-const collectionId = parseInt(useRoute().params.id as string)
+const collectionId = searchQuery.collectionId.value
+if (!collectionId) throw "Bad parameter"
 
 const res = await useCollectionIdQuery({ variables: { id: collectionId } })
 const deleteCollectionMutation = useDeleteCollectionMutation()
