@@ -1,20 +1,21 @@
 <template>
-	<h1>Register</h1>
-
-	<form @submit.prevent="onSubmit">
-		<input type="text" v-model="form.pseudo" placeholder="Pseudo" autofocus />
-		<br />
-		<input type="password" v-model="form.password" placeholder="Password" />
-		<br />
-		<input type="password" v-model="form.password2" placeholder="Retype password" />
-		<br />
-		<label for="rememberMe">Remember me</label>
-		<input type="checkbox" id="rememberMe" v-model="form.rememberMe" />
-		<br />
-		<input type="submit" />
-	</form>
-
-	<router-link :to="{ name: 'Login' }">Login</router-link>
+	<FsCard>
+		<template #title>Create your account</template>
+		<template #subtitle>Sign up to start managing your collections</template>
+		<v-form class="text-end" @submit.prevent="onSubmit">
+			<v-text-field v-model="form.pseudo" label="Pseudo" hide-details prepend-inner-icon="mdi-account" />
+			<PasswordField v-model="form.password" label="Password" hide-details />
+			<PasswordField v-model="form.password2" label="Retype password" hide-details />
+			<v-checkbox v-model="form.rememberMe" color="primary" label="Remember me" hide-details />
+			<v-btn color="primary" text block @click="onSubmit">Create my account</v-btn>
+		</v-form>
+		<template #append>
+			<h3>
+				Already signed up?
+				<router-link :to="{ name: 'Login' }">Sign in</router-link>
+			</h3>
+		</template>
+	</FsCard>
 </template>
 
 <script setup lang="ts">
@@ -22,6 +23,8 @@
 import { setJwt } from '@/graphql/client';
 import { useSignupMutation } from '@/graphql/graphql';
 import { reactive } from 'vue';
+import FsCard from '@/components/FsCard.vue';
+import PasswordField from '@/components/PasswordField.vue';
 
 const form = reactive({ pseudo: "", password: "", password2: "", rememberMe: false })
 const register = useSignupMutation()

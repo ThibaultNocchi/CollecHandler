@@ -9,7 +9,7 @@
 			<v-btn color="primary" text block @click="onSubmit">Login</v-btn>
 		</v-form>
 		<template #append>
-			<h3 class="mt-4">
+			<h3>
 				Don't have an account?
 				<router-link :to="{ name: 'Register' }">Sign up</router-link>
 			</h3>
