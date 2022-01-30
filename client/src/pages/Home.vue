@@ -10,7 +10,7 @@ import { useMeQuery } from '@/graphql/graphql';
 import CollectionsList from '@/components/CollectionsList.vue';
 import { computed } from 'vue';
 
-const me = await useMeQuery()
+const me = useMeQuery()
 const pseudo = computed(() => me.data.value?.me?.pseudo)
 
 </script>
