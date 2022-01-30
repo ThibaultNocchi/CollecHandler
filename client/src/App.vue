@@ -62,7 +62,7 @@
 
     <v-app v-else>
       <v-main>
-        <v-container>
+        <v-container class="fsLayout d-flex">
           <router-view />
         </v-container>
       </v-main>
@@ -92,3 +92,9 @@ const pseudo = computed(() => me.data.value?.me?.pseudo)
 const firstLetter = computed(() => pseudo.value?.charAt(0).toUpperCase())
 
 </script>
+
+<style scoped>
+.fsLayout {
+  height: 100%;
+}
+</style>

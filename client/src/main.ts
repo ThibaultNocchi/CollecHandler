@@ -5,6 +5,7 @@ import urql from "@urql/vue";
 import client from "./graphql/client";
 import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
+import "@/styles/default.css";
 
 loadFonts();
 
