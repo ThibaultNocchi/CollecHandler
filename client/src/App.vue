@@ -1,8 +1,8 @@
 <template>
   <Suspense>
-    <v-app>
+    <v-app v-if="isLoggedIn()">
       <v-app-bar app>
-        <v-app-bar-nav-icon v-if="isNavIcon" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon v-if="display.mobile.value" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-app-bar-title>CollecHandler</v-app-bar-title>
       </v-app-bar>
 
@@ -59,6 +59,14 @@
         </v-container>
       </v-main>
     </v-app>
+
+    <v-app v-else>
+      <v-main>
+        <v-container>
+          <router-view />
+        </v-container>
+      </v-main>
+    </v-app>
   </Suspense>
 </template>
 
@@ -72,7 +80,6 @@ import { useMeQuery } from './graphql/graphql';
 const drawer: Ref<null | boolean> = ref(null)
 
 const logout = () => {
-  drawer.value = false
   setJwt()
 }
 
@@ -84,5 +91,4 @@ const me = useMeQuery()
 const pseudo = computed(() => me.data.value?.me?.pseudo)
 const firstLetter = computed(() => pseudo.value?.charAt(0).toUpperCase())
 
-const isNavIcon = computed(() => isLoggedIn() && display.mobile.value)
 </script>
