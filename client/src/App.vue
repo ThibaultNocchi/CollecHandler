@@ -2,13 +2,19 @@
   <Suspense>
     <v-app>
       <v-app-bar app>
-        <v-app-bar-nav-icon v-if="isLoggedIn()" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon v-if="isNavIcon" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-app-bar-title>CollecHandler</v-app-bar-title>
       </v-app-bar>
 
-      <v-navigation-drawer app temporary v-model="drawer">
+      <v-navigation-drawer
+        v-if="isLoggedIn()"
+        app
+        :permanent="!display.mobile.value"
+        :temporary="display.mobile.value"
+        v-model="drawer"
+      >
         <template #prepend>
-          <v-list>
+          <v-list nav dense>
             <v-list-item>
               <v-list-item-avatar>
                 <v-avatar color="blue">{{ firstLetter }}</v-avatar>
@@ -21,7 +27,7 @@
           <v-divider></v-divider>
         </template>
 
-        <v-list>
+        <v-list nav dense>
           <v-list-item link @click="router.push({ name: 'Home' })">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
@@ -34,7 +40,7 @@
 
         <template #append>
           <v-divider></v-divider>
-          <v-list>
+          <v-list nav dense>
             <v-list-item link @click="logout">
               <v-list-item-icon>
                 <v-icon>mdi-logout</v-icon>
@@ -48,19 +54,22 @@
       </v-navigation-drawer>
 
       <v-main>
-        <router-view />
+        <v-container>
+          <router-view />
+        </v-container>
       </v-main>
     </v-app>
   </Suspense>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useDisplay } from 'vuetify';
 import { isLoggedIn, setJwt } from './graphql/client';
 import { useMeQuery } from './graphql/graphql';
 
-const drawer = ref(false)
+const drawer: Ref<null | boolean> = ref(null)
 
 const logout = () => {
   drawer.value = false
@@ -68,9 +77,12 @@ const logout = () => {
 }
 
 const router = useRouter()
+const display = useDisplay()
 
 const me = useMeQuery()
 
 const pseudo = computed(() => me.data.value?.me?.pseudo)
 const firstLetter = computed(() => pseudo.value?.charAt(0))
+
+const isNavIcon = computed(() => isLoggedIn() && display.mobile.value)
 </script>
