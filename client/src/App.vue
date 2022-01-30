@@ -28,7 +28,7 @@
         </template>
 
         <v-list nav dense>
-          <v-list-item link @click="router.push({ name: 'Home' })">
+          <v-list-item link @click="router.push({ name: 'Home' }); drawer = false">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
