@@ -4,18 +4,7 @@
 		<template #subtitle>Login to your CollecHandler instance to manage your collections</template>
 		<v-form class="text-end" @submit.prevent="onSubmit">
 			<v-text-field v-model="form.pseudo" autofocus hide-details label="Pseudo" prepend-inner-icon="mdi-account" />
-			<v-text-field
-				v-model="form.password"
-				dense
-				hide-details
-				label="Password"
-				prepend-inner-icon="mdi-key"
-				:type="showPassword ? 'text' : 'password'"
-			>
-				<template #append class="pointer">
-					<v-icon @click="showPassword = !showPassword" class="pointer">{{ showPassword ? "mdi-eye" : "mdi-eye-off" }}</v-icon>
-				</template>
-			</v-text-field>
+			<PasswordField v-model="form.password" hide-details label="Password" />
 			<v-checkbox v-model="form.rememberMe" color="primary" label="Remember me" hide-details />
 			<v-btn color="primary" text block @click="onSubmit">Login</v-btn>
 		</v-form>
@@ -32,15 +21,15 @@
 
 import { setJwt } from '@/graphql/client';
 import { useLoginMutation } from '@/graphql/graphql';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import FsCard from '@/components/FsCard.vue'
+import PasswordField from '@/components/PasswordField.vue';
 
 const form = reactive({
 	pseudo: '',
 	password: '',
 	rememberMe: false
 })
-const showPassword = ref(false)
 
 const login = useLoginMutation()
 
