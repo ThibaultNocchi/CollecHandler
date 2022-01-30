@@ -82,7 +82,7 @@ const display = useDisplay()
 const me = useMeQuery()
 
 const pseudo = computed(() => me.data.value?.me?.pseudo)
-const firstLetter = computed(() => pseudo.value?.charAt(0))
+const firstLetter = computed(() => pseudo.value?.charAt(0).toUpperCase())
 
 const isNavIcon = computed(() => isLoggedIn() && display.mobile.value)
 </script>
