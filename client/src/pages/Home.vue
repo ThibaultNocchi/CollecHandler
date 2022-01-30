@@ -8,16 +8,9 @@
 
 import { useMeQuery } from '@/graphql/graphql';
 import CollectionsList from '@/components/CollectionsList.vue';
-import { setJwt } from '@/graphql/client';
-
-const logout = () => {
-	setJwt()
-}
+import { computed } from 'vue';
 
 const me = await useMeQuery()
-if (me.error.value) logout()
-
-const pseudo = me.data.value?.me?.pseudo
-
+const pseudo = computed(() => me.data.value?.me?.pseudo)
 
 </script>
