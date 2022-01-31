@@ -1,7 +1,7 @@
 # CollecHandler
 
 <p align="center">
-  <img style="width:40%;" src="./logo.svg" />
+  <img style="width:40%;" src="client/logo.svg" />
 </p>
 
 <p align="center">
