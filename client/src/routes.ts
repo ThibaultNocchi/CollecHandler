@@ -10,27 +10,32 @@ const routes = [
   {
     name: "Login",
     path: "/login",
-    component: Login
+    component: Login,
+    meta: { layout: "FullscreenLayout" }
   },
   {
     name: "Register",
     path: "/register",
-    component: Register
+    component: Register,
+    meta: { layout: "FullscreenLayout" }
   },
   {
     name: "Home",
     path: "/",
-    component: Home
+    component: Home,
+    meta: { layout: "DefaultLayout" }
   },
   {
     name: "Collection",
     path: "/collection/:id",
-    component: Collection
+    component: Collection,
+    meta: { layout: "DefaultLayout" }
   },
   {
     name: "Item",
     path: "/collection/:collectionId/:id",
-    component: Item
+    component: Item,
+    meta: { layout: "DefaultLayout" }
   }
 ];
 

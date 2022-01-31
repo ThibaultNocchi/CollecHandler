@@ -1,7 +1,7 @@
 <template>
 	<v-main>
 		<v-container class="fsLayout d-flex">
-			<router-view />
+			<slot />
 		</v-container>
 	</v-main>
 </template>

@@ -1,15 +1,18 @@
 <template>
   <Suspense>
     <v-app>
-      <Default v-if="isLoggedIn()" />
-      <Fullscreen v-else />
+      <component :is="layout">
+        <router-view />
+      </component>
     </v-app>
   </Suspense>
 </template>
 
 <script lang="ts" setup>
-import Default from './layouts/Default.vue';
-import Fullscreen from './layouts/Fullscreen.vue';
-import { isLoggedIn } from './graphql/client'
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+
+const route = useRoute()
+const layout = computed(() => route.meta.layout as string | undefined)
 
 </script>
