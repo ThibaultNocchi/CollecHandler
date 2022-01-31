@@ -10,6 +10,8 @@ export const JWT_SECRET = process.env.JWT_SECRET || uuidv4()
 
 const app = express()
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
 const loggingMiddleware = async (
   req: Request,
   res: Response,
