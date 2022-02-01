@@ -3,9 +3,9 @@
 		<template #title>Create your account</template>
 		<template #subtitle>Sign up to start managing your collections</template>
 		<v-form class="text-end" @submit.prevent="onSubmit">
-			<v-text-field v-model="form.pseudo" label="Pseudo" hide-details prepend-inner-icon="mdi-account" />
-			<PasswordField v-model="form.password" label="Password" hide-details />
-			<PasswordField v-model="form.password2" label="Retype password" hide-details />
+			<v-text-field v-model="form.pseudo" class="mb-2" label="Pseudo" hide-details prepend-inner-icon="mdi-account" />
+			<PasswordField v-model="form.password" class="mb-2" label="Password" hide-details />
+			<PasswordField v-model="form.password2" class="mb-2" label="Retype password" hide-details />
 			<v-checkbox v-model="form.rememberMe" color="primary" label="Remember me" hide-details />
 			<v-btn color="primary" text block @click="onSubmit">Create my account</v-btn>
 		</v-form>

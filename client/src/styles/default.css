@@ -1,3 +1,8 @@
 .pointer {
   cursor: pointer;
 }
+
+.v-input__details {
+  /* Disabled for now as the Vuetify hide-details prop doesn't work */
+  display: none;
+}
