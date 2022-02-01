@@ -31,7 +31,6 @@ const emit = defineEmits(['change'])
 
 watch(fileBase64, () => {
 	if (!fileBase64.value) return
-	console.log(fileBase64.value)
 
 	const config: QuaggaJSConfigObject = {
 		src: fileBase64.value.toString(),
