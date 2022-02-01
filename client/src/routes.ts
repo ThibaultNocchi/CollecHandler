@@ -1,4 +1,8 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  RouteLocationNormalized
+} from "vue-router";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
 import Home from "@/pages/Home.vue";
@@ -44,17 +48,19 @@ const router = createRouter({
   routes
 });
 
-router.beforeEach((to, _from) => {
-  const forceLoggedRoutes = ["Home", "Collection", "Item"];
-  const forceUnloggedRoutes = ["Login", "Register"];
+const isLoggedRoute = (route: RouteLocationNormalized) =>
+  ["Home", "Collection", "Item"].includes(route.name?.toString() || "");
 
-  if (isLoggedIn() && forceUnloggedRoutes.includes(to.name?.toString() || "")) {
-    return false;
-  } else if (
-    !isLoggedIn() &&
-    forceLoggedRoutes.includes(to.name?.toString() || "")
-  ) {
-    return false;
+const isUnloggedRoute = (route: RouteLocationNormalized) =>
+  ["Login", "Register"].includes(route.name?.toString() || "");
+
+router.beforeEach((to, from) => {
+  if (isLoggedRoute(to) && !isLoggedIn()) {
+    if (!from.name) return { name: "Login" };
+    else return false;
+  } else if (isUnloggedRoute(to) && isLoggedIn()) {
+    if (!from.name) return { name: "Home" };
+    else return false;
   }
 });
 
