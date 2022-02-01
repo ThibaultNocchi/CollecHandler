@@ -55,5 +55,6 @@ i {
 
 input {
 	opacity: 0;
+	width: 0px;
 }
 </style>
