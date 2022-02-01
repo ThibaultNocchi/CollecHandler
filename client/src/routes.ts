@@ -44,21 +44,18 @@ const router = createRouter({
   routes
 });
 
-router.beforeEach((to, _from, next) => {
-  const loggedRoutes = ["Home", "Collection", "Item"];
-  const unloggedRoutes = ["Login", "Register"];
+router.beforeEach((to, _from) => {
+  const forceLoggedRoutes = ["Home", "Collection", "Item"];
+  const forceUnloggedRoutes = ["Login", "Register"];
 
-  if (isLoggedIn() && unloggedRoutes.includes(to.name?.toString() || "")) {
-    next({ name: "Home" });
-    return;
+  if (isLoggedIn() && forceUnloggedRoutes.includes(to.name?.toString() || "")) {
+    return false;
   } else if (
     !isLoggedIn() &&
-    loggedRoutes.includes(to.name?.toString() || "")
+    forceLoggedRoutes.includes(to.name?.toString() || "")
   ) {
-    next({ name: "Login" });
-    return;
+    return false;
   }
-  next();
 });
 
 export default router;
