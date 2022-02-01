@@ -16,7 +16,6 @@
 
 <script lang="ts" setup>
 import logo from '../../logo.svg'
-console.log(logo)
 </script>
 
 <style scoped>
