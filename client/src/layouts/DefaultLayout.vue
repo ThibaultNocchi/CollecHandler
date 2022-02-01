@@ -20,14 +20,17 @@
 		</template>
 
 		<v-list nav dense>
-			<v-list-item link @click="router.push({ name: 'Home' }); drawer = false">
-				<v-list-item-icon>
-					<v-icon>mdi-home</v-icon>
-				</v-list-item-icon>
-				<v-list-item-content>
-					<v-list-item-title>Home</v-list-item-title>
-				</v-list-item-content>
-			</v-list-item>
+			<template v-for="item in items">
+				<v-list-item link @click="router.push({ name: item.route }); drawer = false">
+					<v-list-item-icon>
+						<v-icon>{{ item.icon }}</v-icon>
+					</v-list-item-icon>
+					<v-list-item-content>
+						<v-list-item-title>{{ item.text }}</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+				<v-divider v-if="item.dividerBelow" class="ma-2" />
+			</template>
 		</v-list>
 
 		<template #append>
@@ -72,5 +75,16 @@ const me = useMeQuery()
 
 const pseudo = computed(() => me.data.value?.me?.pseudo)
 const firstLetter = computed(() => pseudo.value?.charAt(0).toUpperCase())
+
+interface NavbarItem {
+	route: string,
+	icon: string
+	text: string
+	dividerBelow?: boolean
+}
+
+const items: NavbarItem[] = [
+	{ route: 'Home', icon: 'mdi-home', text: 'Home', dividerBelow: true },
+]
 
 </script>
