@@ -1,6 +1,6 @@
 <template>
 	<v-icon @click="iconClick">mdi-barcode-scan</v-icon>
-	<input ref="file" type="file" @change="onScan" />
+	<input class="d-none" ref="file" type="file" @change="onScan" />
 </template>
 
 <script lang="ts" setup>
@@ -50,10 +50,5 @@ watch(fileBase64, () => {
 <style scoped>
 i {
 	cursor: pointer;
-}
-
-input {
-	opacity: 0;
-	width: 0px;
 }
 </style>
