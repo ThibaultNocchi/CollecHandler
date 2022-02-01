@@ -8,6 +8,7 @@ import Register from "@/pages/Register.vue";
 import Home from "@/pages/Home.vue";
 import Collection from "@/pages/Collection.vue";
 import Item from "@/pages/Item.vue";
+import AddItem from "@/pages/AddItem.vue";
 import { isLoggedIn } from "./graphql/client";
 
 const routes = [
@@ -39,6 +40,12 @@ const routes = [
     name: "Item",
     path: "/collection/:collectionId/:id",
     component: Item,
+    meta: { layout: "DefaultLayout" }
+  },
+  {
+    name: "AddItem",
+    path: "/additem",
+    component: AddItem,
     meta: { layout: "DefaultLayout" }
   }
 ];

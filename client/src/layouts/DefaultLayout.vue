@@ -85,6 +85,7 @@ interface NavbarItem {
 
 const items: NavbarItem[] = [
 	{ route: 'Home', icon: 'mdi-home', text: 'Home', dividerBelow: true },
+	{ route: 'AddItem', icon: 'mdi-plus-circle', text: 'Add item' }
 ]
 
 </script>
