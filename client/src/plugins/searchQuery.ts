@@ -7,7 +7,6 @@ const getQueryParamOrUndefined = (key: string) =>
     ? (router.currentRoute.value.query[key] as string)
     : undefined;
 
-export const ORDERING_FIELDS = ["id", "name"];
 
 const searchQuery = {
   page: computed(() => parseInt(getQueryParamOrUndefined("page") || "1")),

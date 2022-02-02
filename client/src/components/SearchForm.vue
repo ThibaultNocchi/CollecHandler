@@ -10,7 +10,7 @@
 		:value="searchQuery.orderingField.value"
 		@change="routeSearchQuery('orderingField', ($event.target as HTMLSelectElement).value)"
 	>
-		<option v-for="item in ORDERING_FIELDS" :value="item">{{ item }}</option>
+		<option v-for="item in OrderingFieldItem" :value="item">{{ item }}</option>
 	</select>
 
 	<br />
@@ -52,8 +52,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Comparisons, Ordering } from '@/graphql/graphql';
-import searchQuery, { routeSearchQuery, ORDERING_FIELDS, routeQuantityComparisonSearchQuery } from '@/plugins/searchQuery';
+import { Comparisons, Ordering, OrderingFieldItem } from '@/graphql/graphql';
+import searchQuery, { routeSearchQuery, routeQuantityComparisonSearchQuery } from '@/plugins/searchQuery';
 import { Ref, ref } from 'vue';
 import BarcodeScanner from './BarcodeScanner.vue';
 

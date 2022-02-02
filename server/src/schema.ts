@@ -12,6 +12,7 @@ import {
   MutationSignupArgs,
   MutationUpdateCollectionArgs,
   MutationUpdateItemArgs,
+  OrderingFieldItem,
   OrderingInput,
   QueryBareCollectionArgs,
   QuerySearchArgs,
@@ -57,7 +58,7 @@ const getItems = async (
 
   const items = context.prisma.item.findMany({
     ...baseQuery,
-    orderBy: [{ [orderingField || 'id']: ordering || 'desc' }],
+    orderBy: [{ [orderingField || OrderingFieldItem.Id]: ordering || 'desc' }],
     skip,
     take: numberPerPage,
   })

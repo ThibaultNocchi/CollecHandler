@@ -64,7 +64,7 @@ input OrderingInput {
   page: Int!
   numberPerPage: Int!
   ordering: Ordering
-  orderingField: String
+  orderingField: OrderingFieldItem
 }
 
 ##### ENUMS
@@ -80,6 +80,11 @@ enum Comparisons {
 enum Ordering {
   asc
   desc
+}
+
+enum OrderingFieldItem {
+  id
+  name
 }
 
 ##### QUERIES AND MUTATIONS

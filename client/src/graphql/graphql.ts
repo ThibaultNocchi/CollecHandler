@@ -130,10 +130,15 @@ export enum Ordering {
   Desc = 'desc'
 }
 
+export enum OrderingFieldItem {
+  Id = 'id',
+  Name = 'name'
+}
+
 export type OrderingInput = {
   numberPerPage: Scalars['Int'];
   ordering?: InputMaybe<Ordering>;
-  orderingField?: InputMaybe<Scalars['String']>;
+  orderingField?: InputMaybe<OrderingFieldItem>;
   page: Scalars['Int'];
 };
 
