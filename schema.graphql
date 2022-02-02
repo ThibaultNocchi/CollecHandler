@@ -1,3 +1,5 @@
+##### NATIVE TYPES
+
 type User {
   pseudo: String!
   collections: [Collection!]!
@@ -10,15 +12,6 @@ type Collection {
   item(id: Int!): Item
 }
 
-input CollectionInput {
-  name: String!
-}
-
-type ItemsList {
-  items: [Item!]!
-  pages: Int!
-}
-
 type Item {
   id: Int!
   collectionId: Int!
@@ -28,6 +21,24 @@ type Item {
   barcode: String
 }
 
+##### CALCULATED TYPES
+
+type ItemsList {
+  items: [Item!]!
+  pages: Int!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+##### CREATION INPUTS
+
+input CollectionInput {
+  name: String!
+}
+
 input ItemInput {
   name: String!
   quantity: Int!
@@ -35,10 +46,28 @@ input ItemInput {
   barcode: String
 }
 
-type AuthPayload {
-  token: String!
-  user: User!
+##### SPECIFIC QUERY INPUTS
+
+input SearchInput {
+  text: String
+  quantity: QuantitySearchInput
+  barcode: String
+  collectionId: Int
 }
+
+input QuantitySearchInput {
+  value: Int!
+  comparison: Comparisons!
+}
+
+input OrderingInput {
+  page: Int!
+  numberPerPage: Int!
+  ordering: Ordering
+  orderingField: String
+}
+
+##### ENUMS
 
 enum Comparisons {
   equals
@@ -53,24 +82,7 @@ enum Ordering {
   desc
 }
 
-input QuantitySearchInput {
-  value: Int!
-  comparison: Comparisons!
-}
-
-input SearchInput {
-  text: String
-  quantity: QuantitySearchInput
-  barcode: String
-  collectionId: Int
-}
-
-input OrderingInput {
-  page: Int!
-  numberPerPage: Int!
-  ordering: Ordering
-  orderingField: String
-}
+##### QUERIES AND MUTATIONS
 
 type Query {
   me: User

@@ -1,3 +1,5 @@
+##### CRUD OPERATIONS
+
 query me {
   me {
     pseudo
@@ -16,23 +18,15 @@ query collectionId($id: Int!) {
   }
 }
 
-query searchItems($ordering: OrderingInput!, $input: SearchInput!) {
-  search(ordering: $ordering, input: $input) {
-    pages
-    items {
-      id
-      collectionId
-      name
-    }
+mutation addCollection($input: CollectionInput!) {
+  addCollection(input: $input) {
+    id
   }
 }
 
-query bareCollection($collectionId: Int!) {
-  bareCollection(collectionId: $collectionId) {
-    name
-    quantity
-    description
-    barcode
+mutation deleteCollection($id: Int!) {
+  deleteCollection(id: $id) {
+    id
   }
 }
 
@@ -49,18 +43,6 @@ query itemId($collectionId: Int!, $id: Int!) {
   }
 }
 
-mutation addCollection($input: CollectionInput!) {
-  addCollection(input: $input) {
-    id
-  }
-}
-
-mutation deleteCollection($id: Int!) {
-  deleteCollection(id: $id) {
-    id
-  }
-}
-
 mutation addItem($collectionId: Int!, $input: ItemInput!) {
   addItem(collectionId: $collectionId, input: $input) {
     id
@@ -73,6 +55,8 @@ mutation deleteItem($id: Int!) {
   }
 }
 
+##### AUTH OPERATIONS
+
 mutation login($pseudo: String!, $password: String!) {
   login(pseudo: $pseudo, password: $password) {
     token
@@ -82,5 +66,29 @@ mutation login($pseudo: String!, $password: String!) {
 mutation signup($pseudo: String!, $password: String!) {
   signup(pseudo: $pseudo, password: $password) {
     token
+  }
+}
+
+##### SEARCH OPERATIONS
+
+query searchItems($ordering: OrderingInput!, $input: SearchInput!) {
+  search(ordering: $ordering, input: $input) {
+    pages
+    items {
+      id
+      collectionId
+      name
+    }
+  }
+}
+
+##### EXPORT OPERATIONS
+
+query bareCollection($collectionId: Int!) {
+  bareCollection(collectionId: $collectionId) {
+    name
+    quantity
+    description
+    barcode
   }
 }
