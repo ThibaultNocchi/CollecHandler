@@ -44,7 +44,7 @@ const searchQuery = await useSearchItemsQuery({
 			// @ts-expect-error - Vue URQL can handle reactive variables
 			ordering: searchQueryStore.ordering,
 			// @ts-expect-error - Vue URQL can handle reactive variables
-			orderingField: searchQueryStore.orderingField
+			orderingFieldItem: searchQueryStore.orderingFieldItem
 		}
 	}
 })

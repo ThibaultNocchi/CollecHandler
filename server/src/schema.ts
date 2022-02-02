@@ -37,7 +37,7 @@ const getItem = (id: number) =>
   })
 
 const getItems = async (
-  { page, numberPerPage, ordering, orderingField }: OrderingInput,
+  { page, numberPerPage, ordering, orderingFieldItem }: OrderingInput,
   { collectionId, text, quantity, barcode }: SearchInput,
 ) => {
   const skip = (page - 1) * numberPerPage
@@ -58,7 +58,9 @@ const getItems = async (
 
   const items = context.prisma.item.findMany({
     ...baseQuery,
-    orderBy: [{ [orderingField || OrderingFieldItem.Id]: ordering || 'desc' }],
+    orderBy: [
+      { [orderingFieldItem || OrderingFieldItem.Id]: ordering || 'desc' },
+    ],
     skip,
     take: numberPerPage,
   })

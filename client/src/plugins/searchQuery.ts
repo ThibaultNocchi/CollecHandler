@@ -1,4 +1,4 @@
-import { Comparisons, Ordering } from "@/graphql/graphql";
+import { Comparisons, Ordering, OrderingFieldItem } from "@/graphql/graphql";
 import router from "@/routes";
 import { computed } from "vue";
 
@@ -7,14 +7,13 @@ const getQueryParamOrUndefined = (key: string) =>
     ? (router.currentRoute.value.query[key] as string)
     : undefined;
 
-
 const searchQuery = {
   page: computed(() => parseInt(getQueryParamOrUndefined("page") || "1")),
   ordering: computed(
     () => (getQueryParamOrUndefined("ordering") as Ordering) || Ordering.Desc
   ),
-  orderingField: computed(
-    () => getQueryParamOrUndefined("orderingField") || "id"
+  orderingFieldItem: computed(
+    () => getQueryParamOrUndefined("orderingFieldItem") || OrderingFieldItem.Id
   ),
   collectionId: computed(() => {
     if (

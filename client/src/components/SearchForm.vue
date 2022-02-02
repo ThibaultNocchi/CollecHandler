@@ -7,8 +7,8 @@
 		<option v-for="item in Ordering" :value="item">{{ item }}</option>
 	</select>
 	<select
-		:value="searchQuery.orderingField.value"
-		@change="routeSearchQuery('orderingField', ($event.target as HTMLSelectElement).value)"
+		:value="searchQuery.orderingFieldItem.value"
+		@change="routeSearchQuery('orderingFieldItem', ($event.target as HTMLSelectElement).value)"
 	>
 		<option v-for="item in OrderingFieldItem" :value="item">{{ item }}</option>
 	</select>

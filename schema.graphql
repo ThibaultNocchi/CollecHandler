@@ -64,7 +64,7 @@ input OrderingInput {
   page: Int!
   numberPerPage: Int!
   ordering: Ordering
-  orderingField: OrderingFieldItem
+  orderingFieldItem: OrderingFieldItem
 }
 
 ##### ENUMS

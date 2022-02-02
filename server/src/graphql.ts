@@ -135,7 +135,7 @@ export enum OrderingFieldItem {
 export type OrderingInput = {
   numberPerPage: Scalars['Int'];
   ordering?: InputMaybe<Ordering>;
-  orderingField?: InputMaybe<OrderingFieldItem>;
+  orderingFieldItem?: InputMaybe<OrderingFieldItem>;
   page: Scalars['Int'];
 };
 
