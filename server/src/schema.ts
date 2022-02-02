@@ -4,6 +4,7 @@ import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { context } from './context'
 import {
   CollectionItemArgs,
+  GetCollectionsInput,
   MutationAddCollectionArgs,
   MutationAddItemArgs,
   MutationDeleteCollectionArgs,
@@ -12,9 +13,12 @@ import {
   MutationSignupArgs,
   MutationUpdateCollectionArgs,
   MutationUpdateItemArgs,
+  Ordering,
+  OrderingFieldCollection,
   OrderingFieldItem,
   OrderingInput,
   QueryBareCollectionArgs,
+  QueryGetCollectionsArgs,
   QuerySearchArgs,
   SearchInput,
   UserCollectionArgs,
@@ -30,6 +34,35 @@ const typeDefs = loadSchemaSync('../schema.graphql', {
 
 const getCollection = (id: number) =>
   context.prisma.collection.findFirst({ where: { id, userId: context.userId } })
+
+const getCollections = async (
+  { page, numberPerPage, ordering, orderingFieldCollection }: OrderingInput,
+  { text }: GetCollectionsInput,
+) => {
+  const skip = (page - 1) * numberPerPage
+
+  const baseQuery = {
+    where: {
+      userId: context.userId,
+      name: text ? { contains: text } : undefined,
+    },
+  }
+
+  const collections = context.prisma.collection.findMany({
+    ...baseQuery,
+    orderBy: [
+      {
+        [orderingFieldCollection || OrderingFieldCollection.Id]:
+          ordering || Ordering.Desc,
+      },
+    ],
+    skip,
+    take: numberPerPage,
+  })
+
+  const count = await context.prisma.collection.count(baseQuery)
+  return { pages: Math.ceil(count / numberPerPage), collections }
+}
 
 const getItem = (id: number) =>
   context.prisma.item.findFirst({
@@ -77,6 +110,8 @@ const resolvers = {
     me: () => context.prisma.user.findUnique({ where: { id: context.userId } }),
     search: (_: undefined, { ordering, input }: QuerySearchArgs) =>
       getItems(ordering, input),
+    getCollections: (_: undefined, args: QueryGetCollectionsArgs) =>
+      getCollections(args.ordering, args.input),
     bareCollection: (_: undefined, { collectionId }: QueryBareCollectionArgs) =>
       context.prisma.item.findMany({
         where: {

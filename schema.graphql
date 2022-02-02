@@ -23,6 +23,11 @@ type Item {
 
 ##### CALCULATED TYPES
 
+type CollectionsList {
+  collections: [Collection!]!
+  pages: Int!
+}
+
 type ItemsList {
   items: [Item!]!
   pages: Int!
@@ -60,11 +65,16 @@ input QuantitySearchInput {
   comparison: Comparisons!
 }
 
+input GetCollectionsInput {
+  text: String
+}
+
 input OrderingInput {
   page: Int!
   numberPerPage: Int!
   ordering: Ordering
   orderingFieldItem: OrderingFieldItem
+  orderingFieldCollection: OrderingFieldCollection
 }
 
 ##### ENUMS
@@ -87,11 +97,20 @@ enum OrderingFieldItem {
   name
 }
 
+enum OrderingFieldCollection {
+  id
+  name
+}
+
 ##### QUERIES AND MUTATIONS
 
 type Query {
   me: User
   search(ordering: OrderingInput!, input: SearchInput!): ItemsList!
+  getCollections(
+    ordering: OrderingInput!
+    input: GetCollectionsInput!
+  ): CollectionsList!
   bareCollection(collectionId: Int!): [Item!]!
 }
 

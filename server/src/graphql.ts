@@ -34,6 +34,12 @@ export type CollectionInput = {
   name: Scalars['String'];
 };
 
+export type CollectionsList = {
+  __typename?: 'CollectionsList';
+  collections: Array<Collection>;
+  pages: Scalars['Int'];
+};
+
 export enum Comparisons {
   Equals = 'equals',
   Gt = 'gt',
@@ -41,6 +47,10 @@ export enum Comparisons {
   Lt = 'lt',
   Lte = 'lte'
 }
+
+export type GetCollectionsInput = {
+  text?: InputMaybe<Scalars['String']>;
+};
 
 export type Item = {
   __typename?: 'Item';
@@ -127,6 +137,11 @@ export enum Ordering {
   Desc = 'desc'
 }
 
+export enum OrderingFieldCollection {
+  Id = 'id',
+  Name = 'name'
+}
+
 export enum OrderingFieldItem {
   Id = 'id',
   Name = 'name'
@@ -135,6 +150,7 @@ export enum OrderingFieldItem {
 export type OrderingInput = {
   numberPerPage: Scalars['Int'];
   ordering?: InputMaybe<Ordering>;
+  orderingFieldCollection?: InputMaybe<OrderingFieldCollection>;
   orderingFieldItem?: InputMaybe<OrderingFieldItem>;
   page: Scalars['Int'];
 };
@@ -147,6 +163,7 @@ export type QuantitySearchInput = {
 export type Query = {
   __typename?: 'Query';
   bareCollection: Array<Item>;
+  getCollections: CollectionsList;
   me?: Maybe<User>;
   search: ItemsList;
 };
@@ -154,6 +171,12 @@ export type Query = {
 
 export type QueryBareCollectionArgs = {
   collectionId: Scalars['Int'];
+};
+
+
+export type QueryGetCollectionsArgs = {
+  input: GetCollectionsInput;
+  ordering: OrderingInput;
 };
 
 
