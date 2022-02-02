@@ -10,6 +10,16 @@ query me {
   }
 }
 
+query getCollections($ordering: OrderingInput!, $input: GetCollectionsInput!) {
+  getCollections(ordering: $ordering, input: $input) {
+    pages
+    collections {
+      id
+      name
+    }
+  }
+}
+
 query getCollection($id: Int!) {
   me {
     collection(id: $id) {
