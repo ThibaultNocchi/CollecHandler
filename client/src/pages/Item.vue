@@ -17,7 +17,7 @@
 	<input type="submit" @click.prevent="onDelete" value="Delete item" />
 </template>
 
-<script setup lang="ts">import { useDeleteItemMutation, useItemIdQuery } from '@/graphql/graphql';
+<script setup lang="ts">import { useDeleteItemMutation, useGetItemQuery } from '@/graphql/graphql';
 import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import jsbarcode from 'jsbarcode'
@@ -30,7 +30,7 @@ const collectionId = parseInt(useRoute().params.collectionId as string)
 if (typeof useRoute().params.id !== "string") throw "Bad parameter"
 const itemId = parseInt(useRoute().params.id as string)
 
-const res = await useItemIdQuery({ variables: { collectionId, id: itemId } })
+const res = await useGetItemQuery({ variables: { collectionId, id: itemId } })
 const deleteItem = useDeleteItemMutation()
 const item = computed(() => res.data.value?.me?.collection?.item || undefined)
 

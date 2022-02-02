@@ -10,7 +10,7 @@ query me {
   }
 }
 
-query collectionId($id: Int!) {
+query getCollection($id: Int!) {
   me {
     collection(id: $id) {
       name
@@ -30,7 +30,7 @@ mutation deleteCollection($id: Int!) {
   }
 }
 
-query itemId($collectionId: Int!, $id: Int!) {
+query getItem($collectionId: Int!, $id: Int!) {
   me {
     collection(id: $collectionId) {
       item(id: $id) {

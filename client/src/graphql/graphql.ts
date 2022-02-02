@@ -184,12 +184,12 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', pseudo: string, collections: Array<{ __typename?: 'Collection', id: number, name: string }> } | null | undefined };
 
-export type CollectionIdQueryVariables = Exact<{
+export type GetCollectionQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type CollectionIdQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', name: string } | null | undefined } | null | undefined };
+export type GetCollectionQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', name: string } | null | undefined } | null | undefined };
 
 export type AddCollectionMutationVariables = Exact<{
   input: CollectionInput;
@@ -205,13 +205,13 @@ export type DeleteCollectionMutationVariables = Exact<{
 
 export type DeleteCollectionMutation = { __typename?: 'Mutation', deleteCollection?: { __typename?: 'Collection', id: number } | null | undefined };
 
-export type ItemIdQueryVariables = Exact<{
+export type GetItemQueryVariables = Exact<{
   collectionId: Scalars['Int'];
   id: Scalars['Int'];
 }>;
 
 
-export type ItemIdQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', item?: { __typename?: 'Item', name: string, quantity: number, description?: string | null | undefined, barcode?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type GetItemQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', item?: { __typename?: 'Item', name: string, quantity: number, description?: string | null | undefined, barcode?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type AddItemMutationVariables = Exact<{
   collectionId: Scalars['Int'];
@@ -275,8 +275,8 @@ export const MeDocument = gql`
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<never, MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
-export const CollectionIdDocument = gql`
-    query collectionId($id: Int!) {
+export const GetCollectionDocument = gql`
+    query getCollection($id: Int!) {
   me {
     collection(id: $id) {
       name
@@ -285,8 +285,8 @@ export const CollectionIdDocument = gql`
 }
     `;
 
-export function useCollectionIdQuery(options: Omit<Urql.UseQueryArgs<never, CollectionIdQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<CollectionIdQuery>({ query: CollectionIdDocument, ...options });
+export function useGetCollectionQuery(options: Omit<Urql.UseQueryArgs<never, GetCollectionQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetCollectionQuery>({ query: GetCollectionDocument, ...options });
 };
 export const AddCollectionDocument = gql`
     mutation addCollection($input: CollectionInput!) {
@@ -310,8 +310,8 @@ export const DeleteCollectionDocument = gql`
 export function useDeleteCollectionMutation() {
   return Urql.useMutation<DeleteCollectionMutation, DeleteCollectionMutationVariables>(DeleteCollectionDocument);
 };
-export const ItemIdDocument = gql`
-    query itemId($collectionId: Int!, $id: Int!) {
+export const GetItemDocument = gql`
+    query getItem($collectionId: Int!, $id: Int!) {
   me {
     collection(id: $collectionId) {
       item(id: $id) {
@@ -325,8 +325,8 @@ export const ItemIdDocument = gql`
 }
     `;
 
-export function useItemIdQuery(options: Omit<Urql.UseQueryArgs<never, ItemIdQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<ItemIdQuery>({ query: ItemIdDocument, ...options });
+export function useGetItemQuery(options: Omit<Urql.UseQueryArgs<never, GetItemQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetItemQuery>({ query: GetItemDocument, ...options });
 };
 export const AddItemDocument = gql`
     mutation addItem($collectionId: Int!, $input: ItemInput!) {

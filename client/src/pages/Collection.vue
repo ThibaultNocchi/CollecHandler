@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { BareCollectionDocument, BareCollectionQuery, useAddItemMutation, useCollectionIdQuery, useDeleteCollectionMutation } from '@/graphql/graphql';
+import { BareCollectionDocument, BareCollectionQuery, useAddItemMutation, useGetCollectionQuery, useDeleteCollectionMutation } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import ItemsList from '@/components/ItemsList.vue';
@@ -38,7 +38,7 @@ import searchQuery from '@/plugins/searchQuery';
 const collectionId = searchQuery.collectionId.value
 if (!collectionId) throw "Bad parameter"
 
-const res = await useCollectionIdQuery({ variables: { id: collectionId } })
+const res = await useGetCollectionQuery({ variables: { id: collectionId } })
 const deleteCollectionMutation = useDeleteCollectionMutation()
 const urqlClient = useClientHandle().client
 
