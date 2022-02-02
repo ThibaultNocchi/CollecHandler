@@ -59,7 +59,9 @@ const getItems = async (
   const items = context.prisma.item.findMany({
     ...baseQuery,
     orderBy: [
-      { [orderingFieldItem || OrderingFieldItem.Id]: ordering || 'desc' },
+      {
+        [orderingFieldItem || OrderingFieldItem.Id]: ordering || Ordering.Desc,
+      },
     ],
     skip,
     take: numberPerPage,
