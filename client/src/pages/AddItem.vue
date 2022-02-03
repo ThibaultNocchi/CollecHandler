@@ -55,15 +55,25 @@
 
 <script lang="ts" setup>
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
-import { useMeQuery } from '@/graphql/graphql';
+import { Ordering, OrderingFieldCollection, useGetCollectionsQuery } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
 import { useDisplay } from 'vuetify';
 import AddCollectionTextField from '@/components/AddCollectionTextField.vue';
 
 const display = useDisplay()
 
-const me = await useMeQuery()
-const collections = computed(() => me.data.value?.me?.collections)
+const getCollections = await useGetCollectionsQuery({
+	variables: {
+		input: {},
+		ordering: {
+			numberPerPage: -1,
+			page: 1,
+			ordering: Ordering.Asc,
+			orderingFieldCollection: OrderingFieldCollection.Name
+		}
+	}
+})
+const collections = computed(() => getCollections.data.value?.getCollections.collections)
 
 const form = reactive({
 	collectionId: undefined,
