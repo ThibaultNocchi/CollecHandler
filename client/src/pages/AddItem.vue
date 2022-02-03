@@ -20,7 +20,7 @@
 						</select>
 					</v-col>
 					<v-col v-if="!form.collectionId" cols="12" sm="6">
-						<v-text-field v-model="form.newCollectionName" hide-details label="New collection name" />
+						<AddCollectionTextField @change="form.collectionId = $event" />
 					</v-col>
 					<v-col cols="12">
 						<v-text-field v-model="form.name" hide-details label="Item name" prepend-inner-icon="mdi-alphabetical" />
@@ -58,6 +58,7 @@ import BarcodeScanner from '@/components/BarcodeScanner.vue';
 import { useMeQuery } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
 import { useDisplay } from 'vuetify';
+import AddCollectionTextField from '@/components/AddCollectionTextField.vue';
 
 const display = useDisplay()
 
@@ -66,7 +67,6 @@ const collections = computed(() => me.data.value?.me?.collections)
 
 const form = reactive({
 	collectionId: undefined,
-	newCollectionName: '',
 	name: '',
 	quantity: 1,
 	barcode: '',
