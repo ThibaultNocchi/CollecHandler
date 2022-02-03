@@ -23,11 +23,18 @@
 						<AddCollectionTextField @change="form.collectionId = $event" />
 					</v-col>
 					<v-col cols="12">
-						<v-text-field v-model="form.name" hide-details label="Item name" prepend-inner-icon="mdi-alphabetical" />
+						<v-text-field
+							v-model="form.name"
+							:error="errors.name"
+							hide-details
+							label="Item name"
+							prepend-inner-icon="mdi-alphabetical"
+						/>
 					</v-col>
 					<v-col cols="12" sm="6">
 						<v-text-field
 							v-model="form.quantity"
+							:error="errors.quantity"
 							type="number"
 							hide-details
 							label="Quantity"
@@ -55,12 +62,14 @@
 
 <script lang="ts" setup>
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
-import { Ordering, OrderingFieldCollection, useGetCollectionsQuery } from '@/graphql/graphql';
+import { Ordering, OrderingFieldCollection, useAddItemMutation, useGetCollectionsQuery } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
 import { useDisplay } from 'vuetify';
 import AddCollectionTextField from '@/components/AddCollectionTextField.vue';
+import { useRouter } from 'vue-router';
 
 const display = useDisplay()
+const router = useRouter()
 
 const getCollections = await useGetCollectionsQuery({
 	variables: {
@@ -75,6 +84,8 @@ const getCollections = await useGetCollectionsQuery({
 })
 const collections = computed(() => getCollections.data.value?.getCollections.collections)
 
+const addItem = useAddItemMutation()
+
 const form = reactive({
 	collectionId: undefined,
 	name: '',
@@ -83,12 +94,58 @@ const form = reactive({
 	description: ''
 })
 
+const errors = reactive({
+	collectionId: false,
+	name: false,
+	quantity: false
+})
+
 const onBarcodeChange = (barcode?: string) => {
 	if (barcode) form.barcode = barcode
 	else alert('Can\'t read barcode, please try closer')
 }
 
 const onSubmit = async () => {
+	if (!form.collectionId) {
+		errors.collectionId = true
+		alert('Please pick a collection')
+		return
+	}
+	errors.collectionId = false
+
+	if (!form.name) {
+		errors.name = true
+		alert('Please fill the item\'s name')
+		return
+	}
+	errors.name = false
+
+	if (!form.quantity) {
+		errors.quantity = true
+		alert('Please fill the item\'s quantity')
+		return
+	}
+	errors.quantity = false
+
+	const res = await addItem.executeMutation({
+		collectionId: form.collectionId,
+		input: {
+			name: form.name,
+			quantity: form.quantity,
+			barcode: form.barcode || undefined,
+			description: form.description || undefined
+		}
+	})
+
+	if (res.error || !res.data?.addItem?.id) {
+		alert('Error adding item, see console')
+		console.error(res.error)
+		return
+	}
+
+	const itemId = res.data.addItem.id
+	router.push({ name: 'Item', params: { collectionId: form.collectionId, id: itemId } })
+
 }
 
 </script>
