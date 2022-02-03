@@ -45,7 +45,7 @@
 						<v-textarea v-model="form.description" hide-details auto-grow label="Description" />
 					</v-col>
 					<v-col cols="12" class="text-right">
-						<v-btn color="primary" text>Send</v-btn>
+						<v-btn color="primary" :block="display.smAndDown.value" text @click="onSubmit">Send</v-btn>
 					</v-col>
 				</v-row>
 			</v-form>
@@ -57,6 +57,9 @@
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
 import { useMeQuery } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
+import { useDisplay } from 'vuetify';
+
+const display = useDisplay()
 
 const me = await useMeQuery()
 const collections = computed(() => me.data.value?.me?.collections)
@@ -73,6 +76,9 @@ const form = reactive({
 const onBarcodeChange = (barcode?: string) => {
 	if (barcode) form.barcode = barcode
 	else alert('Can\'t read barcode, please try closer')
+}
+
+const onSubmit = async () => {
 }
 
 </script>
