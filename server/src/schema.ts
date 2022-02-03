@@ -32,6 +32,9 @@ const typeDefs = loadSchemaSync('../schema.graphql', {
   loaders: [new GraphQLFileLoader()],
 })
 
+const pageCount = (total: number, take?: number) =>
+  take ? Math.ceil(total / take) : 1
+
 const getCollection = (id: number) =>
   context.prisma.collection.findFirst({ where: { id, userId: context.userId } })
 
@@ -39,7 +42,12 @@ const getCollections = async (
   { page, numberPerPage, ordering, orderingFieldCollection }: OrderingInput,
   { text }: GetCollectionsInput,
 ) => {
-  const skip = (page - 1) * numberPerPage
+  let skip: number | undefined = (page - 1) * numberPerPage
+  let take: number | undefined = numberPerPage
+  if (numberPerPage == -1) {
+    skip = undefined
+    take = undefined
+  }
 
   const baseQuery = {
     where: {
@@ -57,11 +65,11 @@ const getCollections = async (
       },
     ],
     skip,
-    take: numberPerPage,
+    take,
   })
 
   const count = await context.prisma.collection.count(baseQuery)
-  return { pages: Math.ceil(count / numberPerPage), collections }
+  return { pages: pageCount(count, take), collections }
 }
 
 const getItem = (id: number) =>
