@@ -1,7 +1,10 @@
 <template>
 	<h1>{{ item?.name }}</h1>
 	<h2>Description</h2>
-	<p v-if="item?.description">{{ item.description }}</p>
+	<p>
+		<template v-if="item?.description">{{ item.description }}</template>
+		<template v-else>No description</template>
+	</p>
 	<h2>Infos</h2>
 	<ul>
 		<li>Quantity: {{ item?.quantity }}</li>
