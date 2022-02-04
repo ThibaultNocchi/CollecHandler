@@ -66,10 +66,11 @@ import { Ordering, OrderingFieldCollection, useAddItemMutation, useGetCollection
 import { computed, reactive } from 'vue';
 import { useDisplay } from 'vuetify';
 import AddCollectionTextField from '@/components/AddCollectionTextField.vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const display = useDisplay()
 const router = useRouter()
+const route = useRoute()
 
 const getCollections = await useGetCollectionsQuery({
 	variables: {
@@ -87,7 +88,7 @@ const collections = computed(() => getCollections.data.value?.getCollections.col
 const addItem = useAddItemMutation()
 
 const form = reactive({
-	collectionId: undefined,
+	collectionId: undefined as number | undefined,
 	name: '',
 	quantity: 1,
 	barcode: '',
@@ -99,6 +100,14 @@ const errors = reactive({
 	name: false,
 	quantity: false
 })
+
+if (typeof route.query.collectionId === "string") {
+	const queryId = parseInt(route.query.collectionId)
+	if (getCollections.data.value?.getCollections.collections.some(el => el.id === queryId)) {
+		form.collectionId = queryId
+		router.replace({ ...route, query: undefined })
+	}
+}
 
 const onBarcodeChange = (barcode?: string) => {
 	if (barcode) form.barcode = barcode

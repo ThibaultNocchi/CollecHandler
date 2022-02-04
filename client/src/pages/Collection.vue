@@ -4,6 +4,8 @@
 
 	<h2>Actions</h2>
 
+	<router-link :to="{ name: 'AddItem', query: { collectionId } }">Add new item</router-link>
+	<br />
 	<input type="submit" value="Download as CSV" @click.prevent="downloadAs('csv')" />
 	<input type="submit" value="Download as JSON" @click.prevent="downloadAs('json')" />
 	<br />
