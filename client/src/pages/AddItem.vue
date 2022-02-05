@@ -10,11 +10,7 @@
 				<v-row>
 					<v-col cols="12" sm="6">
 						<label>Collection</label>
-						<select
-							v-model="form.collectionId"
-							class="pa-2 pointer"
-							style="width:100%;border:1px solid gray;border-radius: 5px;"
-						>
+						<select v-model="form.collectionId" class="pa-2 pointer">
 							<option :value="undefined">New collection</option>
 							<option v-for="collection in collections" :value="collection.id">{{ collection.name }}</option>
 						</select>
