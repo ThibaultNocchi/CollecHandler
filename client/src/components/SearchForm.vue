@@ -39,7 +39,7 @@
 			<v-col cols="4" align-self="center">
 				<select v-model="form.quantityComparison">
 					<option :value="'disabled'">Disabled</option>
-					<option v-for="item in Comparisons" :value="item">{{ item }}</option>
+					<option v-for="item in Comparisons" :value="item">{{ quantityComparisonMappings[item] }}</option>
 				</select>
 			</v-col>
 			<v-col cols="8">
@@ -74,6 +74,14 @@ const form = reactive({
 watch(form, (val) => {
 	routeItemSearch(val)
 })
+
+const quantityComparisonMappings = {
+	[Comparisons.Equals]: "=",
+	[Comparisons.Gt]: ">",
+	[Comparisons.Gte]: "≥",
+	[Comparisons.Lt]: "<",
+	[Comparisons.Lte]: "≤",
+}
 
 const onBarcodeChange = (barcode?: string) => {
 	if (barcode) form.barcode = barcode
