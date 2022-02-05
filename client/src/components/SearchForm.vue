@@ -43,7 +43,14 @@
 				</select>
 			</v-col>
 			<v-col cols="8">
-				<v-text-field v-model="form.quantity" label="Number" type="number" hide-details prepend-inner-icon="mdi-numeric" />
+				<v-text-field
+					v-model="form.quantity"
+					:disabled="form.quantityComparison === 'disabled'"
+					label="Number"
+					type="number"
+					hide-details
+					prepend-inner-icon="mdi-numeric"
+				/>
 			</v-col>
 		</v-row>
 	</v-form>
