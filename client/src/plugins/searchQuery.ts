@@ -40,38 +40,4 @@ const searchQuery = {
   )
 };
 
-export const routeSearchQuery = (name: string, value: string | undefined) => {
-  router.push({
-    ...router.currentRoute.value,
-    query: {
-      ...router.currentRoute.value.query,
-      [name]: value ? value : undefined
-    }
-  });
-};
-
-export const routeQuantityComparisonSearchQuery = (
-  newValue: Comparisons | string,
-  quantity: number | undefined
-) => {
-  if (newValue !== "disabled")
-    router.push({
-      ...router.currentRoute.value,
-      query: {
-        ...router.currentRoute.value.query,
-        quantityComparison: newValue,
-        quantity
-      }
-    });
-  else
-    router.push({
-      ...router.currentRoute.value,
-      query: {
-        ...router.currentRoute.value.query,
-        quantityComparison: undefined,
-        quantity: undefined
-      }
-    });
-};
-
 export default searchQuery;

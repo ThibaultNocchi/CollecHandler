@@ -5,18 +5,12 @@
 				<h3>Ordering</h3>
 			</v-col>
 			<v-col cols="4">
-				<select
-					:value="searchQuery.ordering.value"
-					@change="routeSearchQuery('ordering', ($event.target as HTMLSelectElement).value)"
-				>
+				<select v-model="form.ordering">
 					<option v-for="item in Ordering" :value="item">{{ item }}</option>
 				</select>
 			</v-col>
 			<v-col cols="8">
-				<select
-					:value="searchQuery.orderingFieldItem.value"
-					@change="routeSearchQuery('orderingFieldItem', ($event.target as HTMLSelectElement).value)"
-				>
+				<select v-model="form.orderingFieldItem">
 					<option v-for="item in OrderingFieldItem" :value="item">{{ item }}</option>
 				</select>
 			</v-col>
@@ -24,26 +18,13 @@
 			<v-divider />
 
 			<v-col cols="12">
-				<v-text-field
-					:value="searchQuery.text.value"
-					@input="routeSearchQuery('text', ($event.target as HTMLInputElement).value)"
-					label="Text search"
-					hide-details
-					prepend-inner-icon="mdi-alphabetical"
-				/>
+				<v-text-field v-model="form.text" label="Text search" hide-details prepend-inner-icon="mdi-alphabetical" />
 			</v-col>
 
 			<v-divider />
 
 			<v-col cols="12">
-				<v-text-field
-					:value="searchQuery.barcode.value"
-					@input="routeSearchQuery('barcode', ($event.target as HTMLInputElement).value)"
-					clearable
-					hide-details
-					label="Barcode"
-					prepend-inner-icon="mdi-barcode"
-				>
+				<v-text-field v-model="form.barcode" clearable hide-details label="Barcode" prepend-inner-icon="mdi-barcode">
 					<template #append>
 						<BarcodeScanner @change="onBarcodeChange" />
 					</template>
@@ -56,24 +37,13 @@
 				<h3>Quantity</h3>
 			</v-col>
 			<v-col cols="4" align-self="center">
-				<select
-					:value="searchQuery.quantityComparison.value"
-					@change="routeQuantityComparisonSearchQuery(($event.target as HTMLSelectElement).value, quantityInput?.value as number | undefined)"
-				>
+				<select v-model="form.quantityComparison">
 					<option :value="'disabled'">Disabled</option>
 					<option v-for="item in Comparisons" :value="item">{{ item }}</option>
 				</select>
 			</v-col>
 			<v-col cols="8">
-				<v-text-field
-					:value="searchQuery.quantity.value"
-					@input="routeSearchQuery('quantity', ($event.target as HTMLInputElement).value)"
-					ref="quantityInput"
-					label="Number"
-					type="number"
-					hide-details
-					prepend-inner-icon="mdi-numeric"
-				/>
+				<v-text-field v-model="form.quantity" label="Number" type="number" hide-details prepend-inner-icon="mdi-numeric" />
 			</v-col>
 		</v-row>
 	</v-form>
@@ -81,14 +51,39 @@
 
 <script lang="ts" setup>
 import { Comparisons, Ordering, OrderingFieldItem } from '@/graphql/graphql';
-import searchQuery, { routeSearchQuery, routeQuantityComparisonSearchQuery } from '@/plugins/searchQuery';
-import { Ref, ref } from 'vue';
+import searchQuery from '@/plugins/searchQuery';
+import { reactive, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import BarcodeScanner from './BarcodeScanner.vue';
 
-const quantityInput: Ref<HTMLInputElement | null> = ref(null);
+const router = useRouter()
+
+const form = reactive({
+	ordering: searchQuery.ordering.value,
+	orderingFieldItem: searchQuery.orderingFieldItem.value,
+	text: searchQuery.text.value,
+	barcode: searchQuery.barcode.value,
+	quantityComparison: searchQuery.quantityComparison.value,
+	quantity: searchQuery.quantity.value
+})
+
+watch(form, (val) => {
+	router.push({
+		...router.currentRoute.value,
+		query: {
+			...router.currentRoute.value.query,
+			ordering: val.ordering,
+			orderingFieldItem: val.orderingFieldItem,
+			text: val.text || undefined,
+			barcode: val.barcode || undefined,
+			quantityComparison: val.quantityComparison,
+			quantity: val.quantity || 1
+		}
+	});
+})
 
 const onBarcodeChange = (barcode?: string) => {
-	if (barcode) routeSearchQuery('barcode', barcode)
+	if (barcode) form.barcode = barcode
 	else alert('Can\'t read barcode, please try closer')
 }
 
