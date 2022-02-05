@@ -1,7 +1,7 @@
 <template>
 	<h1>{{ name }}</h1>
 	<v-row>
-		<v-col cols="3">
+		<v-col cols="12" md="4" lg="3">
 			<SearchBar />
 		</v-col>
 		<v-col>
