@@ -1,15 +1,21 @@
 <template>
 	<h1>{{ name }}</h1>
-	<ItemsList :collection-id="collectionId" />
+	<v-row>
+		<v-col cols="3">
+			<SearchBar />
+		</v-col>
+		<v-col>
+			<ItemsList :collection-id="collectionId" />
+			<h2>Actions</h2>
 
-	<h2>Actions</h2>
-
-	<router-link :to="{ name: 'AddItem', query: { collectionId } }">Add new item</router-link>
-	<br />
-	<input type="submit" value="Download as CSV" @click.prevent="downloadAs('csv')" />
-	<input type="submit" value="Download as JSON" @click.prevent="downloadAs('json')" />
-	<br />
-	<input type="submit" value="Delete this collection" @click.prevent="deleteCollection" />
+			<router-link :to="{ name: 'AddItem', query: { collectionId } }">Add new item</router-link>
+			<br />
+			<input type="submit" value="Download as CSV" @click.prevent="downloadAs('csv')" />
+			<input type="submit" value="Download as JSON" @click.prevent="downloadAs('json')" />
+			<br />
+			<input type="submit" value="Delete this collection" @click.prevent="deleteCollection" />
+		</v-col>
+	</v-row>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +26,7 @@ import ItemsList from '@/components/ItemsList.vue';
 import { useClientHandle } from '@urql/vue';
 import { exportToCsv, exportToJson } from '@/plugins/exportCollections';
 import searchQuery from '@/plugins/searchQuery';
+import SearchBar from '@/components/SearchBar.vue';
 
 
 const collectionId = searchQuery.collectionId.value

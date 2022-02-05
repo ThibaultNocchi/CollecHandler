@@ -8,8 +8,8 @@
 
 	<Pagination :pages="pages" />
 
-	<h3>Search</h3>
-	<SearchForm />
+	<!-- <h3>Search</h3> -->
+	<!-- <SearchForm /> -->
 </template>
 
 <script setup lang="ts">
