@@ -6,18 +6,14 @@
 		</router-link>
 	</ul>
 
-	<Pagination :pages="pages" />
-
-	<!-- <h3>Search</h3> -->
-	<!-- <SearchForm /> -->
+	<v-pagination :length="pages" @update:modelValue="onPageChange"></v-pagination>
 </template>
 
 <script setup lang="ts">
 import { useSearchItemsQuery } from '@/graphql/graphql';
 import { computed } from 'vue';
-import Pagination from './Pagination.vue';
-import SearchForm from './SearchForm.vue';
 import searchQueryStore from '@/plugins/searchQuery';
+import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps({
 	collectionId: {
@@ -51,5 +47,12 @@ const searchQuery = await useSearchItemsQuery({
 
 const items = computed(() => searchQuery.data.value?.search.items || [])
 const pages = computed(() => searchQuery.data.value?.search.pages || 1)
+
+const router = useRouter()
+const route = useRoute()
+
+const onPageChange = (page: number) => {
+	router.replace({ ...route, query: { ...route.query, page: page !== 1 ? page : undefined } })
+}
 
 </script>
