@@ -2,7 +2,7 @@ import { Comparisons, Ordering, OrderingFieldItem } from "@/graphql/graphql";
 import router from "@/routes";
 import { computed } from "vue";
 
-const DEFAULTS = {
+export const DEFAULTS = {
   ordering: Ordering.Desc,
   orderingFieldItem: OrderingFieldItem.Id,
   quantityComparison: "disabled" as Comparisons | string,
@@ -22,8 +22,8 @@ const searchQuery = {
   ),
   orderingFieldItem: computed(
     () =>
-      getQueryParamOrUndefined("orderingFieldItem") ||
-      DEFAULTS.orderingFieldItem
+      (getQueryParamOrUndefined("orderingFieldItem") ||
+        DEFAULTS.orderingFieldItem) as OrderingFieldItem
   ),
   collectionId: computed(() => {
     if (
@@ -52,26 +52,17 @@ const searchQuery = {
 };
 
 export const routeItemSearch = ({
-  ordering,
-  orderingFieldItem,
   text,
   barcode,
   quantityComparison,
   quantity
 }: {
-  ordering: Ordering;
-  orderingFieldItem: string;
   text?: string;
   barcode?: string;
   quantityComparison: Comparisons | string;
   quantity: number;
 }) => {
   const routeQuery = {
-    ordering: ordering !== DEFAULTS.ordering ? ordering : undefined,
-    orderingFieldItem:
-      orderingFieldItem !== DEFAULTS.orderingFieldItem
-        ? orderingFieldItem
-        : undefined,
     text: text || undefined,
     barcode: barcode || undefined,
     quantityComparison:
@@ -88,6 +79,26 @@ export const routeItemSearch = ({
     query: {
       ...router.currentRoute.value.query,
       ...routeQuery
+    }
+  });
+};
+
+export const routeItemOrdering = ({
+  ordering,
+  orderingFieldItem
+}: {
+  ordering?: Ordering;
+  orderingFieldItem: OrderingFieldItem;
+}) => {
+  router.push({
+    ...router.currentRoute.value,
+    query: {
+      ...router.currentRoute.value.query,
+      ordering: ordering !== DEFAULTS.ordering ? ordering : undefined,
+      orderingFieldItem:
+        orderingFieldItem !== DEFAULTS.orderingFieldItem
+          ? orderingFieldItem
+          : undefined
     }
   });
 };

@@ -1,15 +1,16 @@
 <template>
 	<h2>Items</h2>
-	<!-- <ul>
-		<router-link :to="{ name: 'Item', params: { collectionId: item.collectionId, id: item.id } }" v-for="item in items">
-			<li>{{ item.id }}. {{ item.name }}</li>
-		</router-link>
-	</ul>-->
 	<v-table>
 		<thead>
 			<tr>
-				<th class="text-left">ID</th>
-				<th class="text-left">Item</th>
+				<th
+					class="text-left pointer"
+					@click="switchOrdering(OrderingFieldItem.Id)"
+				>ID{{ getOrderingArrow(OrderingFieldItem.Id) }}</th>
+				<th
+					class="text-left pointer"
+					@click="switchOrdering(OrderingFieldItem.Name)"
+				>Item{{ getOrderingArrow(OrderingFieldItem.Name) }}</th>
 				<th class="text-left">Quantity</th>
 			</tr>
 		</thead>
@@ -26,9 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import { useSearchItemsQuery } from '@/graphql/graphql';
+import { Ordering, OrderingFieldItem, useSearchItemsQuery } from '@/graphql/graphql';
 import { computed } from 'vue';
-import searchQueryStore from '@/plugins/searchQuery';
+import searchQueryStore, { DEFAULTS as SEARCH_DEFAULTS, routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps({
@@ -73,6 +74,24 @@ const onPageChange = (page: number) => {
 
 const routeItem = (itemId: number) => {
 	router.push({ name: 'Item', params: { collectionId: props.collectionId, id: itemId } })
+}
+
+const downArrow = "↓"
+const upArrow = "↑"
+
+const getOrderingArrow = computed(() => (field: OrderingFieldItem) => {
+	if (searchQueryStore.orderingFieldItem.value === field) {
+		if (searchQueryStore.ordering.value === Ordering.Asc) return upArrow
+		else return downArrow
+	}
+})
+
+const switchOrdering = (field: OrderingFieldItem) => {
+	let newOrdering: undefined | Ordering = undefined
+	if (searchQueryStore.orderingFieldItem.value === field) {
+		newOrdering = searchQueryStore.ordering.value === Ordering.Asc ? Ordering.Desc : Ordering.Asc
+	}
+	routeItemOrdering({ ordering: newOrdering, orderingFieldItem: field })
 }
 
 </script>

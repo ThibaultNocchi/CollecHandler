@@ -2,22 +2,6 @@
 	<v-form>
 		<v-row>
 			<v-col cols="12">
-				<h3>Ordering</h3>
-			</v-col>
-			<v-col cols="4">
-				<select v-model="form.ordering">
-					<option v-for="item in Ordering" :value="item">{{ item }}</option>
-				</select>
-			</v-col>
-			<v-col cols="8">
-				<select v-model="form.orderingFieldItem">
-					<option v-for="item in OrderingFieldItem" :value="item">{{ item }}</option>
-				</select>
-			</v-col>
-
-			<v-divider />
-
-			<v-col cols="12">
 				<v-text-field v-model="form.text" label="Text search" hide-details prepend-inner-icon="mdi-alphabetical" />
 			</v-col>
 
@@ -57,14 +41,12 @@
 </template>
 
 <script lang="ts" setup>
-import { Comparisons, Ordering, OrderingFieldItem } from '@/graphql/graphql';
+import { Comparisons } from '@/graphql/graphql';
 import searchQuery, { routeItemSearch } from '@/plugins/searchQuery';
 import { reactive, watch } from 'vue';
 import BarcodeScanner from './BarcodeScanner.vue';
 
 const form = reactive({
-	ordering: searchQuery.ordering.value,
-	orderingFieldItem: searchQuery.orderingFieldItem.value,
 	text: searchQuery.text.value,
 	barcode: searchQuery.barcode.value,
 	quantityComparison: searchQuery.quantityComparison.value,
