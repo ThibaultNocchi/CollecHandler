@@ -286,7 +286,7 @@ export type SearchItemsQueryVariables = Exact<{
 }>;
 
 
-export type SearchItemsQuery = { __typename?: 'Query', search: { __typename?: 'ItemsList', pages: number, items: Array<{ __typename?: 'Item', id: number, collectionId: number, name: string }> } };
+export type SearchItemsQuery = { __typename?: 'Query', search: { __typename?: 'ItemsList', pages: number, items: Array<{ __typename?: 'Item', id: number, collectionId: number, name: string, quantity: number }> } };
 
 export type BareCollectionQueryVariables = Exact<{
   collectionId: Scalars['Int'];
@@ -431,6 +431,7 @@ export const SearchItemsDocument = gql`
       id
       collectionId
       name
+      quantity
     }
   }
 }
