@@ -53,6 +53,8 @@
 			<slot />
 		</v-container>
 	</v-main>
+
+	<DebugVuetifyBreakpoint />
 </template>
 
 <script setup lang="ts">
@@ -61,6 +63,7 @@ import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { setJwt } from '../graphql/client';
 import { useMeQuery } from '../graphql/graphql';
+import DebugVuetifyBreakpoint from '@/components/DebugVuetifyBreakpoint.vue';
 
 const drawer: Ref<null | boolean> = ref(null)
 
