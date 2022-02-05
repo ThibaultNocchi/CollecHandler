@@ -49,7 +49,7 @@
 	</v-navigation-drawer>
 
 	<v-main>
-		<v-container class="px-sm-16 pt-8">
+		<v-container class="px-lg-16 pt-8">
 			<slot />
 		</v-container>
 	</v-main>
