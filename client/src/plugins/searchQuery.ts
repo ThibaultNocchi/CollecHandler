@@ -2,6 +2,13 @@ import { Comparisons, Ordering, OrderingFieldItem } from "@/graphql/graphql";
 import router from "@/routes";
 import { computed } from "vue";
 
+const DEFAULTS = {
+  ordering: Ordering.Desc,
+  orderingFieldItem: OrderingFieldItem.Id,
+  quantityComparison: "disabled" as Comparisons | string,
+  quantity: 1
+};
+
 const getQueryParamOrUndefined = (key: string) =>
   typeof router.currentRoute.value.query[key] === "string"
     ? (router.currentRoute.value.query[key] as string)
@@ -10,10 +17,13 @@ const getQueryParamOrUndefined = (key: string) =>
 const searchQuery = {
   page: computed(() => parseInt(getQueryParamOrUndefined("page") || "1")),
   ordering: computed(
-    () => (getQueryParamOrUndefined("ordering") as Ordering) || Ordering.Desc
+    () =>
+      (getQueryParamOrUndefined("ordering") as Ordering) || DEFAULTS.ordering
   ),
   orderingFieldItem: computed(
-    () => getQueryParamOrUndefined("orderingFieldItem") || OrderingFieldItem.Id
+    () =>
+      getQueryParamOrUndefined("orderingFieldItem") ||
+      DEFAULTS.orderingFieldItem
   ),
   collectionId: computed(() => {
     if (
@@ -28,16 +38,58 @@ const searchQuery = {
         parseInt(getQueryParamOrUndefined("collectionId"))
       : undefined;
   }),
-  text: computed(() => getQueryParamOrUndefined("text") || ""),
+  text: computed(() => getQueryParamOrUndefined("text")),
   barcode: computed(() => getQueryParamOrUndefined("barcode")),
   quantityComparison: computed(
     () =>
       ((getQueryParamOrUndefined("quantityComparison") as Comparisons) ||
-        "disabled") as Comparisons | string
+        DEFAULTS.quantityComparison) as Comparisons | string
   ),
-  quantity: computed(() =>
-    parseInt(getQueryParamOrUndefined("quantity") || "1")
-  )
+  quantity: computed(() => {
+    const res = getQueryParamOrUndefined("quantity");
+    return res ? parseInt(res) : DEFAULTS.quantity;
+  })
+};
+
+export const routeItemSearch = ({
+  ordering,
+  orderingFieldItem,
+  text,
+  barcode,
+  quantityComparison,
+  quantity
+}: {
+  ordering: Ordering;
+  orderingFieldItem: string;
+  text?: string;
+  barcode?: string;
+  quantityComparison: Comparisons | string;
+  quantity: number;
+}) => {
+  const routeQuery = {
+    ordering: ordering !== DEFAULTS.ordering ? ordering : undefined,
+    orderingFieldItem:
+      orderingFieldItem !== DEFAULTS.orderingFieldItem
+        ? orderingFieldItem
+        : undefined,
+    text: text || undefined,
+    barcode: barcode || undefined,
+    quantityComparison:
+      quantityComparison !== DEFAULTS.quantityComparison
+        ? quantityComparison
+        : undefined,
+    quantity:
+      quantityComparison !== "disabled"
+        ? quantity || DEFAULTS.quantity
+        : undefined
+  };
+  router.push({
+    ...router.currentRoute.value,
+    query: {
+      ...router.currentRoute.value.query,
+      ...routeQuery
+    }
+  });
 };
 
 export default searchQuery;

@@ -51,12 +51,9 @@
 
 <script lang="ts" setup>
 import { Comparisons, Ordering, OrderingFieldItem } from '@/graphql/graphql';
-import searchQuery from '@/plugins/searchQuery';
+import searchQuery, { routeItemSearch } from '@/plugins/searchQuery';
 import { reactive, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import BarcodeScanner from './BarcodeScanner.vue';
-
-const router = useRouter()
 
 const form = reactive({
 	ordering: searchQuery.ordering.value,
@@ -68,18 +65,7 @@ const form = reactive({
 })
 
 watch(form, (val) => {
-	router.push({
-		...router.currentRoute.value,
-		query: {
-			...router.currentRoute.value.query,
-			ordering: val.ordering,
-			orderingFieldItem: val.orderingFieldItem,
-			text: val.text || undefined,
-			barcode: val.barcode || undefined,
-			quantityComparison: val.quantityComparison,
-			quantity: val.quantity || 1
-		}
-	});
+	routeItemSearch(val)
 })
 
 const onBarcodeChange = (barcode?: string) => {
