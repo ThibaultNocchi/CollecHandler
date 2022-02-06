@@ -144,7 +144,8 @@ export enum OrderingFieldCollection {
 
 export enum OrderingFieldItem {
   Id = 'id',
-  Name = 'name'
+  Name = 'name',
+  Quantity = 'quantity'
 }
 
 export type OrderingInput = {

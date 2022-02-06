@@ -11,7 +11,10 @@
 					class="text-left pointer"
 					@click="switchOrdering(OrderingFieldItem.Name)"
 				>Item{{ getOrderingArrow(OrderingFieldItem.Name) }}</th>
-				<th class="text-left">Quantity</th>
+				<th
+					class="text-left pointer"
+					@click="switchOrdering(OrderingFieldItem.Quantity)"
+				>Quantity{{ getOrderingArrow(OrderingFieldItem.Quantity) }}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -29,7 +32,7 @@
 <script setup lang="ts">
 import { Ordering, OrderingFieldItem, useSearchItemsQuery } from '@/graphql/graphql';
 import { computed } from 'vue';
-import searchQueryStore, { DEFAULTS as SEARCH_DEFAULTS, routeItemOrdering } from '@/plugins/searchQuery';
+import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps({

@@ -95,6 +95,7 @@ enum Ordering {
 enum OrderingFieldItem {
   id
   name
+  quantity
 }
 
 enum OrderingFieldCollection {
