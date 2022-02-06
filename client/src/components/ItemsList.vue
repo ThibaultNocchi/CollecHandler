@@ -6,7 +6,7 @@
 				<th
 					class="text-left pointer"
 					@click="switchOrdering(OrderingFieldItem.Id)"
-				>ID{{ getOrderingArrow(OrderingFieldItem.Id) }}</th>
+				>#{{ getOrderingArrow(OrderingFieldItem.Id) }}</th>
 				<th
 					class="text-left pointer"
 					@click="switchOrdering(OrderingFieldItem.Name)"
@@ -15,13 +15,18 @@
 					class="text-left pointer"
 					@click="switchOrdering(OrderingFieldItem.Quantity)"
 				>Quantity{{ getOrderingArrow(OrderingFieldItem.Quantity) }}</th>
+				<th class="text-center">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="item in items" :key="item.name" @click="routeItem(item.id)" class="pointer">
+			<tr v-for="item in items" :key="item.name">
 				<td>{{ item.id }}</td>
 				<td>{{ item.name }}</td>
 				<td>{{ item.quantity }}</td>
+				<td class="text-center">
+					<v-btn @click.stop="routeItem(item.id)" icon="mdi-magnify" color="primary" variant="text" />
+					<v-btn @click.stop="onDelete(item.id)" icon="mdi-delete" color="error" variant="text" />
+				</td>
 			</tr>
 		</tbody>
 	</v-table>
@@ -30,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ordering, OrderingFieldItem, useSearchItemsQuery } from '@/graphql/graphql';
+import { Ordering, OrderingFieldItem, useDeleteItemMutation, useSearchItemsQuery } from '@/graphql/graphql';
 import { computed } from 'vue';
 import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
@@ -95,6 +100,15 @@ const switchOrdering = (field: OrderingFieldItem) => {
 		newOrdering = searchQueryStore.ordering.value === Ordering.Asc ? Ordering.Desc : Ordering.Asc
 	}
 	routeItemOrdering({ ordering: newOrdering, orderingFieldItem: field })
+}
+
+const deleteItem = useDeleteItemMutation()
+const onDelete = async (itemId: number) => {
+	const res = await confirm("Are you sure you want to delete this item?")
+	if (res) {
+		const mutRes = await deleteItem.executeMutation({ id: itemId })
+		if (!mutRes.data?.deleteItem?.id) alert("Delete failed")
+	}
 }
 
 </script>
