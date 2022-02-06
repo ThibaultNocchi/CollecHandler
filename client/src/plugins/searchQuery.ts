@@ -90,7 +90,7 @@ export const routeItemOrdering = ({
   ordering?: Ordering;
   orderingFieldItem: OrderingFieldItem;
 }) => {
-  router.push({
+  router.replace({
     ...router.currentRoute.value,
     query: {
       ...router.currentRoute.value.query,
