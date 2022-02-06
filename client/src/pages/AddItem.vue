@@ -140,7 +140,7 @@ const onSubmit = async () => {
 			barcode: form.barcode || undefined,
 			description: form.description || undefined
 		}
-	})
+	}, { additionalTypenames: ['Collection'] })
 
 	if (res.error || !res.data?.addItem?.id) {
 		alert('Error adding item, see console')
@@ -148,8 +148,7 @@ const onSubmit = async () => {
 		return
 	}
 
-	const itemId = res.data.addItem.id
-	router.push({ name: 'Item', params: { collectionId: form.collectionId, id: itemId } })
+	router.push({ name: 'Collection', params: { id: form.collectionId } })
 
 }
 
