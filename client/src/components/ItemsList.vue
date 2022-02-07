@@ -3,26 +3,27 @@
 	<v-table>
 		<thead>
 			<tr>
-				<th
-					class="text-left pointer"
-					@click="switchOrdering(OrderingFieldItem.Id)"
-				>#{{ getOrderingArrow(OrderingFieldItem.Id) }}</th>
-				<th
-					class="text-left pointer"
-					@click="switchOrdering(OrderingFieldItem.Name)"
-				>Item{{ getOrderingArrow(OrderingFieldItem.Name) }}</th>
-				<th
-					class="text-left pointer"
-					@click="switchOrdering(OrderingFieldItem.Quantity)"
-				>Quantity{{ getOrderingArrow(OrderingFieldItem.Quantity) }}</th>
+				<template v-for="field in tableFields">
+					<th
+						v-if="field.displayCondition.value"
+						class="text-left"
+						:class="{ pointer: field.orderingField }"
+						@click="field.orderingField ? switchOrdering(field.orderingField) : undefined"
+					>{{ field.title }}{{ field.orderingField ? getOrderingArrow(field.orderingField) : undefined }}</th>
+				</template>
 				<th class="text-center">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr v-for="item in items" :key="item.name">
-				<td>{{ item.id }}</td>
-				<td>{{ item.name }}</td>
-				<td>{{ item.quantity }}</td>
+				<template v-for="field in tableFields">
+					<td v-if="field.displayCondition.value">
+						{{
+							// @ts-expect-error TS don't like adressing objects with string variables
+							item[field.objectKey]
+						}}
+					</td>
+				</template>
 				<td class="text-center">
 					<v-btn @click.stop="routeItem(item.id)" icon="mdi-magnify" color="primary" variant="text" />
 					<v-btn @click.stop="onDelete(item.id)" icon="mdi-delete" color="error" variant="text" />
@@ -36,9 +37,10 @@
 
 <script setup lang="ts">
 import { Ordering, OrderingFieldItem, useDeleteItemMutation, useSearchItemsQuery } from '@/graphql/graphql';
-import { computed } from 'vue';
+import { computed, ref, Ref } from 'vue';
 import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
+import { useDisplay } from 'vuetify';
 
 const props = defineProps({
 	collectionId: {
@@ -46,6 +48,21 @@ const props = defineProps({
 		required: false
 	}
 })
+
+const display = useDisplay()
+
+interface TABLE_FIELD {
+	orderingField?: OrderingFieldItem
+	title: string
+	objectKey: string,
+	displayCondition: Ref<boolean>
+}
+
+const tableFields: TABLE_FIELD[] = [
+	{ orderingField: OrderingFieldItem.Id, title: "#", objectKey: "id", displayCondition: ref(true) },
+	{ orderingField: OrderingFieldItem.Name, title: "Name", objectKey: "name", displayCondition: ref(true) },
+	{ orderingField: OrderingFieldItem.Quantity, title: "Quantity", objectKey: "quantity", displayCondition: display.smAndUp },
+]
 
 const searchQuery = await useSearchItemsQuery({
 	variables: {
@@ -110,5 +127,4 @@ const onDelete = async (itemId: number) => {
 		if (!mutRes.data?.deleteItem?.id) alert("Delete failed")
 	}
 }
-
 </script>
