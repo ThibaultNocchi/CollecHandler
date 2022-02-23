@@ -1,6 +1,6 @@
 <template>
 	<v-main>
-		<v-container class="fsLayout d-flex">
+		<v-container class="fsLayout d-flex align-center">
 			<v-row align="center" justify="space-around">
 				<v-col class="d-none d-lg-block" lg="6" xl="4">
 					<v-img class="mx-auto" :src="logo" style="width: 20vw;" />
@@ -20,6 +20,6 @@ import logo from '../../logo.svg'
 
 <style scoped>
 .fsLayout {
-	height: 100%;
+	height: 100vh;
 }
 </style>
