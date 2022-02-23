@@ -211,7 +211,7 @@ export type UserCollectionArgs = {
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', pseudo: string, collections: Array<{ __typename?: 'Collection', id: number, name: string }> } | null | undefined };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', pseudo: string, collections: Array<{ __typename?: 'Collection', id: number, name: string }> } | null };
 
 export type GetCollectionsQueryVariables = Exact<{
   ordering: OrderingInput;
@@ -226,21 +226,21 @@ export type GetCollectionQueryVariables = Exact<{
 }>;
 
 
-export type GetCollectionQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', name: string } | null | undefined } | null | undefined };
+export type GetCollectionQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', name: string } | null } | null };
 
 export type AddCollectionMutationVariables = Exact<{
   input: CollectionInput;
 }>;
 
 
-export type AddCollectionMutation = { __typename?: 'Mutation', addCollection?: { __typename?: 'Collection', id: number } | null | undefined };
+export type AddCollectionMutation = { __typename?: 'Mutation', addCollection?: { __typename?: 'Collection', id: number } | null };
 
 export type DeleteCollectionMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteCollectionMutation = { __typename?: 'Mutation', deleteCollection?: { __typename?: 'Collection', id: number } | null | undefined };
+export type DeleteCollectionMutation = { __typename?: 'Mutation', deleteCollection?: { __typename?: 'Collection', id: number } | null };
 
 export type GetItemQueryVariables = Exact<{
   collectionId: Scalars['Int'];
@@ -248,7 +248,7 @@ export type GetItemQueryVariables = Exact<{
 }>;
 
 
-export type GetItemQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', item?: { __typename?: 'Item', name: string, quantity: number, description?: string | null | undefined, barcode?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type GetItemQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', item?: { __typename?: 'Item', name: string, quantity: number, description?: string | null, barcode?: string | null } | null } | null } | null };
 
 export type AddItemMutationVariables = Exact<{
   collectionId: Scalars['Int'];
@@ -256,14 +256,14 @@ export type AddItemMutationVariables = Exact<{
 }>;
 
 
-export type AddItemMutation = { __typename?: 'Mutation', addItem?: { __typename?: 'Item', id: number } | null | undefined };
+export type AddItemMutation = { __typename?: 'Mutation', addItem?: { __typename?: 'Item', id: number } | null };
 
 export type DeleteItemMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteItemMutation = { __typename?: 'Mutation', deleteItem?: { __typename?: 'Item', id: number } | null | undefined };
+export type DeleteItemMutation = { __typename?: 'Mutation', deleteItem?: { __typename?: 'Item', id: number } | null };
 
 export type LoginMutationVariables = Exact<{
   pseudo: Scalars['String'];
@@ -271,7 +271,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'AuthPayload', token: string } | null | undefined };
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'AuthPayload', token: string } | null };
 
 export type SignupMutationVariables = Exact<{
   pseudo: Scalars['String'];
@@ -279,7 +279,7 @@ export type SignupMutationVariables = Exact<{
 }>;
 
 
-export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'AuthPayload', token: string } | null | undefined };
+export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'AuthPayload', token: string } | null };
 
 export type SearchItemsQueryVariables = Exact<{
   ordering: OrderingInput;
@@ -294,7 +294,7 @@ export type BareCollectionQueryVariables = Exact<{
 }>;
 
 
-export type BareCollectionQuery = { __typename?: 'Query', bareCollection: Array<{ __typename?: 'Item', name: string, quantity: number, description?: string | null | undefined, barcode?: string | null | undefined }> };
+export type BareCollectionQuery = { __typename?: 'Query', bareCollection: Array<{ __typename?: 'Item', name: string, quantity: number, description?: string | null, barcode?: string | null }> };
 
 
 export const MeDocument = gql`
