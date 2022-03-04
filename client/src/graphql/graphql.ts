@@ -232,7 +232,7 @@ export type GetCollectionQueryVariables = Exact<{
 }>;
 
 
-export type GetCollectionQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', name: string } | null } | null };
+export type GetCollectionQuery = { __typename?: 'Query', me?: { __typename?: 'User', collection?: { __typename?: 'Collection', name: string, type?: CollectionType | null } | null } | null };
 
 export type AddCollectionMutationVariables = Exact<{
   input: CollectionInput;
@@ -338,6 +338,7 @@ export const GetCollectionDocument = gql`
   me {
     collection(id: $id) {
       name
+      type
     }
   }
 }

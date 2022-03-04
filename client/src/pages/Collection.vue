@@ -1,6 +1,7 @@
 <template>
 	<h1>{{ name }}</h1>
-	<v-row>
+	<div class="text-subtitle-1">{{ collectionType }}</div>
+	<v-row class="mt-2">
 		<v-col cols="12" md="4" lg="3">
 			<SearchBar />
 		</v-col>
@@ -37,6 +38,7 @@ const deleteCollectionMutation = useDeleteCollectionMutation()
 const urqlClient = useClientHandle().client
 
 const name = computed(() => res.data.value?.me?.collection?.name || '')
+const collectionType = computed(() => res.data.value?.me?.collection?.type || 'other')
 
 const router = useRouter()
 

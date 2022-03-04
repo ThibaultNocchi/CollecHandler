@@ -24,6 +24,7 @@ query getCollection($id: Int!) {
   me {
     collection(id: $id) {
       name
+      type
     }
   }
 }
