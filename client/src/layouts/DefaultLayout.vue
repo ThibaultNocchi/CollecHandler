@@ -34,8 +34,17 @@
 		</v-list>
 
 		<template #append>
-			<v-divider></v-divider>
+			<v-divider />
 			<v-list nav dense>
+				<template v-if="version">
+					<v-list-item>
+						<v-list-item-content>
+							<v-list-item-title>Version: {{ version }}</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+					<v-divider class="ma-2" />
+				</template>
+
 				<v-list-item link @click="logout">
 					<v-list-item-icon>
 						<v-icon>mdi-logout</v-icon>
@@ -90,5 +99,7 @@ const items: NavbarItem[] = [
 	{ route: 'Home', icon: 'mdi-home', text: 'Home', dividerBelow: true },
 	{ route: 'AddItem', icon: 'mdi-plus-circle', text: 'Add item' }
 ]
+
+const version = computed(() => import.meta.env.VITE_VERSION)
 
 </script>
