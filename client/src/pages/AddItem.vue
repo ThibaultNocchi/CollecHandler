@@ -16,7 +16,7 @@
 						</select>
 					</v-col>
 					<v-col v-if="!form.collectionId" cols="12" sm="6">
-						<AddCollectionTextField @change="form.collectionId = $event" />
+						<AddCollectionForm @change="form.collectionId = $event" />
 					</v-col>
 					<v-col cols="12">
 						<v-text-field
@@ -61,7 +61,7 @@ import BarcodeScanner from '@/components/BarcodeScanner.vue';
 import { Ordering, OrderingFieldCollection, useAddItemMutation, useGetCollectionsQuery } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
 import { useDisplay } from 'vuetify';
-import AddCollectionTextField from '@/components/AddCollectionTextField.vue';
+import AddCollectionForm from '@/components/AddCollectionForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const display = useDisplay()
