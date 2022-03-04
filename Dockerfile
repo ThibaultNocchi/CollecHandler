@@ -1,6 +1,8 @@
 FROM node:lts-alpine AS client
 
 WORKDIR /app
+ARG VITE_VERSION
+ENV VITE_VERSION=$VITE_VERSION
 COPY client .
 RUN npm ci --no-audit && npm run build
 

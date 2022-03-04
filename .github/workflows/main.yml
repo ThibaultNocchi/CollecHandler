@@ -31,6 +31,8 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64
+          build-args:
+            VITE_VERSION=${{github.sha}}
           tags: |
             ghcr.io/thibaultnocchi/collechandler:latest
             ghcr.io/thibaultnocchi/collechandler:${{ steps.sha.outputs.sha }}

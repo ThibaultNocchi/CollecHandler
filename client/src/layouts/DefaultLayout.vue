@@ -36,10 +36,10 @@
 		<template #append>
 			<v-divider />
 			<v-list nav dense>
-				<template v-if="version">
+				<template v-if="typeof version === 'string'">
 					<v-list-item>
 						<v-list-item-content>
-							<v-list-item-title>Version: {{ version }}</v-list-item-title>
+							<v-list-item-title>Version: #{{ version.substring(0, 6) }}</v-list-item-title>
 						</v-list-item-content>
 					</v-list-item>
 					<v-divider class="ma-2" />
