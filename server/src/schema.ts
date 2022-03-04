@@ -4,6 +4,7 @@ import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { context } from './context'
 import {
   CollectionItemArgs,
+  CollectionType,
   GetCollectionsInput,
   MutationAddCollectionArgs,
   MutationAddItemArgs,
@@ -151,21 +152,32 @@ const resolvers = {
       return { token, user }
     },
 
-    addCollection: (_: undefined, { input }: MutationAddCollectionArgs) =>
-      context.userId && input.name !== ''
-        ? context.prisma.collection.create({
-            data: { ...input, userId: context.userId },
-          })
-        : null,
+    addCollection: (_: undefined, { input }: MutationAddCollectionArgs) => {
+      if (
+        context.userId &&
+        input.name !== '' &&
+        (!input.type || Object.values(CollectionType).includes(input.type))
+      ) {
+        return context.prisma.collection.create({
+          data: { ...input, userId: context.userId },
+        })
+      } else {
+        return null
+      }
+    },
     updateCollection: async (
       _: undefined,
       { id, input }: MutationUpdateCollectionArgs,
     ) => {
       const collection = await getCollection(id)
-      return context.prisma.collection.update({
-        where: { id: collection?.id },
-        data: { ...input },
-      })
+      if (!input.type || Object.values(CollectionType).includes(input.type)) {
+        return context.prisma.collection.update({
+          where: { id: collection?.id },
+          data: { ...input },
+        })
+      } else {
+        return null
+      }
     },
     deleteCollection: async (
       _: undefined,

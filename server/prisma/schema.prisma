@@ -16,10 +16,11 @@ model User {
 }
 
 model Collection {
-  id     Int    @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
   name   String
+  type   String?
   items  Item[]
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 }
 

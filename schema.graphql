@@ -9,6 +9,7 @@ type User {
 type Collection {
   id: Int!
   name: String!
+  type: CollectionType
   item(id: Int!): Item
 }
 
@@ -42,6 +43,7 @@ type AuthPayload {
 
 input CollectionInput {
   name: String!
+  type: CollectionType
 }
 
 input ItemInput {
@@ -78,6 +80,10 @@ input OrderingInput {
 }
 
 ##### ENUMS
+
+enum CollectionType {
+  books
+}
 
 enum Comparisons {
   equals

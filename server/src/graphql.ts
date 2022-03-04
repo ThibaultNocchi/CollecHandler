@@ -23,6 +23,7 @@ export type Collection = {
   id: Scalars['Int'];
   item?: Maybe<Item>;
   name: Scalars['String'];
+  type?: Maybe<CollectionType>;
 };
 
 
@@ -32,7 +33,12 @@ export type CollectionItemArgs = {
 
 export type CollectionInput = {
   name: Scalars['String'];
+  type?: InputMaybe<CollectionType>;
 };
+
+export enum CollectionType {
+  Books = 'books'
+}
 
 export type CollectionsList = {
   __typename?: 'CollectionsList';
