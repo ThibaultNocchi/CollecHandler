@@ -74,7 +74,7 @@ import { setJwt } from '../graphql/client';
 import { useMeQuery } from '../graphql/graphql';
 import DebugVuetifyBreakpoint from '@/components/DebugVuetifyBreakpoint.vue';
 
-const drawer: Ref<null | boolean> = ref(null)
+const drawer: Ref<undefined | boolean> = ref(undefined)
 
 const logout = () => {
 	setJwt()
