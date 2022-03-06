@@ -57,6 +57,12 @@ export enum Comparisons {
   Lte = 'lte'
 }
 
+export type FetchFromIsbnPayload = {
+  __typename?: 'FetchFromIsbnPayload';
+  isbn: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type GetCollectionsInput = {
   text?: InputMaybe<Scalars['String']>;
 };
@@ -173,6 +179,7 @@ export type QuantitySearchInput = {
 export type Query = {
   __typename?: 'Query';
   bareCollection: Array<Item>;
+  fetchFromIsbn?: Maybe<FetchFromIsbnPayload>;
   getCollections: CollectionsList;
   me?: Maybe<User>;
   search: ItemsList;
@@ -181,6 +188,11 @@ export type Query = {
 
 export type QueryBareCollectionArgs = {
   collectionId: Scalars['Int'];
+};
+
+
+export type QueryFetchFromIsbnArgs = {
+  isbn: Scalars['String'];
 };
 
 
@@ -225,7 +237,7 @@ export type GetCollectionsQueryVariables = Exact<{
 }>;
 
 
-export type GetCollectionsQuery = { __typename?: 'Query', getCollections: { __typename?: 'CollectionsList', pages: number, collections: Array<{ __typename?: 'Collection', id: number, name: string }> } };
+export type GetCollectionsQuery = { __typename?: 'Query', getCollections: { __typename?: 'CollectionsList', pages: number, collections: Array<{ __typename?: 'Collection', id: number, name: string, type?: CollectionType | null }> } };
 
 export type GetCollectionQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -295,6 +307,13 @@ export type SearchItemsQueryVariables = Exact<{
 
 export type SearchItemsQuery = { __typename?: 'Query', search: { __typename?: 'ItemsList', pages: number, items: Array<{ __typename?: 'Item', id: number, collectionId: number, name: string, quantity: number }> } };
 
+export type FetchFromIsbnQueryVariables = Exact<{
+  isbn: Scalars['String'];
+}>;
+
+
+export type FetchFromIsbnQuery = { __typename?: 'Query', fetchFromIsbn?: { __typename?: 'FetchFromIsbnPayload', name: string, isbn: string } | null };
+
 export type BareCollectionQueryVariables = Exact<{
   collectionId: Scalars['Int'];
 }>;
@@ -325,6 +344,7 @@ export const GetCollectionsDocument = gql`
     collections {
       id
       name
+      type
     }
   }
 }
@@ -447,6 +467,18 @@ export const SearchItemsDocument = gql`
 
 export function useSearchItemsQuery(options: Omit<Urql.UseQueryArgs<never, SearchItemsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<SearchItemsQuery>({ query: SearchItemsDocument, ...options });
+};
+export const FetchFromIsbnDocument = gql`
+    query fetchFromIsbn($isbn: String!) {
+  fetchFromIsbn(isbn: $isbn) {
+    name
+    isbn
+  }
+}
+    `;
+
+export function useFetchFromIsbnQuery(options: Omit<Urql.UseQueryArgs<never, FetchFromIsbnQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<FetchFromIsbnQuery>({ query: FetchFromIsbnDocument, ...options });
 };
 export const BareCollectionDocument = gql`
     query bareCollection($collectionId: Int!) {

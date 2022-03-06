@@ -16,6 +16,7 @@ query getCollections($ordering: OrderingInput!, $input: GetCollectionsInput!) {
     collections {
       id
       name
+      type
     }
   }
 }
@@ -91,6 +92,13 @@ query searchItems($ordering: OrderingInput!, $input: SearchInput!) {
       name
       quantity
     }
+  }
+}
+
+query fetchFromIsbn($isbn: String!) {
+  fetchFromIsbn(isbn: $isbn) {
+    name
+    isbn
   }
 }
 

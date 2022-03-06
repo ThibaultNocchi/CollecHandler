@@ -18,6 +18,9 @@
 					<v-col v-if="!form.collectionId" cols="12" sm="6">
 						<AddCollectionForm @change="form.collectionId = $event" />
 					</v-col>
+					<v-col v-else-if="currentCollection?.type === CollectionType.Books" cols="12" sm="6">
+						<FetchFromIsbn @change="fetchFromIsbnEvent" />
+					</v-col>
 					<v-col cols="12">
 						<v-text-field
 							v-model="form.name"
@@ -58,11 +61,12 @@
 
 <script lang="ts" setup>
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
-import { Ordering, OrderingFieldCollection, useAddItemMutation, useGetCollectionsQuery } from '@/graphql/graphql';
+import { Ordering, OrderingFieldCollection, useAddItemMutation, useGetCollectionsQuery, CollectionType, FetchFromIsbnPayload } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
 import { useDisplay } from 'vuetify';
 import AddCollectionForm from '@/components/AddCollectionForm.vue';
 import { useRoute, useRouter } from 'vue-router';
+import FetchFromIsbn from '../components/FetchFromIsbn.vue';
 
 const display = useDisplay()
 const router = useRouter()
@@ -90,6 +94,13 @@ const form = reactive({
 	barcode: '',
 	description: ''
 })
+
+const currentCollection = computed(() => collections.value?.find(el => el.id === form.collectionId))
+
+const fetchFromIsbnEvent = (event: FetchFromIsbnPayload) => {
+	form.name = event.name
+	form.barcode = event.isbn
+}
 
 const errors = reactive({
 	collectionId: false,
