@@ -5,10 +5,9 @@
 
 <script lang="ts" setup>
 import quagga, { QuaggaJSConfigObject } from '@ericblade/quagga2'
-import { Ref, ref, watch } from 'vue';
+import { Ref, ref } from 'vue';
 
 const file: Ref<null | HTMLInputElement> = ref(null)
-const fileBase64: Ref<string | ArrayBuffer | null> = ref(null)
 
 const iconClick = () => {
 	if (file.value) file.value.click()
@@ -20,7 +19,7 @@ const onScan = () => {
 	const reader = new FileReader()
 	reader.readAsDataURL(file.value.files[0])
 	reader.onload = () => {
-		fileBase64.value = reader.result
+		analyseImage(reader.result)
 	}
 
 	file.value.value = ''
@@ -29,11 +28,11 @@ const onScan = () => {
 
 const emit = defineEmits(['change'])
 
-watch(fileBase64, () => {
-	if (!fileBase64.value) return
+const analyseImage = (base64: string | ArrayBuffer | null) => {
+	if (!base64) return
 
 	const config: QuaggaJSConfigObject = {
-		src: fileBase64.value.toString(),
+		src: base64.toString(),
 		decoder: {
 			readers: ["ean_reader", "ean_8_reader", "code_128_reader", "upc_reader", "upc_e_reader"]
 		},
@@ -43,7 +42,7 @@ watch(fileBase64, () => {
 		if (result.codeResult) emit('change', result.codeResult.code)
 		else emit('change', undefined)
 	})
-})
+}
 
 </script>
 
