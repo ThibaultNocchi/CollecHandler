@@ -41,6 +41,7 @@ type AuthPayload {
 
 type FetchFromIsbnPayload {
   name: String!
+  isbn: String!
 }
 
 ##### CREATION INPUTS

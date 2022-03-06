@@ -142,7 +142,7 @@ const resolvers = {
       if (!context.userId) throw 'unauthorized'
       try {
         const res = await nodeisbn.resolve(args.isbn)
-        return { name: res.title }
+        return { name: res.title, isbn: args.isbn }
       } catch {
         return null
       }

@@ -56,6 +56,7 @@ export enum Comparisons {
 
 export type FetchFromIsbnPayload = {
   __typename?: 'FetchFromIsbnPayload';
+  isbn: Scalars['String'];
   name: Scalars['String'];
 };
 
