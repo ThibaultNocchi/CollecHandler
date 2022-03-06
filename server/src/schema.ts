@@ -5,6 +5,7 @@ import { context } from './context'
 import {
   CollectionItemArgs,
   CollectionType,
+  FetchFromIsbnPayload,
   GetCollectionsInput,
   MutationAddCollectionArgs,
   MutationAddItemArgs,
@@ -19,6 +20,7 @@ import {
   OrderingFieldItem,
   OrderingInput,
   QueryBareCollectionArgs,
+  QueryFetchFromIsbnArgs,
   QueryGetCollectionsArgs,
   QuerySearchArgs,
   SearchInput,
@@ -28,6 +30,7 @@ import { compareSync, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { Collection, User } from '@prisma/client'
 import { JWT_SECRET } from './server'
+import nodeisbn from 'node-isbn'
 
 const typeDefs = loadSchemaSync('../schema.graphql', {
   loaders: [new GraphQLFileLoader()],
@@ -117,10 +120,13 @@ const getItems = async (
 const resolvers = {
   Query: {
     me: () => context.prisma.user.findUnique({ where: { id: context.userId } }),
+
     search: (_: undefined, { ordering, input }: QuerySearchArgs) =>
       getItems(ordering, input),
+
     getCollections: (_: undefined, args: QueryGetCollectionsArgs) =>
       getCollections(args.ordering, args.input),
+
     bareCollection: (_: undefined, { collectionId }: QueryBareCollectionArgs) =>
       context.prisma.item.findMany({
         where: {
@@ -128,6 +134,19 @@ const resolvers = {
           collectionId: collectionId,
         },
       }),
+
+    fetchFromIsbn: async (
+      _: undefined,
+      args: QueryFetchFromIsbnArgs,
+    ): Promise<FetchFromIsbnPayload | null> => {
+      if (!context.userId) throw 'unauthorized'
+      try {
+        const res = await nodeisbn.resolve(args.isbn)
+        return { name: res.title }
+      } catch {
+        return null
+      }
+    },
   },
 
   Mutation: {

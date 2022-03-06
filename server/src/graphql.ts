@@ -54,6 +54,11 @@ export enum Comparisons {
   Lte = 'lte'
 }
 
+export type FetchFromIsbnPayload = {
+  __typename?: 'FetchFromIsbnPayload';
+  name: Scalars['String'];
+};
+
 export type GetCollectionsInput = {
   text?: InputMaybe<Scalars['String']>;
 };
@@ -170,6 +175,7 @@ export type QuantitySearchInput = {
 export type Query = {
   __typename?: 'Query';
   bareCollection: Array<Item>;
+  fetchFromIsbn?: Maybe<FetchFromIsbnPayload>;
   getCollections: CollectionsList;
   me?: Maybe<User>;
   search: ItemsList;
@@ -178,6 +184,11 @@ export type Query = {
 
 export type QueryBareCollectionArgs = {
   collectionId: Scalars['Int'];
+};
+
+
+export type QueryFetchFromIsbnArgs = {
+  isbn: Scalars['String'];
 };
 
 

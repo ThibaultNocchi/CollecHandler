@@ -39,6 +39,10 @@ type AuthPayload {
   user: User!
 }
 
+type FetchFromIsbnPayload {
+  name: String!
+}
+
 ##### CREATION INPUTS
 
 input CollectionInput {
@@ -119,6 +123,7 @@ type Query {
     input: GetCollectionsInput!
   ): CollectionsList!
   bareCollection(collectionId: Int!): [Item!]!
+  fetchFromIsbn(isbn: String!): FetchFromIsbnPayload
 }
 
 type Mutation {
