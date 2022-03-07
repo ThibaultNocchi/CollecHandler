@@ -17,7 +17,7 @@
 					hide-details
 				>
 					<template #append>
-						<v-icon type="submit" class="pointer" @click="onSubmit">mdi-plus-circle</v-icon>
+						<v-icon type="submit" color="primary" class="pointer" @click="onSubmit">mdi-plus-circle</v-icon>
 					</template>
 				</v-text-field>
 			</v-col>
