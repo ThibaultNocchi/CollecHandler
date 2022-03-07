@@ -2,7 +2,7 @@
 	<FsCard>
 		<template #title>Login</template>
 		<template #subtitle>Login to your CollecHandler instance to manage your collections</template>
-		<v-form class="text-end" @submit.prevent="onSubmit">
+		<v-form :disabled="login.fetching.value" class="text-end" @submit.prevent="onSubmit">
 			<v-text-field
 				v-model="form.pseudo"
 				class="mb-2"
