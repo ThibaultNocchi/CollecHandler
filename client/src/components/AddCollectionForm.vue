@@ -1,5 +1,5 @@
 <template>
-	<v-form @submit.prevent="onSubmit">
+	<v-form :disabled="addCollection.fetching.value" @submit.prevent="onSubmit">
 		<v-row>
 			<v-col cols="12" sm="auto">
 				<label>Collection type</label>
@@ -9,7 +9,13 @@
 				</select>
 			</v-col>
 			<v-col color="12">
-				<v-text-field v-model="value" :error="error" label="New collection name" hide-details>
+				<v-text-field
+					v-model="value"
+					:error="error"
+					:loading="addCollection.fetching.value"
+					label="New collection name"
+					hide-details
+				>
 					<template #append>
 						<v-icon type="submit" class="pointer" @click="onSubmit">mdi-plus-circle</v-icon>
 					</template>
