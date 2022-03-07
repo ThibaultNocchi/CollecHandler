@@ -6,7 +6,7 @@
 			</v-card-header-text>
 		</v-card-header>
 		<v-card-text>
-			<v-form>
+			<v-form :disabled="addItem.fetching.value" @submit.prevent="onSubmit">
 				<v-row>
 					<v-col cols="12" sm="6">
 						<label>Collection</label>
@@ -51,7 +51,8 @@
 						<v-textarea v-model="form.description" hide-details auto-grow label="Description" />
 					</v-col>
 					<v-col cols="12" class="text-right">
-						<v-btn color="primary" :block="display.smAndDown.value" text @click="onSubmit">Send</v-btn>
+						<v-btn v-if="!addItem.fetching.value" type="submit" color="primary" :block="display.smAndDown.value" text>Add</v-btn>
+						<v-progress-circular v-else color="primary" indeterminate />
 					</v-col>
 				</v-row>
 			</v-form>
