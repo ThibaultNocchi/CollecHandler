@@ -16,7 +16,7 @@ const emit = defineEmits(['change'])
 
 const barcodeParameter = ref('')
 // @ts-expect-error - Vue URQL handles reactive values
-const fetchFromIsbnQuery = useFetchFromIsbnQuery({ variables: { isbn: barcodeParameter }, pause: true })
+const fetchFromIsbnQuery = useFetchFromIsbnQuery({ variables: { isbn: barcodeParameter }, pause: true, requestPolicy: 'network-only' })
 
 const barcodeForm = ref('')
 debouncedWatch(barcodeForm, async () => {
