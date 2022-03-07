@@ -83,7 +83,8 @@ const logout = () => {
 const router = useRouter()
 const display = useDisplay()
 
-const me = useMeQuery()
+const me = await useMeQuery()
+if (me.error.value) logout()
 
 const pseudo = computed(() => me.data.value?.me?.pseudo)
 const firstLetter = computed(() => pseudo.value?.charAt(0).toUpperCase())
