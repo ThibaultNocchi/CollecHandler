@@ -13,7 +13,7 @@
 			/>
 			<PasswordField v-model="form.password" class="mb-2" hide-details label="Password" />
 			<v-checkbox v-model="form.rememberMe" color="primary" label="Remember me" hide-details />
-			<v-btn color="primary" text block @click="onSubmit">Login</v-btn>
+			<v-btn type="submit" color="primary" text block>Login</v-btn>
 		</v-form>
 		<template #append>
 			<h3>

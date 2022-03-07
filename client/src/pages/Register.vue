@@ -7,7 +7,7 @@
 			<PasswordField v-model="form.password" class="mb-2" label="Password" hide-details />
 			<PasswordField v-model="form.password2" class="mb-2" label="Retype password" hide-details />
 			<v-checkbox v-model="form.rememberMe" color="primary" label="Remember me" hide-details />
-			<v-btn color="primary" text block @click="onSubmit">Create my account</v-btn>
+			<v-btn type="submit" color="primary" text block>Create my account</v-btn>
 		</v-form>
 		<template #append>
 			<h3>
