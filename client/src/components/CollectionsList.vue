@@ -8,10 +8,21 @@
 </template>
 
 <script setup lang="ts">
-import { useMeQuery } from '@/graphql/graphql';
+import { Ordering, OrderingFieldCollection, useGetCollectionsQuery } from '@/graphql/graphql';
 import { computed } from 'vue';
-const me = await useMeQuery()
 
-const collections = computed(() => me.data.value?.me?.collections)
+const getCollections = await useGetCollectionsQuery({
+	variables: {
+		input: {},
+		ordering: {
+			numberPerPage: -1,
+			page: 1,
+			ordering: Ordering.Asc,
+			orderingFieldCollection: OrderingFieldCollection.Name
+		}
+	}
+})
+
+const collections = computed(() => getCollections.data.value?.getCollections.collections)
 
 </script>
