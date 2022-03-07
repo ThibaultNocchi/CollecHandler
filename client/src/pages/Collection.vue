@@ -9,12 +9,12 @@
 			<ItemsList :collection-id="collectionId" />
 			<h2>Actions</h2>
 
-			<router-link :to="{ name: 'AddItem', query: { collectionId } }">Add new item</router-link>
+			<v-btn :to="{ name: 'AddItem', query: { collectionId } }" color="primary" size="small">Add new item</v-btn>
 			<br />
-			<input type="submit" value="Download as CSV" @click.prevent="downloadAs('csv')" />
-			<input type="submit" value="Download as JSON" @click.prevent="downloadAs('json')" />
+			<v-btn @click="downloadAs('csv')" size="small">Download as CSV</v-btn>
+			<v-btn @click="downloadAs('json')" size="small">Download as JSON</v-btn>
 			<br />
-			<input type="submit" value="Delete this collection" @click.prevent="deleteCollection" />
+			<v-btn @click="deleteCollection" color="error" size="small">Delete this collection</v-btn>
 		</v-col>
 	</v-row>
 </template>
