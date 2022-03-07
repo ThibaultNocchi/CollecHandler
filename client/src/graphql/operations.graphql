@@ -3,10 +3,6 @@
 query me {
   me {
     pseudo
-    collections {
-      id
-      name
-    }
   }
 }
 

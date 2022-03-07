@@ -229,7 +229,7 @@ export type UserCollectionArgs = {
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', pseudo: string, collections: Array<{ __typename?: 'Collection', id: number, name: string }> } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', pseudo: string } | null };
 
 export type GetCollectionsQueryVariables = Exact<{
   ordering: OrderingInput;
@@ -326,10 +326,6 @@ export const MeDocument = gql`
     query me {
   me {
     pseudo
-    collections {
-      id
-      name
-    }
   }
 }
     `;
