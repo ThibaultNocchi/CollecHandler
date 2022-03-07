@@ -1,7 +1,15 @@
 <template>
-	<v-text-field v-model="barcodeForm" clearable hide-details label="Fetch from ISBN" prepend-inner-icon="mdi-barcode">
+	<v-text-field
+		v-model="barcodeForm"
+		:disabled="fetchFromIsbnQuery.fetching.value"
+		clearable
+		hide-details
+		label="Fetch from ISBN"
+		prepend-inner-icon="mdi-barcode"
+	>
 		<template #append>
-			<BarcodeScanner @change="fetchInfos" />
+			<BarcodeScanner v-if="!fetchFromIsbnQuery.fetching.value" @change="fetchInfos" />
+			<v-progress-circular v-else color="primary" indeterminate />
 		</template>
 	</v-text-field>
 </template>
