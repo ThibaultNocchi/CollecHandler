@@ -48,7 +48,7 @@ const onSubmit = async () => {
 		return
 	}
 	error.value = false
-	const res = await addCollection.executeMutation({ input: { name: value.value, type: collectionType.value } }, { additionalTypenames: ['User'] })
+	const res = await addCollection.executeMutation({ input: { name: value.value, type: collectionType.value } }, { additionalTypenames: ['CollectionsList'] })
 	if (res.error || !res.data?.addCollection?.id) {
 		onError("Got a server error, please retry")
 		return
