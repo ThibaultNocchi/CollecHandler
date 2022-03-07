@@ -56,7 +56,6 @@ const form = reactive({
 })
 
 watch(form, (val) => {
-	console.log(form.text)
 	routeItemSearch(val)
 })
 
