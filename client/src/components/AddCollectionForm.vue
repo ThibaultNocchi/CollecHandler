@@ -1,20 +1,22 @@
 <template>
-	<v-row>
-		<v-col cols="12" sm="auto">
-			<label>Collection type</label>
-			<select v-model="collectionType" class="pa-2 pointer">
-				<option :value="undefined">Other</option>
-				<option v-for="collectionType in CollectionType" :value="collectionType">{{ collectionType }}</option>
-			</select>
-		</v-col>
-		<v-col color="12">
-			<v-text-field v-model="value" :error="error" label="New collection name" hide-details>
-				<template #append>
-					<v-icon class="pointer" @click="onSubmit">mdi-plus-circle</v-icon>
-				</template>
-			</v-text-field>
-		</v-col>
-	</v-row>
+	<v-form @submit.prevent="onSubmit">
+		<v-row>
+			<v-col cols="12" sm="auto">
+				<label>Collection type</label>
+				<select v-model="collectionType" class="pa-2 pointer">
+					<option :value="undefined">Other</option>
+					<option v-for="collectionType in CollectionType" :value="collectionType">{{ collectionType }}</option>
+				</select>
+			</v-col>
+			<v-col color="12">
+				<v-text-field v-model="value" :error="error" label="New collection name" hide-details>
+					<template #append>
+						<v-icon type="submit" class="pointer" @click="onSubmit">mdi-plus-circle</v-icon>
+					</template>
+				</v-text-field>
+			</v-col>
+		</v-row>
+	</v-form>
 </template>
 
 <script lang="ts" setup>
