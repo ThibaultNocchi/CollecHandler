@@ -2,13 +2,9 @@
 	<v-form :disabled="addCollection.fetching.value" @submit.prevent="onSubmit">
 		<v-row>
 			<v-col cols="12" sm="auto">
-				<label>Collection type</label>
-				<select v-model="collectionType" class="pa-2 pointer">
-					<option :value="undefined">Other</option>
-					<option v-for="collectionType in CollectionType" :value="collectionType">{{ collectionType }}</option>
-				</select>
+				<v-select label="Collection type" v-model="collectionType" :items="collectionTypes" clearable no-data-text="Other" />
 			</v-col>
-			<v-col color="12">
+			<v-col>
 				<v-text-field
 					v-model="value"
 					:error="error"
@@ -27,7 +23,9 @@
 
 <script lang="ts" setup>
 import { useAddCollectionMutation, CollectionType } from '@/graphql/graphql';
-import { Ref, ref } from 'vue';
+import { computed, Ref, ref } from 'vue';
+
+const collectionTypes = computed(() => Object.values(CollectionType))
 
 const addCollection = useAddCollectionMutation()
 
