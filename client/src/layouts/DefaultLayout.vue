@@ -21,7 +21,7 @@
 
 		<v-list nav dense>
 			<template v-for="item in items">
-				<v-list-item link @click="router.push({ name: item.route }); drawer = false">
+				<v-list-item link @click="router.push({ name: item.route })">
 					<v-list-item-icon>
 						<v-icon>{{ item.icon }}</v-icon>
 					</v-list-item-icon>
