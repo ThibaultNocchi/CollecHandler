@@ -28,7 +28,7 @@
 <script setup lang="ts">
 
 import { setJwt } from '@/graphql/client';
-import { useLoginMutation } from '@/graphql/graphql';
+import { Errors, useLoginMutation } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
 import FsCard from '@/components/FsCard.vue'
 import PasswordField from '@/components/PasswordField.vue';
@@ -48,8 +48,8 @@ const onSubmit = async () => {
 	form.errors = undefined
 	const res = await login.executeMutation({ password: form.password, pseudo: form.pseudo })
 	if (res.error || !res.data?.login?.token) {
-		// alert("Error logging in")
-		form.errors = 'Wrong credentials'
+		if (res.error?.message === Errors.Login) form.errors = 'Wrong credentials'
+		else form.errors = 'Unrecognized error'
 		return
 	}
 	const token = res.data.login.token
