@@ -7,7 +7,7 @@
 				v-model="form.pseudo"
 				class="mb-2"
 				autofocus
-				hide-details
+				hide-details="auto"
 				label="Pseudo"
 				prepend-inner-icon="mdi-account"
 			/>

@@ -2,11 +2,6 @@
   cursor: pointer;
 }
 
-.v-input__details {
-  /* Disabled for now as the Vuetify hide-details prop doesn't work */
-  display: none;
-}
-
 select {
   /* Used to add style to select while Vuetify releases theirs */
   width: 100%;
