@@ -2,7 +2,7 @@
 	<v-main>
 		<v-container class="fsLayout d-flex align-center">
 			<v-row align="center" justify="space-around">
-				<v-col class="d-none d-lg-block" lg="6" xl="4">
+				<v-col lg="6" xl="4">
 					<v-img class="mx-auto" :src="logo" style="width: 20vw;" />
 					<h1 class="text-center mt-4">CollecHandler</h1>
 				</v-col>
