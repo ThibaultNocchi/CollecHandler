@@ -152,7 +152,13 @@ const resolvers = {
 
   Mutation: {
     signup: async (_: undefined, { pseudo, password }: MutationSignupArgs) => {
-      if (!pseudo || !password) throw 'SignupException'
+      if (!pseudo || !password) throw new Error(Errors.Signup)
+
+      const existingUser = await context.prisma.user.findUnique({
+        where: { pseudo },
+      })
+      if (existingUser) throw new Error(Errors.SignupExistingpseudo)
+
       const hashedPass = await hash(password, 10)
       const user = await context.prisma.user.create({
         data: {

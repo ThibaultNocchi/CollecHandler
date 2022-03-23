@@ -116,6 +116,8 @@ enum OrderingFieldCollection {
 
 enum Errors {
   login
+  signup
+  signup_existingpseudo
 }
 
 ##### QUERIES AND MUTATIONS

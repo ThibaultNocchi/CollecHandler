@@ -58,7 +58,9 @@ export enum Comparisons {
 }
 
 export enum Errors {
-  Login = 'login'
+  Login = 'login',
+  Signup = 'signup',
+  SignupExistingpseudo = 'signup_existingpseudo'
 }
 
 export type FetchFromIsbnPayload = {
