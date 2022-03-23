@@ -2,9 +2,9 @@
 	<FsCard>
 		<template #title>Login</template>
 		<template #subtitle>Login to your CollecHandler instance to manage your collections</template>
-		<v-form :disabled="login.fetching.value" class="text-end" @submit.prevent="onSubmit">
+		<v-form :disabled="login.loading.value" class="text-end" @submit.prevent="onSubmit">
 			<v-text-field
-				v-model="form.pseudo"
+				v-model="payload.pseudo"
 				class="mb-2"
 				autofocus
 				:error="isError"
@@ -12,9 +12,9 @@
 				label="Pseudo"
 				prepend-inner-icon="mdi-account"
 			/>
-			<PasswordField v-model="form.password" class="mb-2" :error-messages="form.errors" label="Password" />
-			<v-checkbox v-model="form.rememberMe" color="primary" label="Remember me" hide-details />
-			<v-btn :disabled="login.fetching.value" type="submit" color="primary" text block>Login</v-btn>
+			<PasswordField v-model="payload.password" class="mb-2" :error-messages="errors" label="Password" />
+			<v-checkbox v-model="rememberMe" color="primary" label="Remember me" hide-details />
+			<v-btn :disabled="login.loading.value" type="submit" color="primary" text block>Login</v-btn>
 		</v-form>
 		<template #append>
 			<h3>
@@ -26,34 +26,35 @@
 </template>
 
 <script setup lang="ts">
-
+import { useMutation } from '@vue/apollo-composable'
 import { setJwt } from '@/graphql/client';
-import { Errors, useLoginMutation } from '@/graphql/graphql';
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref, Ref } from 'vue';
 import FsCard from '@/components/FsCard.vue'
 import PasswordField from '@/components/PasswordField.vue';
+import { LoginDocument, Errors } from '@/graphql/graphql2';
 
-const form = reactive({
-	pseudo: '',
+const payload = reactive({
 	password: '',
-	rememberMe: false,
-	errors: undefined as string | undefined
+	pseudo: ''
 })
+const rememberMe = ref(false)
+const errors: Ref<string | undefined> = ref(undefined)
 
-const isError = computed(() => !!form.errors)
+const isError = computed(() => !!errors.value)
 
-const login = useLoginMutation()
+const login = useMutation(LoginDocument, { variables: payload })
 
 const onSubmit = async () => {
-	form.errors = undefined
-	const res = await login.executeMutation({ password: form.password, pseudo: form.pseudo })
-	if (res.error || !res.data?.login?.token) {
-		if (res.error?.message === Errors.Login) form.errors = 'Wrong credentials'
-		else form.errors = 'Unrecognized error'
-		return
+	errors.value = undefined
+	try {
+		const res = await login.mutate()
+		if (!res?.data?.login?.token) throw Error
+		const token = res.data.login.token
+		setJwt(token, rememberMe.value)
+	} catch {
+		if (login.error.value?.message === Errors.Login) errors.value = 'Wrong credentials'
+		else errors.value = 'Unrecognized error'
 	}
-	const token = res.data.login.token
-	setJwt(token, form.rememberMe)
 }
 
 </script>

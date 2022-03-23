@@ -8,6 +8,8 @@ import { loadFonts } from "./plugins/webfontloader";
 import "@/styles/default.css";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import FullscreenLayout from "@/layouts/FullscreenLayout.vue";
+import { DefaultApolloClient } from "@vue/apollo-composable";
+import apolloClient from "./graphql/client2";
 
 loadFonts();
 
@@ -15,6 +17,7 @@ createApp(App)
   .use(router)
   .use(vuetify)
   .use(urql, client)
+  .provide(DefaultApolloClient, apolloClient)
   .component("DefaultLayout", DefaultLayout)
   .component("FullscreenLayout", FullscreenLayout)
   .mount("#app");

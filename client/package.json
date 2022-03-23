@@ -12,12 +12,15 @@
     "favicons": "real-favicon generate faviconDescription.json faviconData.json public/icons/ && real-favicon inject faviconData.json ./ index.html"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.10",
     "@ericblade/quagga2": "^1.4.2",
     "@mdi/font": "5.9.55",
     "@urql/vue": "^0.6.1",
+    "@vue/apollo-composable": "^4.0.0-alpha.16",
     "@vueuse/core": "^7.5.5",
     "copy-to-clipboard": "^3.3.1",
     "graphql": "^15.8.0",
+    "graphql-tag": "^2.12.6",
     "jsbarcode": "^3.11.5",
     "roboto-fontface": "*",
     "vue": "^3.2.25",
@@ -27,6 +30,7 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.3.1",
+    "@graphql-codegen/typed-document-node": "^2.2.8",
     "@graphql-codegen/typescript": "^2.4.2",
     "@graphql-codegen/typescript-operations": "^2.2.2",
     "@graphql-codegen/typescript-vue-urql": "^2.2.2",
