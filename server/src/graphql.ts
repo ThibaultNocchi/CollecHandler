@@ -54,6 +54,10 @@ export enum Comparisons {
   Lte = 'lte'
 }
 
+export enum Errors {
+  Login = 'login'
+}
+
 export type FetchFromIsbnPayload = {
   __typename?: 'FetchFromIsbnPayload';
   isbn: Scalars['String'];

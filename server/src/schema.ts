@@ -5,6 +5,7 @@ import { context } from './context'
 import {
   CollectionItemArgs,
   CollectionType,
+  Errors,
   FetchFromIsbnPayload,
   GetCollectionsInput,
   MutationAddCollectionArgs,
@@ -164,9 +165,9 @@ const resolvers = {
     },
     login: async (_: undefined, { pseudo, password }: MutationLoginArgs) => {
       const user = await context.prisma.user.findUnique({ where: { pseudo } })
-      if (!user) throw 'LoginException'
+      if (!user) throw new Error(Errors.Login)
       const isEqual = compareSync(password, user.password)
-      if (!isEqual) throw 'LoginException'
+      if (!isEqual) throw new Error(Errors.Login)
       const token = sign({ userId: user.id }, JWT_SECRET)
       return { token, user }
     },

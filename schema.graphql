@@ -114,6 +114,10 @@ enum OrderingFieldCollection {
   name
 }
 
+enum Errors {
+  login
+}
+
 ##### QUERIES AND MUTATIONS
 
 type Query {
