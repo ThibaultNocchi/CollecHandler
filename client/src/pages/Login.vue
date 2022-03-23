@@ -7,11 +7,12 @@
 				v-model="form.pseudo"
 				class="mb-2"
 				autofocus
+				:error="isError"
 				hide-details="auto"
 				label="Pseudo"
 				prepend-inner-icon="mdi-account"
 			/>
-			<PasswordField v-model="form.password" class="mb-2" hide-details label="Password" />
+			<PasswordField v-model="form.password" class="mb-2" :error-messages="form.errors" label="Password" />
 			<v-checkbox v-model="form.rememberMe" color="primary" label="Remember me" hide-details />
 			<v-btn :disabled="login.fetching.value" type="submit" color="primary" text block>Login</v-btn>
 		</v-form>
@@ -28,22 +29,27 @@
 
 import { setJwt } from '@/graphql/client';
 import { useLoginMutation } from '@/graphql/graphql';
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import FsCard from '@/components/FsCard.vue'
 import PasswordField from '@/components/PasswordField.vue';
 
 const form = reactive({
 	pseudo: '',
 	password: '',
-	rememberMe: false
+	rememberMe: false,
+	errors: undefined as string | undefined
 })
+
+const isError = computed(() => !!form.errors)
 
 const login = useLoginMutation()
 
 const onSubmit = async () => {
+	form.errors = undefined
 	const res = await login.executeMutation({ password: form.password, pseudo: form.pseudo })
 	if (res.error || !res.data?.login?.token) {
-		alert("Error logging in")
+		// alert("Error logging in")
+		form.errors = 'Wrong credentials'
 		return
 	}
 	const token = res.data.login.token

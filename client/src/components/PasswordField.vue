@@ -1,6 +1,7 @@
 <template>
 	<v-text-field
 		v-model="value"
+		:error-messages="props.errorMessages"
 		:hide-details="props.hideDetails"
 		:label="props.label"
 		prepend-inner-icon="mdi-key"
@@ -13,12 +14,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { PropType, ref, watch } from 'vue';
 
 const props = defineProps({
+	errorMessages: [Array, String] as PropType<string | string[]>,
+	hideDetails: {
+		type: [Boolean, String] as PropType<boolean | "auto">,
+		default: "auto"
+	},
+	label: String,
 	value: String,
-	hideDetails: Boolean,
-	label: String
 })
 
 const emit = defineEmits(['input'])
