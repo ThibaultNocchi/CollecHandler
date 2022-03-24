@@ -43,18 +43,18 @@ const errors: Ref<string | undefined> = ref(undefined)
 const isError = computed(() => !!errors.value)
 
 const login = useMutation(LoginDocument, { variables: payload })
+login.onDone((res) => {
+	if (!res.data?.login?.token) throw Error
+	setJwt(res.data.login.token, rememberMe.value)
+})
+login.onError((err) => {
+	if (err.message === Errors.Login) errors.value = 'Wrong credentials'
+	else errors.value = 'Unrecognized error'
+})
 
 const onSubmit = async () => {
 	errors.value = undefined
-	try {
-		const res = await login.mutate()
-		if (!res?.data?.login?.token) throw Error
-		const token = res.data.login.token
-		setJwt(token, rememberMe.value)
-	} catch {
-		if (login.error.value?.message === Errors.Login) errors.value = 'Wrong credentials'
-		else errors.value = 'Unrecognized error'
-	}
+	login.mutate()
 }
 
 </script>
