@@ -68,11 +68,11 @@
 
 <script setup lang="ts">
 import { computed, Ref, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
-import { setJwt } from '../graphql/client';
-import { useMeQuery } from '../graphql/graphql';
+import { setJwt } from '@/graphql/client2';
 import DebugVuetifyBreakpoint from '@/components/DebugVuetifyBreakpoint.vue';
+import { useQuery } from '@vue/apollo-composable';
+import { MeDocument } from '@/graphql/graphql2';
 
 const drawer: Ref<undefined | boolean> = ref(undefined)
 
@@ -80,13 +80,12 @@ const logout = () => {
 	setJwt()
 }
 
-const router = useRouter()
 const display = useDisplay()
 
-const me = await useMeQuery()
-if (me.error.value) logout()
+const me = useQuery(MeDocument)
+me.onError(() => { logout() })
 
-const pseudo = computed(() => me.data.value?.me?.pseudo)
+const pseudo = computed(() => me.result.value?.me?.pseudo)
 const firstLetter = computed(() => pseudo.value?.charAt(0).toUpperCase())
 
 interface NavbarItem {
