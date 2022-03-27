@@ -5,12 +5,12 @@
 </template>
 
 <script setup lang="ts">
-
-import { useMeQuery } from '@/graphql/graphql';
-import CollectionsList from '@/components/CollectionsList.vue';
 import { computed } from 'vue';
+import { useQuery } from '@vue/apollo-composable';
+import { MeDocument } from '@/graphql/graphql2';
+import CollectionsList from '@/components/CollectionsList.vue';
 
-const me = useMeQuery()
-const pseudo = computed(() => me.data.value?.me?.pseudo)
+const me = useQuery(MeDocument)
+const pseudo = computed(() => me.result.value?.me?.pseudo)
 
 </script>
