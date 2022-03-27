@@ -6,7 +6,7 @@
 			</v-card-header-text>
 		</v-card-header>
 		<v-card-text>
-			<v-form :disabled="addItem.fetching.value" @submit.prevent="onSubmit">
+			<v-form :disabled="addItem.loading.value" @submit.prevent="onSubmit">
 				<v-row>
 					<v-col cols="12" sm="6">
 						<label>Collection</label>
@@ -51,7 +51,7 @@
 						<v-textarea v-model="form.description" hide-details auto-grow label="Description" />
 					</v-col>
 					<v-col cols="12" class="text-right">
-						<v-btn v-if="!addItem.fetching.value" type="submit" color="primary" :block="display.smAndDown.value" text>Add</v-btn>
+						<v-btn v-if="!addItem.loading.value" type="submit" color="primary" :block="display.smAndDown.value" text>Add</v-btn>
 						<v-progress-circular v-else color="primary" indeterminate />
 					</v-col>
 				</v-row>
@@ -62,18 +62,21 @@
 
 <script lang="ts" setup>
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
-import { Ordering, OrderingFieldCollection, useAddItemMutation, useGetCollectionsQuery, CollectionType, FetchFromIsbnPayload } from '@/graphql/graphql';
+import { Ordering, OrderingFieldCollection, CollectionType, FetchFromIsbnPayload, GetCollectionsDocument, AddItemDocument } from '@/graphql/graphql2';
 import { computed, reactive } from 'vue';
 import { useDisplay } from 'vuetify';
 import AddCollectionForm from '@/components/AddCollectionForm.vue';
 import { useRoute, useRouter } from 'vue-router';
-import FetchFromIsbn from '../components/FetchFromIsbn.vue';
+import FetchFromIsbn from '@/components/FetchFromIsbn.vue';
+import { useApolloClient, useMutation, useQuery } from '@vue/apollo-composable';
 
 const display = useDisplay()
 const router = useRouter()
 const route = useRoute()
+const { client } = useApolloClient()
 
-const getCollections = await useGetCollectionsQuery({
+const getCollections = await client.query({
+	query: GetCollectionsDocument,
 	variables: {
 		input: {},
 		ordering: {
@@ -84,9 +87,17 @@ const getCollections = await useGetCollectionsQuery({
 		}
 	}
 })
-const collections = computed(() => getCollections.data.value?.getCollections.collections)
+const collections = computed(() => getCollections.data.getCollections.collections)
 
-const addItem = useAddItemMutation()
+const addItem = useMutation(AddItemDocument)
+addItem.onDone(() => {
+	router.push({ name: 'Collection', params: { id: form.collectionId } })
+})
+addItem.onError(err => {
+	alert('Error adding item, see console')
+	console.error(err)
+	return
+})
 
 const form = reactive({
 	collectionId: undefined as number | undefined,
@@ -111,7 +122,7 @@ const errors = reactive({
 
 if (typeof route.query.collectionId === "string") {
 	const queryId = parseInt(route.query.collectionId)
-	if (getCollections.data.value?.getCollections.collections.some(el => el.id === queryId)) {
+	if (collections.value.some(el => el.id === queryId)) {
 		form.collectionId = queryId
 		router.replace({ ...route, query: undefined })
 	}
@@ -144,7 +155,7 @@ const onSubmit = async () => {
 	}
 	errors.quantity = false
 
-	const res = await addItem.executeMutation({
+	addItem.mutate({
 		collectionId: form.collectionId,
 		input: {
 			name: form.name,
@@ -152,15 +163,7 @@ const onSubmit = async () => {
 			barcode: form.barcode || undefined,
 			description: form.description || undefined
 		}
-	}, { additionalTypenames: ['Collection'] })
-
-	if (res.error || !res.data?.addItem?.id) {
-		alert('Error adding item, see console')
-		console.error(res.error)
-		return
-	}
-
-	router.push({ name: 'Collection', params: { id: form.collectionId } })
+	})
 
 }
 
