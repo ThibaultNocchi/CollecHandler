@@ -8,21 +8,20 @@
 </template>
 
 <script setup lang="ts">
-import { Ordering, OrderingFieldCollection, useGetCollectionsQuery } from '@/graphql/graphql';
+import { GetCollectionsDocument, Ordering, OrderingFieldCollection } from '@/graphql/graphql2';
+import { useQuery } from '@vue/apollo-composable';
 import { computed } from 'vue';
 
-const getCollections = await useGetCollectionsQuery({
-	variables: {
-		input: {},
-		ordering: {
-			numberPerPage: -1,
-			page: 1,
-			ordering: Ordering.Asc,
-			orderingFieldCollection: OrderingFieldCollection.Name
-		}
+const getCollections = useQuery(GetCollectionsDocument, {
+	input: {},
+	ordering: {
+		numberPerPage: -1,
+		page: 1,
+		ordering: Ordering.Asc,
+		orderingFieldCollection: OrderingFieldCollection.Name
 	}
 })
 
-const collections = computed(() => getCollections.data.value?.getCollections.collections)
+const collections = computed(() => getCollections.result.value?.getCollections.collections)
 
 </script>
