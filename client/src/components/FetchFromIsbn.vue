@@ -1,14 +1,14 @@
 <template>
 	<v-text-field
 		v-model="barcodeForm"
-		:disabled="fetchFromIsbnQuery.fetching.value"
+		:disabled="loading"
 		clearable
 		hide-details
 		label="Fetch from ISBN"
 		prepend-inner-icon="mdi-barcode"
 	>
 		<template #append>
-			<BarcodeScanner v-if="!fetchFromIsbnQuery.fetching.value" @change="fetchInfos" />
+			<BarcodeScanner v-if="!loading" @change="fetchInfos" />
 			<v-progress-circular v-else color="primary" indeterminate />
 		</template>
 	</v-text-field>
@@ -17,25 +17,30 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import BarcodeScanner from './BarcodeScanner.vue';
-import { useFetchFromIsbnQuery } from '@/graphql/graphql'
 import { debouncedWatch } from '@vueuse/core'
+import { useApolloClient } from '@vue/apollo-composable';
+import { FetchFromIsbnDocument } from '@/graphql/graphql2';
 
 const emit = defineEmits(['change'])
-
-const barcodeParameter = ref('')
-// @ts-expect-error - Vue URQL handles reactive values
-const fetchFromIsbnQuery = useFetchFromIsbnQuery({ variables: { isbn: barcodeParameter }, pause: true, requestPolicy: 'network-only' })
+const { client } = useApolloClient()
 
 const barcodeForm = ref('')
+const loading = ref(false)
+
 debouncedWatch(barcodeForm, async () => {
 	fetchInfos(barcodeForm.value)
 }, { debounce: 500 })
 
 const fetchInfos = async (barcode: string) => {
 	if (barcode !== '') {
-		barcodeParameter.value = barcode
-		const res = (await fetchFromIsbnQuery.executeQuery()).data?.value?.fetchFromIsbn
-		emit("change", res)
+		loading.value = true
+		const res = (await client.query({ query: FetchFromIsbnDocument, variables: { isbn: barcode } }))
+		loading.value = false
+		if (!res.data.fetchFromIsbn) {
+			alert("No ISBN found")
+			return
+		}
+		emit("change", res.data.fetchFromIsbn)
 	}
 }
 
