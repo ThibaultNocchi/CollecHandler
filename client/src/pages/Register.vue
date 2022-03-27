@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { useMutation } from '@vue/apollo-composable'
-import { setJwt } from '@/graphql/client';
+import { setJwt } from '@/graphql/client2';
 import { reactive, ref } from 'vue';
 import FsCard from '@/components/FsCard.vue';
 import PasswordField from '@/components/PasswordField.vue';

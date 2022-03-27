@@ -1,4 +1,3 @@
-import router from "@/routes";
 import { createClient } from "@urql/vue";
 import { ref } from "vue";
 
@@ -17,20 +16,5 @@ const client = ref(
       : undefined
   })
 );
-
-export const isLoggedIn = () =>
-  // @ts-expect-error - headers isn't present in type
-  typeof client.value.fetchOptions?.headers?.authorization !== "undefined";
-
-export const setJwt = (token?: string, rememberMe: boolean = false) => {
-  client.value = createClient({
-    url: URL,
-    fetchOptions: token ? { headers: { authorization: token } } : undefined
-  });
-  if (token && rememberMe) localStorage.setItem("jwt", token);
-  else localStorage.removeItem("jwt");
-  if (token) router.push({ name: "Home" });
-  else router.push({ name: "Login" });
-};
 
 export default client;
