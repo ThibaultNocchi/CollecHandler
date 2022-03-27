@@ -36,13 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import { useSearchItemsQuery } from '@/graphql/graphql';
 import { computed, ref, Ref } from 'vue';
 import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
-import { useMutation } from '@vue/apollo-composable';
-import { DeleteItemDocument, Ordering, OrderingFieldItem } from '@/graphql/graphql2';
+import { useMutation, useQuery } from '@vue/apollo-composable';
+import { DeleteItemDocument, Ordering, OrderingFieldItem, SearchItemsDocument } from '@/graphql/graphql2';
 
 const props = defineProps({
 	collectionId: {
@@ -66,31 +65,24 @@ const tableFields: TABLE_FIELD[] = [
 	{ orderingField: OrderingFieldItem.Quantity, title: "Quantity", objectKey: "quantity", displayCondition: display.smAndUp },
 ]
 
-const searchQuery = await useSearchItemsQuery({
-	variables: {
-		input: {
-			collectionId: props.collectionId,
-			// @ts-expect-error - Vue URQL can handle reactive variables
-			text: searchQueryStore.text,
-			// @ts-expect-error - Vue URQL can handle reactive variables
-			barcode: searchQueryStore.barcode,
-			// @ts-expect-error - Vue URQL can handle reactive variables
-			quantity: computed(() => searchQueryStore.quantityComparison.value !== "disabled" ? { value: searchQueryStore.quantity.value || 0, comparison: searchQueryStore.quantityComparison.value } : undefined)
-		},
-		ordering: {
-			// @ts-expect-error - Vue URQL can handle reactive variables
-			page: searchQueryStore.page,
-			numberPerPage: 10,
-			// @ts-expect-error - Vue URQL can handle reactive variables
-			ordering: searchQueryStore.ordering,
-			// @ts-expect-error - Vue URQL can handle reactive variables
-			orderingFieldItem: searchQueryStore.orderingFieldItem
-		}
+// @ts-expect-error typing doesn't like the function variable
+const searchQuery = useQuery(SearchItemsDocument, () => ({
+	input: {
+		collectionId: props.collectionId,
+		text: searchQueryStore.text.value,
+		barcode: searchQueryStore.barcode.value,
+		quantity: searchQueryStore.quantityComparison.value !== "disabled" ? { value: searchQueryStore.quantity.value || 0, comparison: searchQueryStore.quantityComparison.value } : undefined
+	},
+	ordering: {
+		page: searchQueryStore.page.value,
+		numberPerPage: 10,
+		ordering: searchQueryStore.ordering.value,
+		orderingFieldItem: searchQueryStore.orderingFieldItem.value
 	}
-})
+}))
 
-const items = computed(() => searchQuery.data.value?.search.items || [])
-const pages = computed(() => searchQuery.data.value?.search.pages || 1)
+const items = computed(() => searchQuery.result.value?.search.items || [])
+const pages = computed(() => searchQuery.result.value?.search.pages || 1)
 
 const router = useRouter()
 const route = useRoute()
