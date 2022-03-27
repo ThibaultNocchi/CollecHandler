@@ -1,5 +1,5 @@
 <template>
-	<v-form :disabled="addCollection.fetching.value" @submit.prevent="onSubmit">
+	<v-form :disabled="addCollection.loading.value" @submit.prevent="onSubmit">
 		<v-row>
 			<v-col cols="12" sm="auto">
 				<v-select label="Collection type" v-model="collectionType" :items="collectionTypes" clearable no-data-text="Other" />
@@ -8,7 +8,7 @@
 				<v-text-field
 					v-model="value"
 					:error="error"
-					:loading="addCollection.fetching.value"
+					:loading="addCollection.loading.value"
 					label="New collection name"
 					hide-details
 				>
@@ -22,12 +22,22 @@
 </template>
 
 <script lang="ts" setup>
-import { useAddCollectionMutation, CollectionType } from '@/graphql/graphql';
+import { AddCollectionDocument, CollectionType } from '@/graphql/graphql2';
+import { useMutation } from '@vue/apollo-composable';
 import { computed, Ref, ref } from 'vue';
 
 const collectionTypes = computed(() => Object.values(CollectionType))
 
-const addCollection = useAddCollectionMutation()
+const addCollection = useMutation(AddCollectionDocument)
+addCollection.onDone(res => {
+	if (!res.data?.addCollection?.id) throw "Unexpected error"
+	value.value = ''
+	emit('change', res.data.addCollection.id)
+})
+addCollection.onError(err => {
+	console.error(err)
+	onError("Got a server error, please retry")
+})
 
 const value = ref('')
 const collectionType: Ref<undefined | CollectionType> = ref(undefined)
@@ -46,14 +56,12 @@ const onSubmit = async () => {
 		return
 	}
 	error.value = false
-	const res = await addCollection.executeMutation({ input: { name: value.value, type: collectionType.value } }, { additionalTypenames: ['CollectionsList'] })
-	if (res.error || !res.data?.addCollection?.id) {
-		onError("Got a server error, please retry")
-		return
-	}
-	const id = res.data.addCollection.id
-	value.value = ''
-	emit('change', id)
+	addCollection.mutate({
+		input: {
+			name: value.value,
+			type: collectionType.value
+		}
+	})
 }
 
 </script>
