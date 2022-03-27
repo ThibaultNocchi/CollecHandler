@@ -36,11 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import { Ordering, OrderingFieldItem, useDeleteItemMutation, useSearchItemsQuery } from '@/graphql/graphql';
+import { Ordering, OrderingFieldItem, useSearchItemsQuery } from '@/graphql/graphql';
 import { computed, ref, Ref } from 'vue';
 import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
+import { useMutation } from '@vue/apollo-composable';
+import { DeleteItemDocument } from '@/graphql/graphql2';
 
 const props = defineProps({
 	collectionId: {
@@ -119,12 +121,10 @@ const switchOrdering = (field: OrderingFieldItem) => {
 	routeItemOrdering({ ordering: newOrdering, orderingFieldItem: field })
 }
 
-const deleteItem = useDeleteItemMutation()
+const deleteItem = useMutation(DeleteItemDocument)
+deleteItem.onError(() => { alert("Delete failed") })
 const onDelete = async (itemId: number) => {
 	const res = await confirm("Are you sure you want to delete this item?")
-	if (res) {
-		const mutRes = await deleteItem.executeMutation({ id: itemId })
-		if (!mutRes.data?.deleteItem?.id) alert("Delete failed")
-	}
+	if (res) deleteItem.mutate({ id: itemId })
 }
 </script>
