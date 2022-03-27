@@ -16,7 +16,7 @@
 						</select>
 					</v-col>
 					<v-col v-if="!form.collectionId" cols="12" sm="6">
-						<AddCollectionForm @change="form.collectionId = $event" />
+						<AddCollectionForm @change="newCollection($event)" />
 					</v-col>
 					<v-col v-else-if="currentCollection?.type === CollectionType.Books" cols="12" sm="6">
 						<FetchFromIsbn @change="fetchFromIsbnEvent" />
@@ -62,32 +62,45 @@
 
 <script lang="ts" setup>
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
-import { Ordering, OrderingFieldCollection, CollectionType, FetchFromIsbnPayload, GetCollectionsDocument, AddItemDocument } from '@/graphql/graphql';
-import { computed, reactive } from 'vue';
+import { Ordering, OrderingFieldCollection, CollectionType, FetchFromIsbnPayload, GetCollectionsDocument, AddItemDocument, Collection } from '@/graphql/graphql';
+import { computed, reactive, ref, Ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import AddCollectionForm from '@/components/AddCollectionForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 import FetchFromIsbn from '@/components/FetchFromIsbn.vue';
-import { useApolloClient, useMutation } from '@vue/apollo-composable';
+import { useApolloClient, useMutation, useQuery } from '@vue/apollo-composable';
 
 const display = useDisplay()
 const router = useRouter()
 const route = useRoute()
 const { client } = useApolloClient()
 
-const getCollections = await client.query({
-	query: GetCollectionsDocument,
-	variables: {
-		input: {},
-		ordering: {
-			numberPerPage: -1,
-			page: 1,
-			ordering: Ordering.Asc,
-			orderingFieldCollection: OrderingFieldCollection.Name
-		}
+// const getCollections = await client.query({
+// 	query: GetCollectionsDocument,
+// 	variables: {
+// 		input: {},
+// 		ordering: {
+// 			numberPerPage: -1,
+// 			page: 1,
+// 			ordering: Ordering.Asc,
+// 			orderingFieldCollection: OrderingFieldCollection.Name
+// 		}
+// 	}
+// })
+// const collections = computed(() => getCollections.data.getCollections.collections)
+const collections: Ref<Collection[]> = ref([])
+const getCollections = useQuery(GetCollectionsDocument, {
+	input: {},
+	ordering: {
+		numberPerPage: -1,
+		page: 1,
+		ordering: Ordering.Asc,
+		orderingFieldCollection: OrderingFieldCollection.Name
 	}
 })
-const collections = computed(() => getCollections.data.getCollections.collections)
+getCollections.onResult(res => {
+	collections.value = res.data.getCollections.collections
+})
 
 const addItem = useMutation(AddItemDocument)
 addItem.onDone(() => {
@@ -112,6 +125,11 @@ const currentCollection = computed(() => collections.value?.find(el => el.id ===
 const fetchFromIsbnEvent = (event: FetchFromIsbnPayload) => {
 	form.name = event.name
 	form.barcode = event.isbn
+}
+
+const newCollection = async (id: number) => {
+	await getCollections.refetch()
+	form.collectionId = id
 }
 
 const errors = reactive({
