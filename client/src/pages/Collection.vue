@@ -20,41 +20,52 @@
 </template>
 
 <script setup lang="ts">
-import { BareCollectionDocument, BareCollectionQuery, useGetCollectionQuery, useDeleteCollectionMutation } from '@/graphql/graphql';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import ItemsList from '@/components/ItemsList.vue';
-import { useClientHandle } from '@urql/vue';
 import { exportToCsv, exportToJson } from '@/plugins/exportCollections';
 import searchQuery from '@/plugins/searchQuery';
 import SearchBar from '@/components/SearchBar.vue';
-
+import { useApolloClient, useMutation } from '@vue/apollo-composable';
+import { BareCollectionDocument, DeleteCollectionDocument, GetCollectionDocument } from '@/graphql/graphql2';
 
 const collectionId = searchQuery.collectionId.value
 if (!collectionId) throw "Bad parameter"
 
-const res = await useGetCollectionQuery({ variables: { id: collectionId } })
-const deleteCollectionMutation = useDeleteCollectionMutation()
-const urqlClient = useClientHandle().client
-
-const name = computed(() => res.data.value?.me?.collection?.name || '')
-const collectionType = computed(() => res.data.value?.me?.collection?.type || 'other')
-
 const router = useRouter()
+const { client } = useApolloClient()
+
+const res = await client.query({
+	query: GetCollectionDocument,
+	variables: {
+		id: collectionId
+	}
+})
+
+const deleteCollectionMutation = useMutation(DeleteCollectionDocument)
+deleteCollectionMutation.onDone(() => {
+	router.push({ name: 'Home' })
+})
+deleteCollectionMutation.onError(err => {
+	alert("deletion failed")
+	console.error(err)
+})
+
+const name = computed(() => res.data.me?.collection?.name || '')
+const collectionType = computed(() => res.data.me?.collection?.type || 'other')
 
 const downloadAs = async (type: string) => {
-	const allItems: BareCollectionQuery = (await urqlClient.query(BareCollectionDocument, { collectionId }).toPromise()).data
+	const allItems = (await client.query({
+		query: BareCollectionDocument,
+		variables: { collectionId }
+	})).data
 	if (type === 'csv') exportToCsv(name.value, allItems)
 	else if (type === 'json') exportToJson(name.value, allItems)
 }
 
 const deleteCollection = async () => {
 	const res = await confirm("Are you sure you want to delete this collection and its items?")
-	if (res) {
-		const mutRes = await deleteCollectionMutation.executeMutation({ id: collectionId })
-		if (mutRes.data?.deleteCollection?.id) router.push({ name: 'Home' })
-		else alert("deletion failed")
-	}
+	if (res) deleteCollectionMutation.mutate({ id: collectionId })
 }
 
 </script>
