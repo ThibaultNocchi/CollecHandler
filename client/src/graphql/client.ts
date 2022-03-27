@@ -25,7 +25,12 @@ const cache = new InMemoryCache();
 
 const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache
+  cache,
+  defaultOptions: {
+    // Need to force network fetching cause there is a bug in mutations refetchQueries and it needs every variables for each query to refetch them
+    // https://github.com/vuejs/apollo/issues/1326
+    watchQuery: { fetchPolicy: "cache-and-network" }
+  }
 });
 
 export const isLoggedIn = () => !!localToken;
