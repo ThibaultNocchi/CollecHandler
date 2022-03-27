@@ -36,13 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import { Ordering, OrderingFieldItem, useSearchItemsQuery } from '@/graphql/graphql';
+import { useSearchItemsQuery } from '@/graphql/graphql';
 import { computed, ref, Ref } from 'vue';
 import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useMutation } from '@vue/apollo-composable';
-import { DeleteItemDocument } from '@/graphql/graphql2';
+import { DeleteItemDocument, Ordering, OrderingFieldItem } from '@/graphql/graphql2';
 
 const props = defineProps({
 	collectionId: {
