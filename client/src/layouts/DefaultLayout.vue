@@ -69,10 +69,10 @@
 <script setup lang="ts">
 import { computed, Ref, ref } from 'vue';
 import { useDisplay } from 'vuetify';
-import { setJwt } from '@/graphql/client2';
+import { setJwt } from '@/graphql/client';
 import DebugVuetifyBreakpoint from '@/components/DebugVuetifyBreakpoint.vue';
 import { useQuery } from '@vue/apollo-composable';
-import { MeDocument } from '@/graphql/graphql2';
+import { MeDocument } from '@/graphql/graphql';
 
 const drawer: Ref<undefined | boolean> = ref(undefined)
 

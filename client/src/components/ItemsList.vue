@@ -41,7 +41,7 @@ import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useMutation, useQuery } from '@vue/apollo-composable';
-import { DeleteItemDocument, Ordering, OrderingFieldItem, SearchItemsDocument } from '@/graphql/graphql2';
+import { DeleteItemDocument, Ordering, OrderingFieldItem, SearchItemsDocument } from '@/graphql/graphql';
 
 const props = defineProps({
 	collectionId: {
@@ -65,7 +65,7 @@ const tableFields: TABLE_FIELD[] = [
 	{ orderingField: OrderingFieldItem.Quantity, title: "Quantity", objectKey: "quantity", displayCondition: display.smAndUp },
 ]
 
-// @ts-expect-error typing doesn't like the function variable
+// @ts-expect-error it doesn't like the function typing
 const searchQuery = useQuery(SearchItemsDocument, () => ({
 	input: {
 		collectionId: props.collectionId,

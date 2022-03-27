@@ -62,13 +62,13 @@
 
 <script lang="ts" setup>
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
-import { Ordering, OrderingFieldCollection, CollectionType, FetchFromIsbnPayload, GetCollectionsDocument, AddItemDocument } from '@/graphql/graphql2';
+import { Ordering, OrderingFieldCollection, CollectionType, FetchFromIsbnPayload, GetCollectionsDocument, AddItemDocument } from '@/graphql/graphql';
 import { computed, reactive } from 'vue';
 import { useDisplay } from 'vuetify';
 import AddCollectionForm from '@/components/AddCollectionForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 import FetchFromIsbn from '@/components/FetchFromIsbn.vue';
-import { useApolloClient, useMutation, useQuery } from '@vue/apollo-composable';
+import { useApolloClient, useMutation } from '@vue/apollo-composable';
 
 const display = useDisplay()
 const router = useRouter()

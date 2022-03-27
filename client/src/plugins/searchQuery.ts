@@ -1,4 +1,4 @@
-import { Comparisons, Ordering, OrderingFieldItem } from "@/graphql/graphql2";
+import { Comparisons, Ordering, OrderingFieldItem } from "@/graphql/graphql";
 import router from "@/routes";
 import { computed } from "vue";
 

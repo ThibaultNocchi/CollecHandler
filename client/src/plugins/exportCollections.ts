@@ -1,4 +1,4 @@
-import { BareCollectionQuery } from "@/graphql/graphql2";
+import { BareCollectionQuery } from "@/graphql/graphql";
 
 function download(filename: string, text: string) {
   var element = document.createElement("a");

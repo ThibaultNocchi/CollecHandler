@@ -27,11 +27,11 @@
 
 <script setup lang="ts">
 import { useMutation } from '@vue/apollo-composable'
-import { setJwt } from '@/graphql/client2';
+import { setJwt } from '@/graphql/client';
 import { computed, ref, Ref } from 'vue';
 import FsCard from '@/components/FsCard.vue'
 import PasswordField from '@/components/PasswordField.vue';
-import { LoginDocument, Errors } from '@/graphql/graphql2';
+import { LoginDocument, Errors } from '@/graphql/graphql';
 
 const pseudo = ref('')
 const password = ref('')

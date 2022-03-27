@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
-import { MeDocument } from '@/graphql/graphql2';
+import { MeDocument } from '@/graphql/graphql';
 import CollectionsList from '@/components/CollectionsList.vue';
 
 const me = useQuery(MeDocument)

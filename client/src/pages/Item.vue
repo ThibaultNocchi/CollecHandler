@@ -26,7 +26,7 @@ import { useRoute, useRouter } from 'vue-router';
 import jsbarcode from 'jsbarcode'
 import copy from 'copy-to-clipboard'
 import { useApolloClient, useMutation } from '@vue/apollo-composable';
-import { DeleteItemDocument, GetItemDocument } from '@/graphql/graphql2';
+import { DeleteItemDocument, GetItemDocument } from '@/graphql/graphql';
 
 if (typeof useRoute().params.collectionId !== "string") throw "Bad parameter"
 const collectionId = parseInt(useRoute().params.collectionId as string)

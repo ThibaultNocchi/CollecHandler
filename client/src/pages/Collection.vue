@@ -27,7 +27,7 @@ import { exportToCsv, exportToJson } from '@/plugins/exportCollections';
 import searchQuery from '@/plugins/searchQuery';
 import SearchBar from '@/components/SearchBar.vue';
 import { useApolloClient, useMutation } from '@vue/apollo-composable';
-import { BareCollectionDocument, DeleteCollectionDocument, GetCollectionDocument } from '@/graphql/graphql2';
+import { BareCollectionDocument, DeleteCollectionDocument, GetCollectionDocument } from '@/graphql/graphql';
 
 const collectionId = searchQuery.collectionId.value
 if (!collectionId) throw "Bad parameter"

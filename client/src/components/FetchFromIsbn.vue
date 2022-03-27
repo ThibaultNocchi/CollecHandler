@@ -19,7 +19,7 @@ import { ref } from 'vue';
 import BarcodeScanner from './BarcodeScanner.vue';
 import { debouncedWatch } from '@vueuse/core'
 import { useApolloClient } from '@vue/apollo-composable';
-import { FetchFromIsbnDocument } from '@/graphql/graphql2';
+import { FetchFromIsbnDocument } from '@/graphql/graphql';
 
 const emit = defineEmits(['change'])
 const { client } = useApolloClient()

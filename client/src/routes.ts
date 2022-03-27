@@ -9,7 +9,7 @@ import Home from "@/pages/Home.vue";
 import Collection from "@/pages/Collection.vue";
 import Item from "@/pages/Item.vue";
 import AddItem from "@/pages/AddItem.vue";
-import { isLoggedIn } from "./graphql/client2";
+import { isLoggedIn } from "./graphql/client";
 
 const routes = [
   {

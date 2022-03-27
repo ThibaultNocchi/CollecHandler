@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Comparisons } from '@/graphql/graphql2';
+import { Comparisons } from '@/graphql/graphql';
 import searchQuery, { routeItemSearch } from '@/plugins/searchQuery';
 import { reactive, ref, watch } from 'vue';
 import { useDebounce } from '@vueuse/core'

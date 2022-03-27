@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { GetCollectionsDocument, Ordering, OrderingFieldCollection } from '@/graphql/graphql2';
+import { GetCollectionsDocument, Ordering, OrderingFieldCollection } from '@/graphql/graphql';
 import { useQuery } from '@vue/apollo-composable';
 import { computed } from 'vue';
 

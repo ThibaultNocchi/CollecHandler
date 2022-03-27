@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AddCollectionDocument, CollectionType } from '@/graphql/graphql2';
+import { AddCollectionDocument, CollectionType } from '@/graphql/graphql';
 import { useMutation } from '@vue/apollo-composable';
 import { computed, Ref, ref } from 'vue';
 
