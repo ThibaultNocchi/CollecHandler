@@ -118,6 +118,7 @@ enum Errors {
   login
   signup
   signup_existingpseudo
+  unauthorized
 }
 
 ##### QUERIES AND MUTATIONS

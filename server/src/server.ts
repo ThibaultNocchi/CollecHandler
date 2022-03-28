@@ -1,46 +1,37 @@
-import express, { NextFunction, Request, Response } from 'express'
-import { graphqlHTTP } from 'express-graphql'
-import { schema } from './schema'
-import { context } from './context'
+import { resolvers, typeDefs } from './schema'
 import { verify } from 'jsonwebtoken'
-import cors from 'cors'
 import { v4 as uuidv4 } from 'uuid'
+import { ApolloServer } from 'apollo-server'
+import { PrismaClient } from '@prisma/client'
 
 export const JWT_SECRET = process.env.JWT_SECRET || uuidv4()
 
-const app = express()
-
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const loggingMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const token = req.headers.authorization
-  if (token) {
-    try {
-      const payload = verify(token, JWT_SECRET)
-      // @ts-expect-error userId doesn't exist on type
-      context.userId = payload.userId
-    } catch (err) {
-      res.status(401).send()
-      return
-    }
-  }
-  next()
+export interface Context {
+  prisma: PrismaClient
+  userId?: number
 }
 
-app.use(cors())
-app.use(loggingMiddleware)
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    context: context,
-    graphiql: !process.env.NODE_ENV,
-  }),
-)
+const prisma = new PrismaClient()
 
-app.listen(4000)
-console.log(`🚀 Server ready at: http://localhost:4000/graphql`)
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }): Context => {
+    const token = req.headers.authorization
+    let userId = undefined
+    if (token) {
+      try {
+        const payload = verify(token, JWT_SECRET)
+        // @ts-expect-error userId doesn't exist on type
+        userId = payload.userId
+      } catch {}
+    }
+    return { prisma, userId }
+  },
+})
+
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`)
+})
