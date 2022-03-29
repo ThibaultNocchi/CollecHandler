@@ -31,7 +31,7 @@ import { setJwt } from '@/graphql/client';
 import { reactive, ref } from 'vue';
 import FsCard from '@/components/FsCard.vue';
 import PasswordField from '@/components/PasswordField.vue';
-import { SignupDocument } from '@/graphql/graphql';
+import { Errors, SignupDocument } from '@/graphql/graphql';
 
 const payload = reactive({ pseudo: "", password: "" })
 const password2 = ref('')
@@ -40,6 +40,14 @@ const rememberMe = ref(false)
 const errors = reactive({ pseudo: undefined as string | undefined, password: undefined as string | undefined, password2: undefined as string | undefined })
 const register = useMutation(SignupDocument, { variables: payload })
 
+register.onDone(res => {
+	if (!res.data?.signup?.token) throw Error
+	setJwt(res.data?.signup?.token, rememberMe.value)
+})
+register.onError(err => {
+	if (err.message === Errors.SignupExistingpseudo) errors.pseudo = "Existing pseudo"
+	else errors.pseudo = "Error signing up"
+})
 
 const onSubmit = async () => {
 	errors.pseudo = undefined
@@ -59,15 +67,7 @@ const onSubmit = async () => {
 		return
 	}
 
-	try {
-		const res = await register.mutate()
-		if (!res?.data?.signup?.token) throw Error
-		const token = res.data.signup.token
-		setJwt(token, rememberMe.value)
-	} catch {
-		if (register.error.value)
-			alert("Error signing up")
-	}
+	register.mutate()
 }
 
 </script>
