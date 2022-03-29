@@ -7,10 +7,9 @@
 			<v-col>
 				<v-text-field
 					v-model="value"
-					:error="error"
+					:error-messages="error"
 					:loading="addCollection.loading.value"
 					label="New collection name"
-					hide-details
 				>
 					<template #append>
 						<v-icon type="submit" color="primary" class="pointer" @click="onSubmit">mdi-plus-circle</v-icon>
@@ -41,21 +40,20 @@ addCollection.onError(err => {
 
 const value = ref('')
 const collectionType: Ref<undefined | CollectionType> = ref(undefined)
-const error = ref(false)
+const error: Ref<string | undefined> = ref(undefined)
 
 const emit = defineEmits(['change'])
 
 const onError = (msg: string) => {
-	error.value = true
-	alert(msg)
+	error.value = msg
 }
 
 const onSubmit = async () => {
+	error.value = undefined
 	if (!value.value) {
 		onError("Please fill the new collection name")
 		return
 	}
-	error.value = false
 	addCollection.mutate({
 		input: {
 			name: value.value,
