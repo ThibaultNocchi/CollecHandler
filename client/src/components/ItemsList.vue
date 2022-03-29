@@ -41,7 +41,7 @@ import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useMutation, useQuery } from '@vue/apollo-composable';
-import { DeleteItemDocument, Ordering, OrderingFieldItem, SearchItemsDocument } from '@/graphql/graphql';
+import { DeleteItemDocument, Item, Ordering, OrderingFieldItem, SearchItemsDocument } from '@/graphql/graphql';
 
 const props = defineProps({
 	collectionId: {
@@ -81,8 +81,14 @@ const searchQuery = useQuery(SearchItemsDocument, () => ({
 	}
 }))
 
-const items = computed(() => searchQuery.result.value?.search.items || [])
-const pages = computed(() => searchQuery.result.value?.search.pages || 1)
+const items: Ref<Item[]> = ref([])
+const pages = ref(1)
+
+searchQuery.onResult((res) => {
+	if (!res.data) return
+	items.value = res.data.search.items
+	pages.value = res.data.search.pages
+})
 
 const router = useRouter()
 const route = useRoute()
