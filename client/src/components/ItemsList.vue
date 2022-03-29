@@ -32,11 +32,11 @@
 		</tbody>
 	</v-table>
 
-	<v-pagination :length="pages" @update:modelValue="onPageChange"></v-pagination>
+	<v-pagination v-model="pagination" :length="pages"></v-pagination>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, Ref } from 'vue';
+import { computed, ref, Ref, watch } from 'vue';
 import searchQueryStore, { routeItemOrdering } from '@/plugins/searchQuery';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
@@ -93,9 +93,10 @@ searchQuery.onResult((res) => {
 const router = useRouter()
 const route = useRoute()
 
-const onPageChange = (page: number) => {
-	router.replace({ ...route, query: { ...route.query, page: page !== 1 ? page : undefined } })
-}
+const pagination = ref(searchQueryStore.page.value)
+watch(pagination, (newPage: number) => {
+	router.replace({ ...route, query: { ...route.query, page: newPage !== 1 ? newPage : undefined } })
+})
 
 const routeItem = (itemId: number) => {
 	router.push({ name: 'Item', params: { collectionId: props.collectionId, id: itemId } })
