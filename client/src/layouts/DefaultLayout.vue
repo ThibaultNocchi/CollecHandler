@@ -6,53 +6,33 @@
 
 	<v-navigation-drawer app :permanent="!display.mobile.value" :temporary="display.mobile.value" v-model="drawer">
 		<template #prepend>
-			<v-list nav dense>
+			<v-list nav>
 				<v-list-item>
-					<v-list-item-avatar>
+					<v-list-item-avatar start>
 						<v-avatar color="blue">{{ firstLetter }}</v-avatar>
 					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title>{{ pseudo }}</v-list-item-title>
-					</v-list-item-content>
+					<v-list-item-title>{{ pseudo }}</v-list-item-title>
 				</v-list-item>
 			</v-list>
 			<v-divider></v-divider>
 		</template>
 
-		<v-list nav dense>
+		<v-list nav density="comfortable">
 			<template v-for="item in items">
-				<v-list-item link :to="{ name: item.route }">
-					<v-list-item-icon>
-						<v-icon>{{ item.icon }}</v-icon>
-					</v-list-item-icon>
-					<v-list-item-content>
-						<v-list-item-title>{{ item.text }}</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
+				<v-list-item :to="{ name: item.route }" :prepend-icon="item.icon" :title="item.text" />
 				<v-divider v-if="item.dividerBelow" class="ma-2" />
 			</template>
 		</v-list>
 
 		<template #append>
 			<v-divider />
-			<v-list nav dense>
+			<v-list nav density="comfortable">
 				<template v-if="typeof version === 'string'">
-					<v-list-item>
-						<v-list-item-content>
-							<v-list-item-title>Version: #{{ version.substring(0, 6) }}</v-list-item-title>
-						</v-list-item-content>
-					</v-list-item>
+					<v-list-item :title="'Version: #' + version.substring(0, 6)" />
 					<v-divider class="ma-2" />
 				</template>
 
-				<v-list-item link @click="logout">
-					<v-list-item-icon>
-						<v-icon>mdi-logout</v-icon>
-					</v-list-item-icon>
-					<v-list-item-content>
-						<v-list-item-title>Logout</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
+				<v-list-item @click="logout" prepend-icon="mdi-logout" title="Logout" />
 			</v-list>
 		</template>
 	</v-navigation-drawer>
