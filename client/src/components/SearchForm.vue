@@ -2,13 +2,27 @@
 	<v-form>
 		<v-row>
 			<v-col cols="12">
-				<v-text-field v-model="text" label="Text search" hide-details prepend-inner-icon="mdi-alphabetical" />
+				<v-text-field
+					v-model="text"
+					clearable
+					density="comfortable"
+					hide-details
+					label="Text search"
+					prepend-inner-icon="mdi-alphabetical"
+				/>
 			</v-col>
 
 			<v-divider />
 
 			<v-col cols="12">
-				<v-text-field v-model="form.barcode" clearable hide-details label="Barcode" prepend-inner-icon="mdi-barcode">
+				<v-text-field
+					v-model="form.barcode"
+					clearable
+					density="comfortable"
+					hide-details
+					label="Barcode"
+					prepend-inner-icon="mdi-barcode"
+				>
 					<template #append>
 						<BarcodeScanner @change="onBarcodeChange" />
 					</template>
@@ -30,6 +44,7 @@
 				<v-text-field
 					v-model="form.quantity"
 					:disabled="form.quantityComparison === 'disabled'"
+					density="comfortable"
 					label="Number"
 					type="number"
 					hide-details
