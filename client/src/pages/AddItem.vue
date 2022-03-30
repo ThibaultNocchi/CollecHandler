@@ -86,6 +86,14 @@ const getCollections = useQuery(GetCollectionsDocument, {
 })
 getCollections.onResult(res => {
 	collections.value = res.data.getCollections.collections
+
+	if (typeof route.query.collectionId === "string") {
+		const queryId = parseInt(route.query.collectionId)
+		if (collections.value.some(el => el.id === queryId)) {
+			form.collectionId = queryId
+		}
+		router.replace({ ...route, query: undefined })
+	}
 })
 
 const addItem = useMutation(AddItemDocument)
@@ -123,14 +131,6 @@ const errors = reactive({
 	name: false,
 	quantity: false
 })
-
-if (typeof route.query.collectionId === "string") {
-	const queryId = parseInt(route.query.collectionId)
-	if (collections.value.some(el => el.id === queryId)) {
-		form.collectionId = queryId
-		router.replace({ ...route, query: undefined })
-	}
-}
 
 const onBarcodeChange = (barcode?: string) => {
 	if (barcode) form.barcode = barcode
