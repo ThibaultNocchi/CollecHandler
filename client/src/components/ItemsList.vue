@@ -26,7 +26,13 @@
 				</template>
 				<td class="text-center">
 					<v-btn @click.stop="routeItem(item.id)" icon="mdi-magnify" color="primary" variant="text" />
-					<v-btn @click.stop="onDelete(item.id)" icon="mdi-delete" color="error" variant="text" />
+					<v-btn
+						v-if="display.smAndUp.value"
+						@click.stop="onDelete(item.id)"
+						color="error"
+						icon="mdi-delete"
+						variant="text"
+					/>
 				</td>
 			</tr>
 		</tbody>
