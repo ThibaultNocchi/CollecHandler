@@ -2,14 +2,22 @@
 	<v-form :disabled="addCollection.loading.value" @submit.prevent="onSubmit">
 		<v-row>
 			<v-col cols="12" sm="auto">
-				<v-select label="Collection type" v-model="collectionType" :items="collectionTypes" clearable no-data-text="Other" />
+				<v-select
+					v-model="collectionType"
+					:items="collectionTypes"
+					clearable
+					hide-details="auto"
+					label="Collection type"
+					no-data-text="Other"
+				/>
 			</v-col>
 			<v-col>
 				<v-text-field
 					v-model="value"
 					:error-messages="error"
-					:loading="addCollection.loading.value"
+					hide-details="auto"
 					label="New collection name"
+					:loading="addCollection.loading.value"
 				>
 					<template #append>
 						<v-icon type="submit" color="primary" class="pointer" @click="onSubmit">mdi-plus-circle</v-icon>
