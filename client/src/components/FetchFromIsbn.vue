@@ -6,6 +6,8 @@
 		hide-details
 		label="Fetch from ISBN"
 		prepend-inner-icon="mdi-barcode"
+		append-inner-icon="mdi-magnify"
+		@click:append-inner="fetchInfos(barcodeForm)"
 	>
 		<template #append>
 			<BarcodeScanner v-if="!loading" @change="fetchInfos" />
@@ -17,7 +19,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import BarcodeScanner from './BarcodeScanner.vue';
-import { debouncedWatch } from '@vueuse/core'
 import { useApolloClient } from '@vue/apollo-composable';
 import { FetchFromIsbnDocument } from '@/graphql/graphql';
 
@@ -26,10 +27,6 @@ const { client } = useApolloClient()
 
 const barcodeForm = ref('')
 const loading = ref(false)
-
-debouncedWatch(barcodeForm, async () => {
-	fetchInfos(barcodeForm.value)
-}, { debounce: 500 })
 
 const fetchInfos = async (barcode: string) => {
 	if (barcode !== '') {
@@ -45,3 +42,9 @@ const fetchInfos = async (barcode: string) => {
 }
 
 </script>
+
+<style>
+.v-field__append-inner {
+	cursor: pointer;
+}
+</style>
