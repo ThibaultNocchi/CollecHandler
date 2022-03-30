@@ -68,26 +68,12 @@ import { useDisplay } from 'vuetify';
 import AddCollectionForm from '@/components/AddCollectionForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 import FetchFromIsbn from '@/components/FetchFromIsbn.vue';
-import { useApolloClient, useMutation, useQuery } from '@vue/apollo-composable';
+import { useMutation, useQuery } from '@vue/apollo-composable';
 
 const display = useDisplay()
 const router = useRouter()
 const route = useRoute()
-const { client } = useApolloClient()
 
-// const getCollections = await client.query({
-// 	query: GetCollectionsDocument,
-// 	variables: {
-// 		input: {},
-// 		ordering: {
-// 			numberPerPage: -1,
-// 			page: 1,
-// 			ordering: Ordering.Asc,
-// 			orderingFieldCollection: OrderingFieldCollection.Name
-// 		}
-// 	}
-// })
-// const collections = computed(() => getCollections.data.getCollections.collections)
 const collections: Ref<Collection[]> = ref([])
 const getCollections = useQuery(GetCollectionsDocument, {
 	input: {},
