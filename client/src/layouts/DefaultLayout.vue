@@ -1,7 +1,7 @@
 <template>
 	<v-app-bar app>
 		<v-app-bar-nav-icon v-if="display.mobile.value" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-		<v-app-bar-title>CollecHandler</v-app-bar-title>
+		<v-app-bar-title tag="div">CollecHandler</v-app-bar-title>
 	</v-app-bar>
 
 	<v-navigation-drawer app :permanent="!display.mobile.value" :temporary="display.mobile.value" v-model="drawer">
