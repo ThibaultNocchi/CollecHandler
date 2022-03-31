@@ -26,12 +26,14 @@
 
 		<template #append>
 			<v-divider />
-			<v-list nav density="comfortable">
-				<template v-if="typeof version === 'string'">
+			<template v-if="typeof version === 'string'">
+				<v-list nav density="comfortable">
 					<v-list-item :title="'Version: #' + version.substring(0, 6)" />
-					<v-divider class="ma-2" />
-				</template>
+				</v-list>
+				<v-divider />
+			</template>
 
+			<v-list nav density="comfortable">
 				<v-list-item @click="logout" prepend-icon="mdi-logout" title="Logout" />
 			</v-list>
 		</template>
