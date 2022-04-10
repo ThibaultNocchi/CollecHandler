@@ -4,12 +4,10 @@
 		<thead>
 			<tr>
 				<template v-for="field in tableFields">
-					<th
-						v-if="field.displayCondition.value"
-						class="text-left"
-						:class="{ pointer: field.orderingField }"
-						@click="field.orderingField ? switchOrdering(field.orderingField) : undefined"
-					>{{ field.title }}{{ field.orderingField ? getOrderingArrow(field.orderingField) : undefined }}</th>
+					<th v-if="field.displayCondition.value" class="text-left" :class="{ pointer: field.orderingField }"
+						@click="field.orderingField ? switchOrdering(field.orderingField) : undefined">{{ field.title }}{{
+							field.orderingField ? getOrderingArrow(field.orderingField) : undefined
+						}}</th>
 				</template>
 				<th class="text-center">Actions</th>
 			</tr>
@@ -26,19 +24,15 @@
 				</template>
 				<td class="text-center">
 					<v-btn @click.stop="routeItem(item.id)" icon="mdi-magnify" color="primary" variant="text" />
-					<v-btn
-						v-if="display.smAndUp.value"
-						@click.stop="onDelete(item.id)"
-						color="error"
-						icon="mdi-delete"
-						variant="text"
-					/>
+					<v-btn v-if="display.smAndUp.value" @click.stop="onDelete(item.id)" color="error" icon="mdi-delete"
+						variant="text" />
 				</td>
 			</tr>
 		</tbody>
 	</v-table>
 
-	<v-pagination v-model="pagination" :length="pages"></v-pagination>
+	<v-pagination v-model="pagination" :length="pages">
+		</v-pagination>
 </template>
 
 <script setup lang="ts">
@@ -92,6 +86,7 @@ const pages = ref(1)
 
 searchQuery.onResult((res) => {
 	if (!res.data) return
+	if (pagination.value != 1 && res.data.search.pages < pagination.value) { pagination.value = 1; return }
 	items.value = res.data.search.items
 	pages.value = res.data.search.pages
 })
