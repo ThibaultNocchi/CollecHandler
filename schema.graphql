@@ -32,6 +32,7 @@ type CollectionsList {
 type ItemsList {
   items: [Item!]!
   pages: Int!
+  total: Int!
 }
 
 type AuthPayload {

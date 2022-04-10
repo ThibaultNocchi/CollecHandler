@@ -93,6 +93,7 @@ export type ItemsList = {
   __typename?: 'ItemsList';
   items: Array<Item>;
   pages: Scalars['Int'];
+  total: Scalars['Int'];
 };
 
 export type Mutation = {

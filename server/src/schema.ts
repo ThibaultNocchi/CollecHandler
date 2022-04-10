@@ -119,7 +119,7 @@ const getItems = async (
 
   const count = await ctx.prisma.item.count(baseQuery)
 
-  return { pages: Math.ceil(count / numberPerPage), items }
+  return { total: count, pages: Math.ceil(count / numberPerPage), items }
 }
 
 const resolvers = {
