@@ -1,15 +1,16 @@
 <template>
 	<v-form>
 		<v-row>
-			<v-col cols="12">
-				<v-text-field v-model="text" clearable density="comfortable" hide-details label="Text search"
-					prepend-inner-icon="mdi-alphabetical" :variant="props.variant" />
-			</v-col>
+			<template v-if="props.displayText">
+				<v-col cols="12">
+					<v-text-field v-model="text" clearable density="comfortable" hide-details label="Text search"
+						prepend-inner-icon="mdi-alphabetical" :variant="props.variant" />
+				</v-col>
+			</template>
 
-			<template v-if="!props.textOnly">
+			<v-divider v-if="props.displayText && props.displayOthers" />
 
-				<v-divider />
-
+			<template v-if="props.displayOthers">
 				<v-col cols="12">
 					<v-text-field v-model="form.barcode" clearable density="comfortable" hide-details label="Barcode"
 						prepend-inner-icon="mdi-barcode" :variant="props.variant">
@@ -34,8 +35,8 @@
 					<v-text-field v-model="form.quantity" :disabled="form.quantityComparison === 'disabled'" density="comfortable"
 						label="Number" type="number" hide-details prepend-inner-icon="mdi-numeric" :variant="props.variant" />
 				</v-col>
-
 			</template>
+
 		</v-row></v-form>
 </template>
 
@@ -47,7 +48,11 @@ import { useDebounce } from '@vueuse/core'
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
 
 const props = defineProps({
-	textOnly: {
+	displayText: {
+		type: Boolean,
+		default: false
+	},
+	displayOthers: {
 		type: Boolean,
 		default: false
 	},

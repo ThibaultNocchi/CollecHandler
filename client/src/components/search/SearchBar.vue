@@ -6,11 +6,11 @@
 			</v-card-header-text>
 		</v-card-header>
 		<v-card-text>
-			<SearchForm />
+			<SearchForm display-text display-others />
 		</v-card-text>
 	</v-card>
 	<template v-else>
-		<SearchForm text-only variant="underlined" />
+		<SearchForm display-text variant="underlined" />
 		</template>
 </template>
 
