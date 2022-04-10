@@ -32,6 +32,8 @@
             <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
           <v-toolbar-title>Filters</v-toolbar-title>
+          <v-spacer />
+          <div>{{ currentTotalItems }} item(s)</div>
         </v-toolbar>
 
         <v-card class="mt-4 mx-4 mx-sm-16">
@@ -51,6 +53,7 @@ import { computed, ref } from "vue";
 import { useDisplay } from "vuetify";
 import SearchForm from "@/components/search/SearchForm.vue";
 import SearchText from "@/components/search/SearchText.vue";
+import { currentTotalItems } from "@/plugins/searchQuery";
 
 const display = useDisplay();
 const isBig = computed(() => display.mdAndUp.value);
