@@ -31,7 +31,11 @@ const props = defineProps({
 
 const text = ref(searchQuery.text.value);
 
-watchDebounced(text, val => {
-  routeItemTextSearch(val);
-});
+watchDebounced(
+  text,
+  val => {
+    routeItemTextSearch(val);
+  },
+  { debounce: 500 }
+);
 </script>
