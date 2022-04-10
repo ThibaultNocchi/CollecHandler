@@ -1,38 +1,46 @@
 <template>
 	<h2>Items</h2>
-	<v-table>
-		<thead>
-			<tr>
-				<template v-for="field in tableFields">
-					<th v-if="field.displayCondition.value" class="text-left" :class="{ pointer: field.orderingField }"
-						@click="field.orderingField ? switchOrdering(field.orderingField) : undefined">{{ field.title }}{{
-							field.orderingField ? getOrderingArrow(field.orderingField) : undefined
-						}}</th>
-				</template>
-				<th class="text-center">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr v-for="item in items" :key="item.name">
-				<template v-for="field in tableFields">
-					<td v-if="field.displayCondition.value">
-						{{
-							// @ts-expect-error TS don't like adressing objects with string variables
-							item[field.objectKey]
-						}}
+	<template v-if="items.length != 0">
+		<v-table>
+			<thead>
+				<tr>
+					<template v-for="field in tableFields">
+						<th v-if="field.displayCondition.value" class="text-left" :class="{ pointer: field.orderingField }"
+							@click="field.orderingField ? switchOrdering(field.orderingField) : undefined">{{ field.title }}{{
+								field.orderingField ? getOrderingArrow(field.orderingField) : undefined
+							}}</th>
+					</template>
+					<th class="text-center">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="item in items" :key="item.name">
+					<template v-for="field in tableFields">
+						<td v-if="field.displayCondition.value">
+							{{
+								// @ts-expect-error TS don't like adressing objects with string variables
+								item[field.objectKey]
+							}}
+						</td>
+					</template>
+					<td class="text-center">
+						<v-btn @click.stop="routeItem(item.id)" icon="mdi-magnify" color="primary" variant="text" />
+						<v-btn v-if="display.smAndUp.value" @click.stop="onDelete(item.id)" color="error" icon="mdi-delete"
+							variant="text" />
 					</td>
-				</template>
-				<td class="text-center">
-					<v-btn @click.stop="routeItem(item.id)" icon="mdi-magnify" color="primary" variant="text" />
-					<v-btn v-if="display.smAndUp.value" @click.stop="onDelete(item.id)" color="error" icon="mdi-delete"
-						variant="text" />
-				</td>
-			</tr>
-		</tbody>
-	</v-table>
+				</tr>
+			</tbody>
+		</v-table>
 
-	<v-pagination v-model="pagination" :length="pages">
-		</v-pagination>
+		<v-pagination v-model="pagination" :length="pages" />
+
+	</template>
+	<div v-else class="my-4">
+		<div class="text-center">
+			<v-icon color="warning" size="x-large">mdi-magnify-close</v-icon>
+		</div>
+		<div class="text-subtitle-1 text-center">No item found</div>
+		</div>
 </template>
 
 <script setup lang="ts">
