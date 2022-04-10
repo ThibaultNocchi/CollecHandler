@@ -9,7 +9,9 @@
 			<ItemsList :collection-id="collectionId" />
 			<h2>Actions</h2>
 
-			<v-btn :to="{ name: 'AddItem', query: { collectionId } }" color="primary" size="small">Add new item</v-btn>
+			<v-btn :to="{ name: 'AddItem', query: { collectionId: collectionId } }" color="primary" size="small">
+				Add new item
+			</v-btn>
 			<br />
 			<v-btn @click="downloadAs('csv')" size="small">Download as CSV</v-btn>
 			<v-btn @click="downloadAs('json')" size="small">Download as JSON</v-btn>
