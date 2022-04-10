@@ -51,19 +51,28 @@ const searchQuery = {
   })
 };
 
+export const routeItemTextSearch = (text?: string) => {
+  // Ensures empty strings are undefined
+  const textToSend = text || undefined;
+  router.push({
+    ...router.currentRoute.value,
+    query: {
+      ...router.currentRoute.value.query,
+      text: textToSend
+    }
+  });
+};
+
 export const routeItemSearch = ({
-  text,
   barcode,
   quantityComparison,
   quantity
 }: {
-  text?: string;
   barcode?: string;
   quantityComparison: Comparisons | string;
   quantity: number;
 }) => {
   const routeQuery = {
-    text: text || undefined,
     barcode: barcode || undefined,
     quantityComparison:
       quantityComparison !== DEFAULTS.quantityComparison
