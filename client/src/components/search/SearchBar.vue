@@ -10,7 +10,7 @@
 		</v-card-text>
 	</v-card>
 	<template v-else>
-		<SearchForm is-mobile />
+		<SearchForm text-only variant="underlined" />
 		</template>
 </template>
 

@@ -1,58 +1,59 @@
 <template>
-	<v-form v-if="!props.isMobile">
+	<v-form>
 		<v-row>
 			<v-col cols="12">
 				<v-text-field v-model="text" clearable density="comfortable" hide-details label="Text search"
-					prepend-inner-icon="mdi-alphabetical" />
+					prepend-inner-icon="mdi-alphabetical" :variant="props.variant" />
 			</v-col>
 
-			<v-divider />
+			<template v-if="!props.textOnly">
 
-			<v-col cols="12">
-				<v-text-field v-model="form.barcode" clearable density="comfortable" hide-details label="Barcode"
-					prepend-inner-icon="mdi-barcode">
-					<template #append>
-						<BarcodeScanner @change="onBarcodeChange" />
-					</template>
-				</v-text-field>
-			</v-col>
+				<v-divider />
 
-			<v-divider />
+				<v-col cols="12">
+					<v-text-field v-model="form.barcode" clearable density="comfortable" hide-details label="Barcode"
+						prepend-inner-icon="mdi-barcode" :variant="props.variant">
+						<template #append>
+							<BarcodeScanner @change="onBarcodeChange" />
+						</template>
+					</v-text-field>
+				</v-col>
 
-			<v-col cols="12">
-				<h3>Quantity</h3>
-			</v-col>
-			<v-col cols="4" align-self="center">
-				<select v-model="form.quantityComparison">
-					<option :value="'disabled'">Disabled</option>
-					<option v-for="item in Comparisons" :value="item">{{ quantityComparisonMappings[item] }}</option>
-				</select>
-			</v-col>
-			<v-col cols="8">
-				<v-text-field v-model="form.quantity" :disabled="form.quantityComparison === 'disabled'" density="comfortable"
-					label="Number" type="number" hide-details prepend-inner-icon="mdi-numeric" />
-			</v-col>
-		</v-row>
-	</v-form>
+				<v-divider />
 
-	<v-row v-else>
-		<v-col>
-			<v-text-field v-model="text" clearable density="comfortable" hide-details label="Text search"
-				prepend-inner-icon="mdi-alphabetical" variant="underlined" />
-		</v-col>	</v-row>
+				<v-col cols="12">
+					<h3>Quantity</h3>
+				</v-col>
+				<v-col cols="4" align-self="center">
+					<select v-model="form.quantityComparison">
+						<option :value="'disabled'">Disabled</option>
+						<option v-for="item in Comparisons" :value="item">{{ quantityComparisonMappings[item] }}</option>
+					</select>
+				</v-col>
+				<v-col cols="8">
+					<v-text-field v-model="form.quantity" :disabled="form.quantityComparison === 'disabled'" density="comfortable"
+						label="Number" type="number" hide-details prepend-inner-icon="mdi-numeric" :variant="props.variant" />
+				</v-col>
+
+			</template>
+		</v-row></v-form>
 </template>
 
 <script lang="ts" setup>
 import { Comparisons } from '@/graphql/graphql';
 import searchQuery, { routeItemSearch } from '@/plugins/searchQuery';
-import { reactive, ref, watch } from 'vue';
+import { PropType, reactive, ref, watch } from 'vue';
 import { useDebounce } from '@vueuse/core'
 import BarcodeScanner from '@/components/BarcodeScanner.vue';
 
 const props = defineProps({
-	isMobile: {
+	textOnly: {
 		type: Boolean,
 		default: false
+	},
+	variant: {
+		type: String as PropType<"filled" | "outlined" | "plain" | "contained" | "underlined">,
+		default: "filled"
 	}
 })
 
