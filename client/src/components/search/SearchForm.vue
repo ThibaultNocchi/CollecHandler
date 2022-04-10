@@ -1,5 +1,8 @@
 <template>
   <v-col cols="12">
+    <h3>Barcode search</h3>
+  </v-col>
+  <v-col cols="12">
     <v-text-field
       v-model="form.barcode"
       clearable

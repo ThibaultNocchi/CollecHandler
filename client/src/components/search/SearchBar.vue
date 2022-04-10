@@ -33,7 +33,14 @@
           </v-btn>
           <v-toolbar-title>Filters</v-toolbar-title>
         </v-toolbar>
-        <SearchForm variant="filled" />
+
+        <v-card class="mt-4 mx-4 mx-sm-16">
+          <v-card-text>
+            <v-row>
+              <SearchForm variant="filled" />
+            </v-row>
+          </v-card-text>
+        </v-card>
       </v-card>
     </v-dialog>
   </template>
