@@ -6,6 +6,7 @@
     hide-details
     label="Text search"
     prepend-inner-icon="mdi-alphabetical"
+    :single-line="props.singleLine"
     :variant="props.variant"
   />
 </template>
@@ -21,6 +22,10 @@ const props = defineProps({
       "filled" | "outlined" | "plain" | "contained" | "underlined"
     >,
     default: "filled"
+  },
+  singleLine: {
+    type: Boolean,
+    default: false
   }
 });
 

@@ -17,7 +17,7 @@
   </v-card>
 
   <template v-else>
-    <SearchText variant="underlined" />
+    <SearchText single-line variant="underlined" />
   </template>
 </template>
 
