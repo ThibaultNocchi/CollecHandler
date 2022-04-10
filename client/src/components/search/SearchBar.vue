@@ -29,7 +29,7 @@
       <v-card>
         <v-toolbar>
           <v-btn icon @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
+            <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
           <v-toolbar-title>Filters</v-toolbar-title>
         </v-toolbar>
