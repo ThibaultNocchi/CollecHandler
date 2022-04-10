@@ -49,7 +49,6 @@ import { Comparisons } from "@/graphql/graphql";
 import searchQuery, { routeItemSearch } from "@/plugins/searchQuery";
 import { PropType, reactive, watch } from "vue";
 import BarcodeScanner from "@/components/BarcodeScanner.vue";
-import SearchText from "./SearchText.vue";
 
 const props = defineProps({
   variant: {
