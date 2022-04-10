@@ -1,5 +1,6 @@
 <template>
   <h2>Items</h2>
+  <div class="text-subtitle-1">{{ currentTotalItems }} item(s)</div>
   <template v-if="items.length != 0">
     <v-table>
       <thead>
@@ -152,6 +153,7 @@ searchQuery.onResult(res => {
   }
   items.value = res.data.search.items;
   pages.value = res.data.search.pages;
+  currentTotalItems.value = res.data.search.total;
 });
 
 const router = useRouter();

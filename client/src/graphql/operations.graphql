@@ -82,6 +82,7 @@ mutation signup($pseudo: String!, $password: String!) {
 query searchItems($ordering: OrderingInput!, $input: SearchInput!) {
   search(ordering: $ordering, input: $input) {
     pages
+    total
     items {
       id
       collectionId

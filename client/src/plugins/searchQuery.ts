@@ -1,6 +1,6 @@
 import { Comparisons, Ordering, OrderingFieldItem } from "@/graphql/graphql";
 import router from "@/routes";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 export const DEFAULTS = {
   ordering: Ordering.Desc,
@@ -111,5 +111,7 @@ export const routeItemOrdering = ({
     }
   });
 };
+
+export const currentTotalItems = ref(0);
 
 export default searchQuery;
