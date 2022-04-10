@@ -6,19 +6,27 @@
 			</v-card-header-text>
 		</v-card-header>
 		<v-card-text>
-			<SearchForm display-text display-others />
+			<v-row>
+				<v-col cols="12">
+					<SearchText variant="filled" />
+				</v-col>
+				<v-divider />
+				<SearchForm variant="filled" />
+			</v-row>
 		</v-card-text>
 	</v-card>
+
 	<template v-else>
-		<SearchForm display-text variant="underlined" />
+		<SearchText variant="underlined" />
 		</template>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { useDisplay } from 'vuetify';
-import SearchForm from '@/components/search/SearchForm.vue';
+import { computed } from "vue";
+import { useDisplay } from "vuetify";
+import SearchForm from "@/components/search/SearchForm.vue";
+import SearchText from "@/components/search/SearchText.vue";
 
-const display = useDisplay()
-const isBig = computed(() => display.mdAndUp.value)
+const display = useDisplay();
+const isBig = computed(() => display.mdAndUp.value);
 </script>
