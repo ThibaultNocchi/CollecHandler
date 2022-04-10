@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 import searchQuery, { routeItemTextSearch } from "@/plugins/searchQuery";
-import { PropType, ref } from "vue";
+import { PropType, ref, watch } from "vue";
 import { watchDebounced } from "@vueuse/core";
 
 const props = defineProps({
@@ -30,12 +30,22 @@ const props = defineProps({
 });
 
 const text = ref(searchQuery.text.value);
+const paused = ref(false);
 
 watchDebounced(
   text,
   val => {
-    routeItemTextSearch(val);
+    if (!paused.value) routeItemTextSearch(val);
+    paused.value = false;
   },
   { debounce: 500 }
 );
+
+// Serves to update this component instance if value is changed somewhere else
+watch(searchQuery.text, val => {
+  if (val !== text.value) {
+    paused.value = true;
+    text.value = val;
+  }
+});
 </script>

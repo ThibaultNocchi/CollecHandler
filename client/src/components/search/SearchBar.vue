@@ -39,6 +39,10 @@
         <v-card class="mt-4 mx-4 mx-sm-16">
           <v-card-text>
             <v-row>
+              <v-col cols="12">
+                <SearchText variant="filled" />
+              </v-col>
+              <v-divider />
               <SearchForm variant="filled" />
             </v-row>
           </v-card-text>
