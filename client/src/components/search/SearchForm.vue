@@ -28,7 +28,17 @@
       </option>
     </select>
   </v-col>
-  <v-col cols="8"> <SearchText :variant="props.variant" /> </v-col>
+  <v-col cols="8">
+    <v-text-field
+      v-model="form.quantity"
+      :disabled="form.quantityComparison === 'disabled'"
+      density="comfortable"
+      label="Number"
+      type="number"
+      hide-details
+      prepend-inner-icon="mdi-numeric"
+    />
+  </v-col>
 </template>
 
 <script lang="ts" setup>
