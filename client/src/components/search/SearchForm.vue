@@ -1,5 +1,5 @@
 <template>
-	<v-form>
+	<v-form v-if="!props.isMobile">
 		<v-row>
 			<v-col cols="12">
 				<v-text-field v-model="text" clearable density="comfortable" hide-details label="Text search"
@@ -32,7 +32,14 @@
 				<v-text-field v-model="form.quantity" :disabled="form.quantityComparison === 'disabled'" density="comfortable"
 					label="Number" type="number" hide-details prepend-inner-icon="mdi-numeric" />
 			</v-col>
-		</v-row></v-form>
+		</v-row>
+	</v-form>
+
+	<v-row v-else>
+		<v-col>
+			<v-text-field v-model="text" clearable density="comfortable" hide-details label="Text search"
+				prepend-inner-icon="mdi-alphabetical" variant="underlined" />
+		</v-col>	</v-row>
 </template>
 
 <script lang="ts" setup>
@@ -40,7 +47,7 @@ import { Comparisons } from '@/graphql/graphql';
 import searchQuery, { routeItemSearch } from '@/plugins/searchQuery';
 import { reactive, ref, watch } from 'vue';
 import { useDebounce } from '@vueuse/core'
-import BarcodeScanner from './BarcodeScanner.vue';
+import BarcodeScanner from '@/components/BarcodeScanner.vue';
 
 const props = defineProps({
 	isMobile: {

@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
-import SearchForm from './SearchForm.vue';
+import SearchForm from '@/components/search/SearchForm.vue';
 
 const display = useDisplay()
 const isBig = computed(() => display.mdAndUp.value)

@@ -17,8 +17,7 @@
 			<v-btn @click="downloadAs('json')" size="small">Download as JSON</v-btn>
 			<br />
 			<v-btn @click="deleteCollection" color="error" size="small">Delete this collection</v-btn>
-		</v-col>
-	</v-row>
+		</v-col>	</v-row>
 </template>
 
 <script setup lang="ts">
@@ -27,7 +26,7 @@ import { useRouter } from 'vue-router';
 import ItemsList from '@/components/ItemsList.vue';
 import { exportToCsv, exportToJson } from '@/plugins/exportCollections';
 import searchQuery from '@/plugins/searchQuery';
-import SearchBar from '@/components/SearchBar.vue';
+import SearchBar from '@/components/search/SearchBar.vue';
 import { useApolloClient, useMutation } from '@vue/apollo-composable';
 import { BareCollectionDocument, DeleteCollectionDocument, GetCollectionDocument } from '@/graphql/graphql';
 
