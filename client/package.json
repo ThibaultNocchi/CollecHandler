@@ -16,7 +16,7 @@
     "@ericblade/quagga2": "^1.4.2",
     "@mdi/font": "5.9.55",
     "@vue/apollo-composable": "^4.0.0-alpha.16",
-    "@vueuse/core": "^7.5.5",
+    "@vueuse/core": "^8.2.5",
     "copy-to-clipboard": "^3.3.1",
     "graphql": "^15.8.0",
     "graphql-tag": "^2.12.6",
