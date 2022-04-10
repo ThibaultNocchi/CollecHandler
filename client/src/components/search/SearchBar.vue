@@ -1,24 +1,24 @@
 <template>
-	<v-card v-if="isBig">
-		<v-card-header>
-			<v-card-header-text>
-				<v-card-title>Search</v-card-title>
-			</v-card-header-text>
-		</v-card-header>
-		<v-card-text>
-			<v-row>
-				<v-col cols="12">
-					<SearchText variant="filled" />
-				</v-col>
-				<v-divider />
-				<SearchForm variant="filled" />
-			</v-row>
-		</v-card-text>
-	</v-card>
+  <v-card v-if="isBig">
+    <v-card-header>
+      <v-card-header-text>
+        <v-card-title>Search</v-card-title>
+      </v-card-header-text>
+    </v-card-header>
+    <v-card-text>
+      <v-row>
+        <v-col cols="12">
+          <SearchText variant="filled" />
+        </v-col>
+        <v-divider />
+        <SearchForm variant="filled" />
+      </v-row>
+    </v-card-text>
+  </v-card>
 
-	<template v-else>
-		<SearchText variant="underlined" />
-		</template>
+  <template v-else>
+    <SearchText variant="underlined" />
+  </template>
 </template>
 
 <script lang="ts" setup>
