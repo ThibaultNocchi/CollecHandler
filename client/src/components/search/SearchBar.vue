@@ -17,16 +17,26 @@
   </v-card>
 
   <template v-else>
-    <SearchText single-line variant="underlined" />
+    <v-row align="center">
+      <v-col>
+        <SearchText single-line variant="outlined" />
+      </v-col>
+      <v-col cols="auto">
+        <v-btn variant="text" @click="dialog = true">Filters</v-btn>
+      </v-col>
+    </v-row>
+    <v-dialog v-model="dialog" fullscreen></v-dialog>
   </template>
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useDisplay } from "vuetify";
 import SearchForm from "@/components/search/SearchForm.vue";
 import SearchText from "@/components/search/SearchText.vue";
 
 const display = useDisplay();
 const isBig = computed(() => display.mdAndUp.value);
+
+const dialog = ref(false);
 </script>
