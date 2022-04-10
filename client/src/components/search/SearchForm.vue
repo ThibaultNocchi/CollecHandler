@@ -1,41 +1,38 @@
 <template>
-	<v-form>
-		<v-row>
-			<template v-if="props.displayText">
-				<v-col cols="12">
-					<SearchText :variant="props.variant" />
-				</v-col>
-			</template>
+	<v-row>
+		<template v-if="props.displayText">
+			<v-col cols="12">
+				<SearchText :variant="props.variant" />
+			</v-col>
+		</template>
 
-			<v-divider v-if="props.displayText && props.displayOthers" />
+		<v-divider v-if="props.displayText && props.displayOthers" />
 
-			<template v-if="props.displayOthers">
-				<v-col cols="12">
-					<v-text-field v-model="form.barcode" clearable density="comfortable" hide-details label="Barcode"
-						prepend-inner-icon="mdi-barcode" :variant="props.variant">
-						<template #append>
-							<BarcodeScanner @change="onBarcodeChange" />
-						</template>
-					</v-text-field>
-				</v-col>
+		<template v-if="props.displayOthers">
+			<v-col cols="12">
+				<v-text-field v-model="form.barcode" clearable density="comfortable" hide-details label="Barcode"
+					prepend-inner-icon="mdi-barcode" :variant="props.variant">
+					<template #append>
+						<BarcodeScanner @change="onBarcodeChange" />
+					</template>
+				</v-text-field>
+			</v-col>
 
-				<v-divider />
+			<v-divider />
 
-				<v-col cols="12">
-					<h3>Quantity</h3>
-				</v-col>
-				<v-col cols="4" align-self="center">
-					<select v-model="form.quantityComparison">
-						<option :value="'disabled'">Disabled</option>
-						<option v-for="item in Comparisons" :value="item">{{ quantityComparisonMappings[item] }}</option>
-					</select>
-				</v-col>
-				<v-col cols="8">
-					<SearchText :variant="props.variant" />
-				</v-col>
-			</template>
-
-		</v-row></v-form>
+			<v-col cols="12">
+				<h3>Quantity</h3>
+			</v-col>
+			<v-col cols="4" align-self="center">
+				<select v-model="form.quantityComparison">
+					<option :value="'disabled'">Disabled</option>
+					<option v-for="item in Comparisons" :value="item">{{ quantityComparisonMappings[item] }}</option>
+				</select>
+			</v-col>
+			<v-col cols="8">
+				<SearchText :variant="props.variant" />
+			</v-col>
+		</template>	</v-row>
 </template>
 
 <script lang="ts" setup>
