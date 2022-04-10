@@ -25,7 +25,17 @@
         <v-btn variant="text" @click="dialog = true">Filters</v-btn>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" fullscreen></v-dialog>
+    <v-dialog v-model="dialog" fullscreen>
+      <v-card>
+        <v-toolbar>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Filters</v-toolbar-title>
+        </v-toolbar>
+        <SearchForm variant="filled" />
+      </v-card>
+    </v-dialog>
   </template>
 </template>
 
