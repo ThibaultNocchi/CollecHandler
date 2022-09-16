@@ -2,5 +2,6 @@
 	"volar.codeLens.scriptSetupTools": true,
 	"[vue]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+	},
+	"task.allowAutomaticTasks": "on"
 }
